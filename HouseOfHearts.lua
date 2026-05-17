@@ -159,6 +159,82 @@ SMODS.Joker{
     end
 }
 
+SMODS.Joker{
+    name = "BPM",
+    key = "bpm",
+    config = {
+        extra = 103
+    },
+    pos = {
+        x = 3, y = 0
+    },
+    cost = 5,
+    rarity = 1,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and context.joker_main then
+            local cards = false
+            for i = 1, #context.scoring_hand do
+                if context.scoring_hand[i]:get_id() == 9 or context.scoring_hand[i]:get_id() == 14 then cards = true end
+            end
+            if cards then
+                return{
+                    message = localize{type='variable',key='a_chips',vars={card.ability.extra}},
+                    chip_mod = card.ability.extra
+                }
+            end
+        end
+    end
+}
+
+SMODS.Joker{
+    name = "Stethoscope",
+    key = "stethoscope",
+    config = {
+        extra = 15
+    },
+    pos = {
+        x = 0, y = 1
+    },
+    cost = 5,
+    rarity = 1,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and context.joker_main then
+            local cards = 0
+            for i = 1, #context.scoring_hand do
+                if context.scoring_hand[i]:is_face() then cards = cards + 1 end
+            end
+            if cards == 1 then
+                return{
+                    message = localize{type='variable',key='a_mult',vars={card.ability.extra}},
+                    mult_mod = card.ability.extra
+                }
+            end
+        end
+    end
+}
+
 -- FUNCTIONS
 
 change_ktb_suit = function()
