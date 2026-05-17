@@ -1,11 +1,11 @@
 return {
 	descriptions = {
 		Joker = {
-			j_1 = {
+			j_hoh_keep_the_beat = {
 				name = "Keep the Beat",
 				text = {
 					"This Joker gains {C:mult}+#1#{} Mult",
-					"per consecutive hand played with",
+					"per {C:attention}consecutive{} hand played with",
 					"a scoring {V:1}#2#{} card,",
                     "suit cycles every hand",
                     "{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)",
