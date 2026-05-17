@@ -39,7 +39,7 @@ return {
                     "a scoring {C:attention}Ace{} or {C:attention}9{}",
 				},
 			},
-			j_5 = {
+			j_hoh_stethoscope = {
 				name = "Stethoscope",
 				text = {
 					"{C:mult}+#1#{} Mult if played",
