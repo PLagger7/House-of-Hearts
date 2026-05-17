@@ -31,7 +31,7 @@ SMODS.Joker{
     end,
 
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers then      
+        if context.cardarea == G.jokers then
             if context.before and not context.bluerint then
                 local cards = false
                 for i = 1, #context.scoring_hand do
@@ -62,7 +62,48 @@ SMODS.Joker{
             end
         end
     end
+}
 
+SMODS.Joker{
+    name = "Wayfarer",
+    key = "wayfarer",
+    config = {
+        extra = {
+            m_mod = 2,
+            mult = 0
+        }
+    },
+    pos = {
+        x = 1, y = 0
+    },
+    cost = 5,
+    rarity = 1,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = false,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra.m_mod, card.ability.extra.mult,}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers then
+            if context.before and next(context.poker_hands['Straight']) and not context.blueprint then
+                    card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.m_mod
+                    return {
+                        message = localize('k_upgrade_ex'),
+                    }
+            elseif context.joker_main and card.ability.extra.mult > 0 then
+                return{
+                    message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
+                    mult_mod = card.ability.extra.mult
+                }
+            end
+        end
+    end
 }
 
 -- FUNCTIONS

@@ -12,7 +12,7 @@ return {
                     "{C:inactive, s:0.8}(#4#, #5#, #6#, #7#){}",
 				},
 			},
-			j_2 = {
+			j_hoh_wayfarer = {
 				name = "Wayfarer",
 				text = {
 					"This Joker gains {C:mult}+#1#{} Mult",
@@ -48,6 +48,15 @@ return {
                     "exactly {C:attention}1 face{} card",
 				},
 			},
+			j_10 = {
+				name = "Jump Rope",
+				text = {
+                    "This Joker gains {C:chips}+#1#{} Chips",
+                    "when a {C:attention}Booster Pack{} item",
+                    "is chosen",
+                    "{C:inactive}(Currently {C:chips}+#3#{C:inactive} Chips)",
+				},
+			},
 			j_6 = {
 				name = "CPR Training",
 				text = {
@@ -81,15 +90,6 @@ return {
                     "for every {C:spades}Spade{} or {C:clubs}Club{} card",
                     "that is destroyed",
                     "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
-				},
-			},
-			j_10 = {
-				name = "Jump Rope",
-				text = {
-                    "This Joker gains {C:chips}+#1#{} Chips",
-                    "when a {C:attention}Booster Pack{} item",
-                    "is chosen",
-                    "{C:inactive}(Currently {C:chips}+#3#{C:inactive} Chips)",
 				},
 			},
 			j_11 = {
