@@ -1,0 +1,23 @@
+{
+  "id": "HOHMod",
+  "name": "House of Hearts Mod project",
+  "display_name": "House of Hearts Mod project",
+  "author": [
+    "Balatro University Discord",
+    "see credits"
+  ],
+  "description": "",
+  "prefix": "hoh",
+  "main_file": "HouseOfHearts.lua",
+  "priority": 0,
+  "badge_colour": "FA1C26",
+  "badge_text_colour": "FFFFFF",
+  "version": "1.0-ALPHA",
+  "dependencies": [
+    "Steamodded (>=1.0.0~BETA-1221a)",
+    "Lovely (>=0.8)",
+    "Balatro (>=1.0.1o)"
+  ],
+  "conflicts": [
+  ]
+}
