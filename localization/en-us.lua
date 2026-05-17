@@ -21,13 +21,12 @@ return {
                     "{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
 				},
 			},
-			j_3 = {
+			j_hoh_cyclist = {
 				name = "Cyclist",
 				text = {
                     "This Joker gains {C:chips}+#1#{} Chips",
                     "per {C:spades}Spade{} or {C:clubs}Club{}",
-                    "and {C:mult}+#2#{} Mult",
-                    "per {C:hearts}Heart{} or {C:diamonds}Diamond{}",
+                    "and {C:mult}+#2#{} Mult per {C:hearts}Heart{} or {C:diamonds}Diamond{}",
                     "discarded this round",
                     "{C:inactive}(Currently {C:chips}+#3#{C:inactive} Chips and {C:mult}+#4#{C:inactive} Mult)",
 				},

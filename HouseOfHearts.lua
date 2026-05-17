@@ -35,7 +35,6 @@ SMODS.Joker{
             if context.before and not context.bluerint then
                 local cards = false
                 for i = 1, #context.scoring_hand do
-                    print(context.scoring_hand[i].suit)
                     if context.scoring_hand[i]:is_suit(G.GAME.ktb_suit) then cards = true end
                 end
                 if cards then
@@ -86,7 +85,7 @@ SMODS.Joker{
     atlas = 'atlas',
 
     loc_vars = function(self, info_queue, card)
-        return {vars = {card.ability.extra.m_mod, card.ability.extra.mult,}}
+        return {vars = {card.ability.extra.m_mod, card.ability.extra.mult}}
     end,
 
     calculate = function(self, card, context)
@@ -100,6 +99,60 @@ SMODS.Joker{
                 return{
                     message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
                     mult_mod = card.ability.extra.mult
+                }
+            end
+        end
+    end
+}
+
+SMODS.Joker{
+    name = "Cyclist",
+    key = "cyclist",
+    config = {
+        extra = {
+            m_mod = 4,
+            ch_mod = 10,
+            mult = 0,
+            chips = 0
+        }
+    },
+    pos = {
+        x = 2, y = 0
+    },
+    cost = 4,
+    rarity = 1,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra.ch_mod, card.ability.extra.m_mod, card.ability.extra.chips, card.ability.extra.mult}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers then
+            if context.discard and not context.other_card.debuff  and not context.blueprint then
+                if context.other_card:is_suit("Diamonds") or context.other_card:is_suit("Hearts") then
+                    card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.m_mod
+                elseif context.other_card:is_suit("Clubs") or context.other_card:is_suit("Spades") then
+                    card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.ch_mod
+                end
+            end
+            if context.joker_main and (card.ability.extra.chips > 0 or card.ability.extra.mult > 0) then
+                return {
+                    message = "+"..card.ability.extra.chips.." Chips, +" ..card.ability.extra.mult.." Mult",
+                    chip_mod = card.ability.extra.chips,
+                    mult_mod = card.ability.extra.mult,
+                }
+            end
+            if context.end_of_round then
+                card.ability.extra.mult = 0
+                card.ability.extra.chips = 0
+                return {
+                    message = localize('k_reset')
                 }
             end
         end
