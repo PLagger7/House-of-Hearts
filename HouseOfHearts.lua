@@ -253,7 +253,7 @@ SMODS.Joker{
 
 SMODS.Joker{
     name = '5-A-Day',
-    key = '5-a-day',
+    key = '5_a_day',
     config = {},
     atlas = 'atlas',
     pos = {x = 2, y = 1},
@@ -268,7 +268,27 @@ SMODS.Joker{
     atlas = 'atlas',
     pos = {x = 3, y = 1},
     cost = 6,
-    rarity = 2
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = false,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+
+    add_to_deck = function ()
+        TeaTime = true
+    end,
+
+    calculate = function (self, card, context)
+        if context.skip_blind then
+            TeaTime = true
+             SMODS.destroy_cards(card, nil, nil, true)
+                return {
+                    message = localize('k_drank_ex'),
+                    colour = G.C.FILTER
+                }
+        end
+    end
 }
 
 SMODS.Joker{
@@ -341,6 +361,47 @@ change_ktb_suit = function()
         if i == #suits then i = 0 end
         G.GAME.ktb_suit = suits[i + 1]
     end
+end
+
+TeaTime = false
+local ref_skip_blind = G.FUNCS.skip_blind
+function G.FUNCS.skip_blind(e)
+    if TeaTime then
+        G.E_MANAGER:add_event(Event({ --i stole all this from Shenanigans Decks
+                trigger = 'before',
+                delay = 0.2,
+                func = function()
+                    G.blind_prompt_box.alignment.offset.y = -10
+                    G.blind_select.alignment.offset.y = 40
+                    G.blind_select.alignment.offset.x = 0
+                    return true
+                end
+            }))
+            G.E_MANAGER:add_event(Event({     -- from G.FUNCS.cash_out
+                trigger = 'immediate',
+                func = function()
+                    if G.round_eval then
+                        G.round_eval:remove()
+                        G.round_eval = nil
+                    end
+                    G.GAME.current_round.jokers_purchased = 0
+                    G.GAME.current_round.discards_left = math.max(0,
+                        G.GAME.round_resets.discards + G.GAME.round_bonus.discards)
+                    G.GAME.current_round.hands_left = (math.max(1, G.GAME.round_resets.hands + G.GAME.round_bonus.next_hands))
+                    G.STATE = G.STATES.SHOP
+                    G.GAME.shop_free = nil
+                    G.GAME.shop_d6ed = nil
+
+                    G.blind_select:remove() -- from somewhere else
+                    G.blind_prompt_box:remove()
+                    G.blind_select = nil
+
+                    G.STATE_COMPLETE = false
+                    return true
+                end
+            }))
+        end
+    return ref_skip_blind(e)
 end
 
 -- RESETS
