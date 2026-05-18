@@ -196,11 +196,38 @@ SMODS.Joker{
 SMODS.Joker{
     name = 'Jump Rope',
     key = 'jump_rope',
-    config = {},
+    config = {
+        extra = {
+            chips = 0,
+            c_mod = 15
+        }
+    },
     atlas = 'atlas',
     pos = {x = 4, y = 0},
     cost = 6,
-    rarity = 1
+    rarity = 1,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = false,
+    unlocked = true,
+    discovered = true,
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra.c_mod, card.ability.extra.chips}}
+    end,
+
+    --calculate = function(self, card, context)
+        --if context.open_booster then
+            --if context.card then
+                --print(card.config.center)
+                --card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.c_mod
+                --return {
+                --    message = localize('k_upgrade_ex'),
+                --    colour = G.C.BLUE,
+                --}
+            --end
+        --end
+    --end
 }
 
 SMODS.Joker{
@@ -347,6 +374,33 @@ SMODS.Joker{
     perishable_compat = true,
     unlocked = true,
     discovered = true,
+
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and context.after then
+            if #context.full_hand == 2 then
+                local heart_card = {}
+                local nonheart_card = {}
+                for k, v in ipairs(context.full_hand) do
+                    if v:is_suit("Hearts") then heart_card[#heart_card+1] = v
+                    else nonheart_card[#nonheart_card+1] = v end
+                    if #heart_card == 1 and #nonheart_card == 1 then
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
+                                if nonheart_card[1] ~= heart_card[1] then
+                                    copy_card(heart_card[1], nonheart_card[1])
+                                end
+                                return true
+                            end
+                        }))
+                        return {
+                            message = localize('k_copied_ex'),
+                            colour = G.C.RED
+                        }
+                    end
+                end
+            end
+        end
+    end
 }
 
 SMODS.Joker{
