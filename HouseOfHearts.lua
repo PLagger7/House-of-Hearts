@@ -160,10 +160,21 @@ SMODS.Joker{
 }
 
 SMODS.Joker{
+<<<<<<< HEAD
+    name = "BPM",
+    key = "bpm",
+    config = {
+        extra = 103
+    },
+    pos = {
+        x = 3, y = 0
+    },
+=======
     name = 'BPM',
     key = 'bpm',
     config = {extra = {chips = 103}},
     pos = {x = 3, y = 0},
+>>>>>>> 9574d5d (Added placeholder joker objects + atlas update)
     cost = 5,
     rarity = 1,
     blueprint_compat = true,
@@ -172,6 +183,38 @@ SMODS.Joker{
     unlocked = true,
     discovered = true,
     atlas = 'atlas',
+<<<<<<< HEAD
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and context.joker_main then
+            local cards = false
+            for i = 1, #context.scoring_hand do
+                if context.scoring_hand[i]:get_id() == 9 or context.scoring_hand[i]:get_id() == 14 then cards = true end
+            end
+            if cards then
+                return{
+                    message = localize{type='variable',key='a_chips',vars={card.ability.extra}},
+                    chip_mod = card.ability.extra
+                }
+            end
+        end
+    end
+}
+
+SMODS.Joker{
+    name = "Stethoscope",
+    key = "stethoscope",
+    config = {
+        extra = 15
+    },
+    pos = {
+        x = 0, y = 1
+    },
+=======
 }
 
 SMODS.Joker{
@@ -194,6 +237,7 @@ SMODS.Joker{
     key = 'stethoscope',
     config = {extra = {mult = 15}},
     pos = {x = 0, y = 1},
+>>>>>>> 9574d5d (Added placeholder joker objects + atlas update)
     cost = 5,
     rarity = 1,
     blueprint_compat = true,
@@ -202,6 +246,27 @@ SMODS.Joker{
     unlocked = true,
     discovered = true,
     atlas = 'atlas',
+<<<<<<< HEAD
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and context.joker_main then
+            local cards = 0
+            for i = 1, #context.scoring_hand do
+                if context.scoring_hand[i]:is_face() then cards = cards + 1 end
+            end
+            if cards == 1 then
+                return{
+                    message = localize{type='variable',key='a_mult',vars={card.ability.extra}},
+                    mult_mod = card.ability.extra
+                }
+            end
+        end
+    end
+=======
 }
 
 SMODS.Joker{
@@ -344,6 +409,7 @@ SMODS.Joker{
     discovered = true,
     atlas = 'atlas',
 
+>>>>>>> 9574d5d (Added placeholder joker objects + atlas update)
 }
 
 -- FUNCTIONS

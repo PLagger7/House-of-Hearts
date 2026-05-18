@@ -31,7 +31,7 @@ return {
                     "{C:inactive}(Currently {C:chips}+#3#{C:inactive} Chips and {C:mult}+#4#{C:inactive} Mult)",
 				},
 			},
-			j_4 = {
+			j_hoh_bpm = {
 				name = "BPM",
 				text = {
 					"{C:chips}+#1#{} Chips if played",
@@ -39,7 +39,7 @@ return {
                     "a scoring {C:attention}Ace{} or {C:attention}9{}",
 				},
 			},
-			j_5 = {
+			j_hoh_stethoscope = {
 				name = "Stethoscope",
 				text = {
 					"{C:mult}+#1#{} Mult if played",
