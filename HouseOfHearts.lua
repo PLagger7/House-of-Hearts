@@ -174,7 +174,7 @@ SMODS.Joker{
     atlas = 'atlas',
 
     loc_vars = function(self, info_queue, card)
-        return {vars = {card.ability.extra}}
+        return {vars = {card.ability.extra.chips}}
     end,
 
     calculate = function(self, card, context)
@@ -185,12 +185,22 @@ SMODS.Joker{
             end
             if cards then
                 return{
-                    message = localize{type='variable',key='a_chips',vars={card.ability.extra}},
-                    chip_mod = card.ability.extra
+                    message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+                    chip_mod = card.ability.extra.chips
                 }
             end
         end
     end
+}
+
+SMODS.Joker{
+    name = 'Jump Rope',
+    key = 'jump_rope',
+    config = {},
+    atlas = 'atlas',
+    pos = {x = 4, y = 0},
+    cost = 6,
+    rarity = 1
 }
 
 SMODS.Joker{
@@ -229,6 +239,97 @@ SMODS.Joker{
             end
         end
     end
+}
+
+SMODS.Joker{
+    name = 'CPR Training',
+    key = 'cpr_training',
+    config = {},
+    atlas = 'atlas',
+    pos = {x = 1, y = 1},
+    cost = 6,
+    rarity = 2
+}
+
+SMODS.Joker{
+    name = '5-A-Day',
+    key = '5-a-day',
+    config = {},
+    atlas = 'atlas',
+    pos = {x = 2, y = 1},
+    cost = 6,
+    rarity = 2
+}
+
+SMODS.Joker{
+    name = 'Green Tea',
+    key = 'green_tea',
+    config = {},
+    atlas = 'atlas',
+    pos = {x = 3, y = 1},
+    cost = 6,
+    rarity = 2
+}
+
+SMODS.Joker{
+    name = 'Pressure Cuff',
+    key = 'pressure_cuff',
+    config = {},
+    atlas = 'atlas',
+    pos = {x = 4, y = 1},
+    cost = 7,
+    rarity = 2
+}
+
+SMODS.Joker{
+    name = 'Heart of Gold',
+    key = 'heart_of_gold',
+    config = {},
+    atlas = 'atlas',
+    pos = {x = 0, y = 2},
+    cost = 8,
+    rarity = 2
+}
+
+SMODS.Joker{
+    name = 'Heartfelt Gift',
+    key = 'heartfelt_gift',
+    config = {},
+    atlas = 'atlas',
+    pos = {x = 1, y = 2},
+    cost = 6,
+    rarity = 2
+}
+
+SMODS.Joker{
+    name = 'Crimson Chip',
+    key = 'crimson_chip',
+    config = {},
+    atlas = 'atlas',
+    pos = {x = 2, y = 2},
+    cost = 9,
+    rarity = 3
+}
+
+SMODS.Joker{
+    name = 'Share the Love',
+    key = 'share_the_love',
+    config = {},
+    atlas = 'atlas',
+    pos = {x = 3, y = 2},
+    soul_pos = {x = 0, y = 3},
+    cost = 8,
+    rarity = 3
+}
+
+SMODS.Joker{
+    name = 'Hemoglobin',
+    key = 'hemoglobin',
+    config = {},
+    atlas = 'atlas',
+    pos = {x = 4, y = 2},
+    cost = 8,
+    rarity = 3
 }
 
 -- FUNCTIONS
