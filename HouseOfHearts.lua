@@ -159,6 +159,193 @@ SMODS.Joker{
     end
 }
 
+SMODS.Joker{
+    name = 'BPM',
+    key = 'bpm',
+    config = {extra = {chips = 103}},
+    pos = {x = 3, y = 0},
+    cost = 5,
+    rarity = 1,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+}
+
+SMODS.Joker{
+    name = 'Jump Rope',
+    key = 'jump_rope',
+    config = {extra = {chips = 0, chip_mod = 15}},
+    pos = {x = 4, y = 0},
+    cost = 6,
+    rarity = 1,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+}
+
+SMODS.Joker{
+    name = 'Stethoscope',
+    key = 'stethoscope',
+    config = {extra = {mult = 15}},
+    pos = {x = 0, y = 1},
+    cost = 5,
+    rarity = 1,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+}
+
+SMODS.Joker{
+    name = 'CPR Training',
+    key = 'cpr_training',
+    config = {},
+    pos = {x = 1, y = 1},
+    cost = 6,
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+}
+
+SMODS.Joker{
+    name = '5-A-Day',
+    key = '5-a-day',
+    config = {},
+    pos = {x = 2, y = 1},
+    cost = 7,
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+}
+
+SMODS.Joker{
+    name = 'Green Tea',
+    key = 'green_tea',
+    config = {},
+    pos = {x = 3, y = 1},
+    cost = 6,
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+}
+
+SMODS.Joker{
+    name = 'Pressure Cuff',
+    key = 'pressure_cuff',
+    config = {},
+    pos = {x = 4, y = 1},
+    cost = 7,
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+}
+
+SMODS.Joker{
+    name = 'Heart of Gold',
+    key = 'heart_of_gold',
+    config = {},
+    pos = {x = 0, y = 2},
+    cost = 8,
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+}
+
+SMODS.Joker{
+    name = 'Heartfelt Gift',
+    key = 'heartfelt_gift',
+    config = {},
+    pos = {x = 1, y = 2},
+    cost = 6,
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+}
+
+SMODS.Joker{
+    name = 'Crimson Chip',
+    key = 'crimson_chip',
+    config = {},
+    pos = {x = 2, y = 2},
+    cost = 9,
+    rarity = 3,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+}
+
+SMODS.Joker{
+    name = 'Share the Love',
+    key = 'share_the_love',
+    config = {},
+    pos = {x = 3, y = 2},
+    cost = 8,
+    rarity = 3,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+}
+
+SMODS.Joker{
+    name = 'Hemoglobin',
+    key = 'hemoglobin',
+    config = {},
+    pos = {x = 4, y = 2},
+    cost = 8,
+    rarity = 3,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+}
+
 -- FUNCTIONS
 
 change_ktb_suit = function()
