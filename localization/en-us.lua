@@ -112,7 +112,7 @@ return {
 				name = "Crimson Chip",
 				text = {
 					"Retrigger all played cards {C:attention}#1#{} times,",
-                    "gain {C:attention}#2#{} retrigger every {C:attention}#3#{} hands",
+                    "gain {C:attention}#2#{} retrigger every {C:attention}#3#{} {C:inactive}[#4#]{} hands",
                     "played this round"
 				},
 			},

@@ -353,11 +353,51 @@ SMODS.Joker{
 SMODS.Joker{
     name = 'Crimson Chip',
     key = 'crimson_chip',
-    config = {},
+    config = {
+        extra = {
+            times = 0,
+            r_mod = 1,
+            h_mod = 2,
+            h_counter = 2
+        }
+    },
     atlas = 'atlas',
     pos = {x = 2, y = 2},
     cost = 9,
-    rarity = 3
+    rarity = 3,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra.times, card.ability.extra.r_mod, card.ability.extra.h_mod, card.ability.extra.h_counter}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.cardarea == G.play and context.repetition then
+            return {
+                message = localize('k_again_ex'),
+                repetitions = card.ability.extra.times,
+            }
+        elseif context.after and not context.blueprint then
+            card.ability.extra.h_counter = card.ability.extra.h_counter - 1
+            if card.ability.extra.h_counter == 0 then
+                card.ability.extra.times = card.ability.extra.times + card.ability.extra.r_mod
+                card.ability.extra.h_counter = card.ability.extra.h_mod
+                return {
+                    message = localize('k_upgrade_ex'),
+                }
+            end
+        elseif context.cardarea == G.jokers and context.end_of_round then
+            card.ability.extra.times = 0
+            card.ability.extra.h_counter = card.ability.extra.h_mod
+            return {
+                message = localize('k_reset')
+            }
+        end
+    end
 }
 
 SMODS.Joker{
