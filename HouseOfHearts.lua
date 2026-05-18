@@ -228,8 +228,10 @@ SMODS.Joker{
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.joker_main then
             local cards = 0
-            for i = 1, #context.scoring_hand do
-                if context.scoring_hand[i]:is_face() then cards = cards + 1 end
+            for i = 1, #context.full_hand do
+                if context.full_hand[i]:get_id() == 11 then cards = cards + 1 -- can't use is_face() because of debuff interaction
+                elseif context.full_hand[i]:get_id() == 12 then cards = cards + 1
+                elseif context.full_hand[i]:get_id() == 13 then cards = cards + 1 end
             end
             if cards == 1 then
                 return{
@@ -339,7 +341,12 @@ SMODS.Joker{
     pos = {x = 3, y = 2},
     soul_pos = {x = 0, y = 3},
     cost = 8,
-    rarity = 3
+    rarity = 3,
+    blueprint_compat = false,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
 }
 
 SMODS.Joker{

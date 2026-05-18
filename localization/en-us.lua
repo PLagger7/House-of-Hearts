@@ -121,7 +121,8 @@ return {
 				text = {
 					"If played hand contains exactly",
                     "1 {C:hearts}Heart{} card and 1 {C:attention}non-Heart{} card,",
-                    "convert the {C:attention}non-Heart{} card into the {C:hearts}Heart{} card"
+                    "convert the {C:attention}non-Heart{} card", 
+					"into the {C:hearts}Heart{} card"
 				},
 			},
 			j_hoh_hemoglobin = {
