@@ -51,9 +51,9 @@ return {
 				name = "Jump Rope",
 				text = {
                     "This Joker gains {C:chips}+#1#{} Chips",
-                    "when a {C:attention}Booster Pack{} item",
-                    "is chosen",
-                    "{C:inactive}(Currently {C:chips}+#3#{C:inactive} Chips)",
+                    "when any {C:attention}Card{} is chosen",
+                    "from a {C:attention}Booster Pack{}",
+                    "{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
 				},
 			},
 			j_hoh_cpr_training = {
@@ -112,7 +112,7 @@ return {
 				name = "Crimson Chip",
 				text = {
 					"Retrigger all played cards {C:attention}#1#{} times,",
-                    "gain {C:attention}#2#{} retrigger every {C:attention}#3#{} hands",
+                    "gain {C:attention}#2#{} retrigger every {C:attention}#3#{} {C:inactive}[#4#]{} hands",
                     "played this round"
 				},
 			},
@@ -121,7 +121,8 @@ return {
 				text = {
 					"If played hand contains exactly",
                     "1 {C:hearts}Heart{} card and 1 {C:attention}non-Heart{} card,",
-                    "convert the {C:attention}non-Heart{} card into the {C:hearts}Heart{} card"
+                    "convert the {C:attention}non-Heart{} card",
+					"into the {C:hearts}Heart{} card"
 				},
 			},
 			j_hoh_hemoglobin = {
