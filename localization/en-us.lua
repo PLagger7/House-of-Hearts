@@ -145,4 +145,9 @@ return {
 			},
         },
 	},
+	misc = {
+		dictionary = {
+			k_pumped_ex = "Pumped!",
+		}
+	}
 }

@@ -277,7 +277,62 @@ SMODS.Joker{
     atlas = 'atlas',
     pos = {x = 1, y = 1},
     cost = 6,
-    rarity = 2
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+
+    calculate = function(self, card, context)
+        if context.after and (next(context.poker_hands['Two Pair']) or next(context.poker_hands['Full House']) or next(context.poker_hands['Flush House'])) and not context.blueprint then
+            local ranks1 = {}
+            local ranks2 = {}
+            for i = 1, #context.full_hand do
+                if context.full_hand[i]:get_id() == context.full_hand[1]:get_id() then ranks1[#ranks1+1] = context.full_hand[i]
+                else ranks2[#ranks2+1] = context.full_hand[i] end
+            end
+            if ranks2[1]:get_id() > ranks1[1]:get_id() then -- janky but works
+                for i = 1, #ranks1 do
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            assert(SMODS.modify_rank(ranks1[i], -1))
+                            return true
+                        end
+                    }))
+                end
+                for i = 1, #ranks2 do
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            assert(SMODS.modify_rank(ranks2[i], 1))
+                            return true
+                        end
+                    }))
+                end
+            else
+                for i = 1, #ranks1 do
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            assert(SMODS.modify_rank(ranks1[i], 1))
+                            return true
+                        end
+                    }))
+                end
+                for i = 1, #ranks2 do
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            assert(SMODS.modify_rank(ranks2[i], -1))
+                            return true
+                        end
+                    }))
+                end
+            end
+            return{
+                message = localize("k_pumped_ex"),
+                colour = G.C.RED
+            }
+        end
+    end
 }
 
 SMODS.Joker{
