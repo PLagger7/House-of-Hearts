@@ -500,11 +500,29 @@ SMODS.Joker{
 SMODS.Joker{
     name = 'Heart of Gold',
     key = 'heart_of_gold',
-    config = {},
+    config = {
+        extra = 32
+    },
     atlas = 'atlas',
     pos = {x = 0, y = 2},
     cost = 8,
-    rarity = 2
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra}}
+    end,
+
+    calc_dollar_bonus = function(self, card)
+        local thunk = card.ability.extra
+        if G.GAME.blind.boss then
+            return thunk
+        end
+    end
 }
 
 SMODS.Joker{
