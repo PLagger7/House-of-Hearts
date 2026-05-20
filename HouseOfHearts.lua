@@ -277,17 +277,126 @@ SMODS.Joker{
     atlas = 'atlas',
     pos = {x = 1, y = 1},
     cost = 6,
-    rarity = 2
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+
+    calculate = function(self, card, context)
+        if context.after and not context.blueprint and
+        (next(context.poker_hands['Two Pair']) or next(context.poker_hands['Full House']) or next(context.poker_hands['Flush House'])) then
+            local ranks1 = {}
+            local ranks2 = {}
+            for i = 1, #context.full_hand do
+                if context.full_hand[i]:get_id() == context.full_hand[1]:get_id() then ranks1[#ranks1+1] = context.full_hand[i]
+                else ranks2[#ranks2+1] = context.full_hand[i] end
+            end
+            if ranks2[1]:get_id() > ranks1[1]:get_id() then -- janky but works
+                for i = 1, #ranks1 do
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            assert(SMODS.modify_rank(ranks1[i], -1))
+                            ranks1[i]:juice_up()
+                            card:juice_up()
+                            return true
+                        end
+                    }))
+                end
+                for i = 1, #ranks2 do
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            assert(SMODS.modify_rank(ranks2[i], 1))
+                            ranks2[i]:juice_up()
+                            card:juice_up()
+                            return true
+                        end
+                    }))
+                end
+            else
+                for i = 1, #ranks1 do
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            assert(SMODS.modify_rank(ranks1[i], 1))
+                            ranks1[i]:juice_up()
+                            card:juice_up()
+                            return true
+                        end
+                    }))
+                end
+                for i = 1, #ranks2 do
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            assert(SMODS.modify_rank(ranks2[i], -1))
+                            ranks2[i]:juice_up()
+                            card:juice_up()
+                            return true
+                        end
+                    }))
+                end
+            end
+            return{
+                message = localize("k_pumped_ex"),
+                colour = G.C.FILTER
+            }
+        end
+    end
 }
 
 SMODS.Joker{
     name = '5-A-Day',
     key = '5_a_day',
-    config = {},
+    config = {
+        extra = {
+            uses = 3,
+        }
+    },
     atlas = 'atlas',
     pos = {x = 2, y = 1},
     cost = 6,
-    rarity = 2
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = false,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra.uses}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.after and not context.blueprint and next(context.poker_hands['Flush']) then
+            card.ability.extra.uses = card.ability.extra.uses - 1
+            for k,v in ipairs(context.full_hand) do
+                local enhancement = SMODS.poll_enhancement {
+                    key = 'dd_enhancement',
+                    guaranteed = true
+                }
+                G.E_MANAGER:add_event(Event {
+                func = function()
+                    v:set_ability(enhancement)
+                    v:juice_up()
+                    card:juice_up()
+                    return true
+                end
+                })
+            end
+            if card.ability.extra.uses >= 1 then
+            return{
+                message = localize("k_enhanced_ex"),
+                colour = G.C.FILTER
+            }
+            else
+                SMODS.destroy_cards(card, nil, nil, true)
+                return {
+                    message = localize('k_complete_ex'),
+                    colour = G.C.FILTER
+                }
+            end
+        end
+    end
 }
 
 SMODS.Joker{
@@ -323,21 +432,97 @@ SMODS.Joker{
 SMODS.Joker{
     name = 'Pressure Cuff',
     key = 'pressure_cuff',
-    config = {},
+    config = {
+        extra = {
+            xmult = 1,
+            xm_mod = 0.25
+        }
+    },
     atlas = 'atlas',
     pos = {x = 4, y = 1},
     cost = 7,
-    rarity = 2
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = false,
+    unlocked = true,
+    discovered = true,
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra.xm_mod, card.ability.extra.xmult}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.cards_destroyed and not context.bluerpint then
+            local bl = 0
+            for k, v in ipairs(context.glass_shattered) do
+                if v:is_suit("Spades") or v:is_suit("Clubs") then
+                    bl = bl + 1
+                end
+            end
+            if bl > 0 then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        card.ability.extra.xmult = card.ability.extra.xmult + bl*card.ability.extra.xm_mod
+                        return true
+                    end
+                    }))
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult + faces*card.ability.extra.xm_mod}}})
+                return true
+            end
+            }))
+            end
+
+            return
+        elseif context.remove_playing_cards and not context.bluerpint then
+            local bl = 0
+                for k, v in ipairs(context.removed) do
+                    if v:is_suit("Spades") or v:is_suit("Clubs") then bl = bl + 1 end
+                end
+                if bl > 0 then
+                    card.ability.extra.xmult = card.ability.extra.xmult + bl*card.ability.extra.xm_mod
+                    G.E_MANAGER:add_event(Event({
+                    func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult}}}); return true
+                    end}))
+                end
+            return
+        elseif context.cardarea == G.jokers and context.joker_main and card.ability.extra.xmult > 1 then
+            return {
+                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}},
+                Xmult_mod = card.ability.extra.xmult
+            }
+        end
+    end
 }
 
 SMODS.Joker{
     name = 'Heart of Gold',
     key = 'heart_of_gold',
-    config = {},
+    config = {
+        extra = 32
+    },
     atlas = 'atlas',
     pos = {x = 0, y = 2},
     cost = 8,
-    rarity = 2
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra}}
+    end,
+
+    calc_dollar_bonus = function(self, card)
+        local thunk = card.ability.extra
+        if G.GAME.blind.boss then
+            return thunk
+        end
+    end
 }
 
 SMODS.Joker{
@@ -428,6 +613,9 @@ SMODS.Joker{
                             func = function()
                                 if nonheart_card[1] ~= heart_card[1] then
                                     copy_card(heart_card[1], nonheart_card[1])
+                                    heart_card[1]:juice_up()
+                                    nonheart_card[1]:juice_up()
+                                    card:juice_up()
                                 end
                                 return true
                             end
