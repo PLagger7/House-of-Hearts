@@ -285,7 +285,8 @@ SMODS.Joker{
     discovered = true,
 
     calculate = function(self, card, context)
-        if context.after and (next(context.poker_hands['Two Pair']) or next(context.poker_hands['Full House']) or next(context.poker_hands['Flush House'])) and not context.blueprint then
+        if context.after and not context.blueprint and
+        (next(context.poker_hands['Two Pair']) or next(context.poker_hands['Full House']) or next(context.poker_hands['Flush House'])) then
             local ranks1 = {}
             local ranks2 = {}
             for i = 1, #context.full_hand do
@@ -297,6 +298,8 @@ SMODS.Joker{
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             assert(SMODS.modify_rank(ranks1[i], -1))
+                            ranks1[i]:juice_up()
+                            card:juice_up()
                             return true
                         end
                     }))
@@ -305,6 +308,8 @@ SMODS.Joker{
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             assert(SMODS.modify_rank(ranks2[i], 1))
+                            ranks2[i]:juice_up()
+                            card:juice_up()
                             return true
                         end
                     }))
@@ -314,6 +319,8 @@ SMODS.Joker{
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             assert(SMODS.modify_rank(ranks1[i], 1))
+                            ranks1[i]:juice_up()
+                            card:juice_up()
                             return true
                         end
                     }))
@@ -322,6 +329,8 @@ SMODS.Joker{
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             assert(SMODS.modify_rank(ranks2[i], -1))
+                            ranks2[i]:juice_up()
+                            card:juice_up()
                             return true
                         end
                     }))
@@ -329,7 +338,7 @@ SMODS.Joker{
             end
             return{
                 message = localize("k_pumped_ex"),
-                colour = G.C.RED
+                colour = G.C.FILTER
             }
         end
     end
@@ -338,11 +347,56 @@ SMODS.Joker{
 SMODS.Joker{
     name = '5-A-Day',
     key = '5_a_day',
-    config = {},
+    config = {
+        extra = {
+            uses = 3,
+        }
+    },
     atlas = 'atlas',
     pos = {x = 2, y = 1},
     cost = 6,
-    rarity = 2
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = false,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra.uses}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.after and not context.blueprint and next(context.poker_hands['Flush']) then
+            card.ability.extra.uses = card.ability.extra.uses - 1
+            for k,v in ipairs(context.full_hand) do
+                local enhancement = SMODS.poll_enhancement {
+                    key = 'dd_enhancement',
+                    guaranteed = true
+                }
+                G.E_MANAGER:add_event(Event {
+                func = function()
+                    v:set_ability(enhancement)
+                    v:juice_up()
+                    card:juice_up()
+                    return true
+                end
+                })
+            end
+            if card.ability.extra.uses >= 1 then
+            return{
+                message = localize("k_enhanced_ex"),
+                colour = G.C.FILTER
+            }
+            else
+                SMODS.destroy_cards(card, nil, nil, true)
+                return {
+                    message = localize('k_complete_ex'),
+                    colour = G.C.FILTER
+                }
+            end
+        end
+    end
 }
 
 SMODS.Joker{
@@ -483,6 +537,9 @@ SMODS.Joker{
                             func = function()
                                 if nonheart_card[1] ~= heart_card[1] then
                                     copy_card(heart_card[1], nonheart_card[1])
+                                    heart_card[1]:juice_up()
+                                    nonheart_card[1]:juice_up()
+                                    card:juice_up()
                                 end
                                 return true
                             end

@@ -148,6 +148,8 @@ return {
 	misc = {
 		dictionary = {
 			k_pumped_ex = "Pumped!",
+			k_enhanced_ex = "Enhanced!",
+			k_complete_ex = "Complete!"
 		}
 	}
 }
