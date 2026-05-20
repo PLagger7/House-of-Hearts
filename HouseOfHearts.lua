@@ -432,11 +432,69 @@ SMODS.Joker{
 SMODS.Joker{
     name = 'Pressure Cuff',
     key = 'pressure_cuff',
-    config = {},
+    config = {
+        extra = {
+            xmult = 1,
+            xm_mod = 0.25
+        }
+    },
     atlas = 'atlas',
     pos = {x = 4, y = 1},
     cost = 7,
-    rarity = 2
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = false,
+    unlocked = true,
+    discovered = true,
+
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra.xm_mod, card.ability.extra.xmult}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.cards_destroyed and not context.bluerpint then
+            local bl = 0
+            for k, v in ipairs(context.glass_shattered) do
+                if v:is_suit("Spades") or v:is_suit("Clubs") then
+                    bl = bl + 1
+                end
+            end
+            if bl > 0 then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        card.ability.extra.xmult = card.ability.extra.xmult + bl*card.ability.extra.xm_mod
+                        return true
+                    end
+                    }))
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult + faces*card.ability.extra.xm_mod}}})
+                return true
+            end
+            }))
+            end
+
+            return
+        elseif context.remove_playing_cards and not context.bluerpint then
+            local bl = 0
+                for k, v in ipairs(context.removed) do
+                    if v:is_suit("Spades") or v:is_suit("Clubs") then bl = bl + 1 end
+                end
+                if bl > 0 then
+                    card.ability.extra.xmult = card.ability.extra.xmult + bl*card.ability.extra.xm_mod
+                    G.E_MANAGER:add_event(Event({
+                    func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult}}}); return true
+                    end}))
+                end
+            return
+        elseif context.cardarea == G.jokers and context.joker_main and card.ability.extra.xmult > 1 then
+            return {
+                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}},
+                Xmult_mod = card.ability.extra.xmult
+            }
+        end
+    end
 }
 
 SMODS.Joker{
