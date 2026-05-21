@@ -70,7 +70,7 @@ return {
 				text = {
 					"If played hand contains a {C:attention}Flush{},",
                     "{C:attention}randomise{} the Enchancements of all",
-                    "played cards when scored",
+                    "played cards after scoring",
                     "{C:inactive}({C:attention}#1#{C:inactive} use(s) remaining)",
 				},
 			},
@@ -128,11 +128,11 @@ return {
 			j_hoh_hemoglobin = {
 				name = "Hemoglobin",
 				text = {
-					"Gives {X:mult,C:white} X#1# {} Mult",
+					"Gives {X:mult,C:white} X#2# {} Mult",
                     "for each {C:attention}Mult Card{}, {C:dark_edition}Holographic{} card,",
                     "or a card with a {C:red}Red Seal{}",
                     "in your {C:attention}full deck",
-                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+                    "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
 				},
 			},
         },

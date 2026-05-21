@@ -634,11 +634,53 @@ SMODS.Joker{
 SMODS.Joker{
     name = 'Hemoglobin',
     key = 'hemoglobin',
-    config = {},
+    config = {extra = {xmult = 1, xmult_mod = 0.2}},
     atlas = 'atlas',
     pos = {x = 4, y = 2},
     cost = 8,
-    rarity = 3
+    rarity = 3,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+
+    update_xmult = function (self, card)
+        if G.playing_cards then
+            local reds = 0
+            for _, card in pairs(G.playing_cards) do
+                if SMODS.has_enhancement(card, 'm_mult') then
+                    reds = reds + 1
+                end
+                if card.edition and card.edition.key == 'e_holo' then
+                    reds = reds + 1
+                end
+                if card.seal == 'Red' then
+                    reds = reds + 1
+                end
+            end
+            card.ability.extra.xmult = 1 + reds * card.ability.extra.xmult_mod
+        end
+    end,
+
+    loc_vars = function (self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS['m_mult']
+        info_queue[#info_queue+1] = G.P_CENTERS['e_holo']
+        info_queue[#info_queue+1] = G.P_SEALS['Red']
+        self:update_xmult(card)
+        return{
+            vars = {card.ability.extra.xmult, card.ability.extra.xmult_mod}
+        }
+    end,
+
+    calculate = function (self, card, context)
+        if context.joker_main then
+            self:update_xmult(card)
+            return{
+                xmult = card.ability.extra.xmult
+            }
+        end
+    end
 }
 
 -- FUNCTIONS
