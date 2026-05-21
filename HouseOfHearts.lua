@@ -32,7 +32,7 @@ SMODS.Joker{
 
     calculate = function(self, card, context)
         if context.cardarea == G.jokers then
-            if context.before and not context.bluerint then
+            if context.before and not context.blueprint then
                 local cards = false
                 for i = 1, #context.scoring_hand do
                     if context.scoring_hand[i]:is_suit(G.GAME.ktb_suit) then cards = true end
@@ -199,7 +199,9 @@ SMODS.Joker{
     config = {
         extra = {
             chips = 0,
-            c_mod = 15
+            chips_mod = 15,
+            pack_size = 0,
+            skipped = false
         }
     },
     atlas = 'atlas',
@@ -213,21 +215,45 @@ SMODS.Joker{
     discovered = true,
 
     loc_vars = function(self, info_queue, card)
-        return {vars = {card.ability.extra.c_mod, card.ability.extra.chips}}
+        return {vars = {card.ability.extra.chips_mod, card.ability.extra.chips}}
     end,
 
-    --calculate = function(self, card, context)
-        --if context.open_booster then
-            --if context.card then
-                --print(card.config.center)
-                --card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.c_mod
-                --return {
-                --    message = localize('k_upgrade_ex'),
-                --    colour = G.C.BLUE,
-                --}
-            --end
-        --end
-    --end
+    calculate = function (self, card, context)
+
+        if context.open_booster and not context.blueprint then
+            card.ability.extra.pack_size = G.GAME.pack_choices
+            card.ability.extra.skipped = false
+        end
+
+        if context.skipping_booster then
+            card.ability.extra.skipped = true
+        end
+
+        if G.GAME.pack_choices ~= nil and card.ability.extra.pack_size > G.GAME.pack_choices
+                then
+                card.ability.extra.pack_size = G.GAME.pack_choices
+                card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
+                return{
+                    message = localize('k_upgrade_ex'),
+                    color = G.C.CHIPS
+                }
+            end
+
+        if context.ending_booster and not card.ability.extra.skipped then
+            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
+                return{
+                    message = localize('k_upgrade_ex'),
+                    color = G.C.CHIPS
+                }
+        end
+
+        if context.joker_main then
+            return{
+                chips = card.ability.extra.chips
+            }
+        end
+
+    end
 }
 
 SMODS.Joker{
@@ -721,6 +747,10 @@ SMODS.Joker{
         end
     end
 }
+
+
+-- DECKS
+
 
 -- FUNCTIONS
 
