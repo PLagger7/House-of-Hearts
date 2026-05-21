@@ -103,7 +103,7 @@ return {
 			j_hoh_heartfelt_gift = {
 				name = "Heartfelt Gift",
 				text = {
-					"If played hand contains a {C:attention}Three of a Kind{},",
+					"If played hand is a {C:attention}Three of a Kind{},",
                     "create a {C:planet, T:c_venus}Venus{}, {C:tarot, T:c_lovers}The Lovers{},",
                     "{C:tarot, T:c_sun}The Sun{}, or {C:spectral, T:c_deja_vu}Deja Vu{} card",
 				},
@@ -149,7 +149,8 @@ return {
 		dictionary = {
 			k_pumped_ex = "Pumped!",
 			k_enhanced_ex = "Enhanced!",
-			k_complete_ex = "Complete!"
+			k_complete_ex = "Complete!",
+			k_gifted_ex = 'Gifted!'
 		}
 	}
 }

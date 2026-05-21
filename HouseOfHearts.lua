@@ -528,11 +528,50 @@ SMODS.Joker{
 SMODS.Joker{
     name = 'Heartfelt Gift',
     key = 'heartfelt_gift',
-    config = {},
+    config = {extra = {poker_hand = 'Three of a Kind'}},
     atlas = 'atlas',
     pos = {x = 1, y = 2},
     cost = 6,
-    rarity = 2
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    unlocked = true,
+    discovered = true,
+
+    loc_vars = function (self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS['c_venus']
+        info_queue[#info_queue+1] = G.P_CENTERS['c_lovers']
+        info_queue[#info_queue+1] = G.P_CENTERS['c_sun']
+        info_queue[#info_queue+1] = G.P_CENTERS['c_deja_vu']
+        return{
+            vars = {localize(card.ability.extra.poker_hand, 'poker_hands')}
+        }
+    end,
+
+    calculate = function (self, card, context)
+        local gift_pool = {'c_venus', 'c_lovers', 'c_sun', 'c_deja_vu'}
+        
+        if context.joker_main and context.scoring_name == card.ability.extra.poker_hand then
+            local gift = pseudorandom_element(gift_pool, 'hoh_heartfelt_gift')
+            G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            G.E_MANAGER:add_event(Event({
+                trigger = 'before',
+                delay = 0.0,
+                func = (function()
+                    SMODS.add_card {
+                        key = gift,
+                        key_append = 'heartfelt_gift'
+                    }
+                    G.GAME.consumeable_buffer = 0
+                    return true
+                end)
+            }))
+            return {
+                message = localize('k_gifted_ex'),
+            }
+        end
+    end
 }
 
 SMODS.Joker{
