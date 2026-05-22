@@ -137,10 +137,11 @@ return {
 			},
         },
         Back = {
-			b_deck = {
-				name = "Deck",
+			b_hoh_heartbeat = {
+				name = "Heartbeat Deck",
 				text = {
-					"Effect",
+					"All {C:hearts}Heart{} cards",
+					'start with a {C:attention}Red Seal'
 				},
 			},
         },

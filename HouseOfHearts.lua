@@ -1,6 +1,6 @@
 local mod = SMODS.current_mod
 SMODS.Atlas({key = "atlas", path = "House_of_hearts_atlas.png", px = 71, py = 95, atlas_table = "ASSET_ATLAS"}):register()
-
+SMODS.Atlas({key = 'decks', path = 'House_of_hearts_deck.png', px = 71, py = 95, atlas_table = 'ASSET_ATLAS'}):register()
 -- JOKERS
 
 SMODS.Joker{
@@ -751,6 +751,32 @@ SMODS.Joker{
 
 -- DECKS
 
+SMODS.Back{
+    key = 'heartbeat',
+    atlas = 'decks',
+    pos = {x = 0, y = 0},
+    config = {seal = 'Red'},
+    unlocked = true,
+
+    loc_vars = function (self, info_queue, back)
+        return{
+            vars = {localize{type = 'name_text', key = self.config.seal}}
+        }
+    end,
+
+    apply = function (self, back)
+        G.E_MANAGER:add_event(Event({
+            func = function ()
+                for _, card in ipairs(G.playing_cards) do
+                    if card.base.suit == 'Hearts' then
+                        card:set_seal('Red', true)
+                    end
+                end
+                return true
+            end
+        }))
+    end
+}
 
 -- FUNCTIONS
 
