@@ -833,7 +833,7 @@ end
 -- RESETS
 
 reset_ktb_suit = function()
-    G.GAME.ktb_suit = "Diamonds"
+    G.GAME.ktb_suit = G.GAME.ktb_suit or "Diamonds"
 end
 
 mod.reset_game_globals = function(run_start)
