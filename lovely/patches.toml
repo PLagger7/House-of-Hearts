@@ -1,0 +1,37 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 99999
+
+# Big priority because this is already a part of latest SMODS
+
+# Allow custom tooltips pulled from Other set in localization
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+match_indent = true
+position = "at"
+pattern = '''
+detailed_tooltip = part.control.T and (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T]) or nil,'''
+payload = '''
+detailed_tooltip = part.control.T and (
+                    G.P_CENTERS[part.control.T]
+                    or G.P_TAGS[part.control.T]
+                    or {set = 'Other', key = part.control.T, vars = {}}
+                  ) or nil,'''
+
+# Allow custom tooltips pulled from Other set in localization
+# Latest SMODS compatibility ^
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+match_indent = true
+position = "at"
+pattern = '''
+detailed_tooltip = part.control.T and (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T]) or nil,'''
+payload = '''
+detailed_tooltip = part.control.T and (
+                    G.P_CENTERS[part.control.T]
+                    or G.P_TAGS[part.control.T]
+                    or {set = 'Other', key = part.control.T, vars = {}}
+                  ) or nil,'''

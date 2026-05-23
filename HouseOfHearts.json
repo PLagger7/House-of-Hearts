@@ -1,10 +1,9 @@
 {
   "id": "HOHMod",
-  "name": "House of Hearts Mod project",
-  "display_name": "House of Hearts Mod project",
+  "name": "House of Hearts",
+  "display_name": "House of Hearts",
   "author": [
-    "Balatro University Discord",
-    "see credits"
+    "Balatro University Discord"
   ],
   "description": "",
   "prefix": "hoh",
