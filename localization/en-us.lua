@@ -152,7 +152,7 @@ return {
                     "{C:green,T:hoh_alasbabylon_hover}AlasBabylon{}",
                     "{C:blue,button:hoh_kitty,u:blue,T:hoh_kitty_hover}dottykitty{}",
                     "{C:red,button:hoh_doc,u:red}drspectred{}",
-					"{C:blue,T:hoh_expelsword_hover}Expelsword{} and {C:blue,T:hoh_uselessreptile_hover}UselessReptile8{}",
+					"{C:blue,T:hoh_expelsword_hover}Expelsword{} and {C:hoh_teal,T:hoh_uselessreptile_hover}UselessReptile8{}",
 					"{C:hoh_pink,T:hoh_fallen_hover}Fallen{}",
 					"{C:green,T:hoh_honu_hover}HonuKane{}",
 					"{C:tarot,T:hoh_kei_hover}KeiFlox{}",

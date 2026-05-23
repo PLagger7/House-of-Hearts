@@ -28,6 +28,7 @@ end
 -- Custom Loc Colours
 loc_colour()
 G.ARGS.LOC_COLOURS.hoh_pink = HEX('E59CD0')
+G.ARGS.LOC_COLOURS.hoh_teal = HEX('3AB7B7')
 
 -- Credits Page
 
