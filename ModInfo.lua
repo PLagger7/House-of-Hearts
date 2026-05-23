@@ -10,7 +10,7 @@ function G.FUNCS.hoh_omega(e)
 end
 
 function G.FUNCS.hoh_plagger(e)
-    love.system.openURL("https://github.com/PLagger7")
+    love.system.openURL("https://plagger.carrd.co/")
 end
 
 function G.FUNCS.hoh_lava(e)
