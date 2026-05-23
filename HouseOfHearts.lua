@@ -3,8 +3,27 @@ mod.no_marquee = true
 
 load(NFS.read(mod.path.."/ModInfo.lua"))()
 
-SMODS.Atlas({key = "atlas", path = "House_of_hearts_atlas.png", px = 71, py = 95, atlas_table = "ASSET_ATLAS"}):register()
-SMODS.Atlas({key = 'decks', path = 'House_of_hearts_deck.png', px = 71, py = 95, atlas_table = 'ASSET_ATLAS'}):register()
+SMODS.Atlas {
+    key = "atlas",
+    path = "House_of_hearts_atlas.png",
+    px = 71,
+    py = 95,
+    atlas_table = "ASSET_ATLAS"
+}
+SMODS.Atlas {
+    key = 'decks',
+    path = 'House_of_hearts_deck.png',
+    px = 71,
+    py = 95,
+    atlas_table = 'ASSET_ATLAS'
+}
+SMODS.Atlas {
+    key = 'modicon',
+    path = 'modicon.png',
+    px = 154,
+    py = 154,
+    atlas_table = 'ASSET_ATLAS'
+}
 -- JOKERS
 
 SMODS.Joker{
