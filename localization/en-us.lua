@@ -151,7 +151,7 @@ return {
                 text = {
                     "{C:green,T:hoh_alasbabylon_hover}AlasBabylon{}",
                     "{C:blue,button:hoh_kitty,u:blue,T:hoh_kitty_hover}dottykitty{}",
-                    "{C:red,button:hoh_doc,u:red}drspectred{}",
+                    "{C:red,button:hoh_doc,u:red,T:hoh_doc_hover}drspectred{}",
 					"{C:blue,T:hoh_expelsword_hover}Expelsword{} and {C:hoh_teal,T:hoh_uselessreptile_hover}UselessReptile8{}",
 					"{C:hoh_pink,T:hoh_fallen_hover}Fallen{}",
 					"{C:green,T:hoh_honu_hover}HonuKane{}",
@@ -160,10 +160,17 @@ return {
 					"{C:money,button:hoh_omega,u:money,T:hoh_omega_hover}Omegaflowey18{}",
                     "{C:red,button:hoh_plagger,u:red,T:hoh_plagger_hover}PLagger{}",
                     "{C:blue,button:hoh_stupxd,u:blue,T:hoh_stupxd_hover}stupxd{}",
+                    "{C:red,button:hoh_wingcap,T:hoh_wingcap_hover}Wingcap{}",
                     " ",
                 },
             },
 			hoh_alasbabylon_hover = {
+				name = "Contributions",
+                text = {
+                    "Ideas",
+                },
+			},
+			hoh_doc_hover = {
 				name = "Contributions",
                 text = {
                     "Ideas",
@@ -178,9 +185,7 @@ return {
 			hoh_uselessreptile_hover = {
 				name = "Art Contributions",
                 text = {
-                    "- Line 1",
-                    "- Line 2",
-                    "- Line 3",
+                    "- BPM",
                 },
 			},
 			hoh_kitty_hover = {
@@ -188,16 +193,18 @@ return {
                 text = {
                     "Organisation, Ideas",
                     "Art",
-                    "- Line 2",
-                    "- Line 3",
+                    "- Stethoscope",
+                    "- CPR Training",
+                    "- 5-A-Day",
+                    "- Heartbeat Deck",
                 },
 			},
 			hoh_honu_hover = {
 				name = "Art Contributions",
                 text = {
-                    "- Line 1",
-                    "- Line 2",
-                    "- Line 3",
+                    "- Jump Rope",
+                    "- Green Tea",
+                    "- Heart of Gold",
                 },
 			},
 			hoh_fallen_hover = {
@@ -222,8 +229,8 @@ return {
 				name = "Art Contributions",
                 text = {
                     "Ideas, Art",
-                    "- Line 2",
-                    "- Line 3",
+                    "- Crimson Chip",
+                    "- Share the Love",
                 },
 			},
 			hoh_plagger_hover = {
@@ -231,14 +238,22 @@ return {
                 text = {
                     "Ideas, Code",
                     "Art",
-                    "- Line 2",
-                    "- Line 3",
+                    "- Cyclist",
+                    "- Hemoglobin",
                 },
 			},
 			hoh_stupxd_hover = {
 				name = "Contributions",
                 text = {
                     "This menu :3",
+                },
+			},
+			hoh_wingcap_hover = {
+				name = "Contributions",
+                text = {
+                    "Ideas, Art",
+                    "- Wayfarer",
+                    "- Heartfelt Gift",
                 },
 			},
         },
