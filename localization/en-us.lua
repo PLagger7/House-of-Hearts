@@ -167,32 +167,33 @@ return {
 			hoh_alasbabylon_hover = {
 				name = "Contributions",
                 text = {
-                    "Ideas",
+                    "{X:green,C:white}Ideas{}",
                 },
 			},
 			hoh_doc_hover = {
 				name = "Contributions",
                 text = {
-                    "Ideas",
+                    "{X:green,C:white}Ideas{}",
                 },
 			},
 			hoh_expelsword_hover = {
 				name = "Contributions",
                 text = {
-                    "Ideas, Achievements",
+                    "{X:green,C:white}Ideas{} {X:attention,C:white}Achievements{}",
                 },
 			},
 			hoh_uselessreptile_hover = {
-				name = "Art Contributions",
+				name = "Contributions",
                 text = {
+                    "{X:money,C:white}Art{}",
                     "- BPM",
                 },
 			},
 			hoh_kitty_hover = {
 				name = "Contributions",
                 text = {
-                    "Organisation, Ideas",
-                    "Art",
+                    "{X:blue,C:white}Organisation{} {X:green,C:white}Ideas{}",
+                    "{X:money,C:white}Art{}",
                     "- Stethoscope",
                     "- CPR Training",
                     "- 5-A-Day",
@@ -200,8 +201,9 @@ return {
                 },
 			},
 			hoh_honu_hover = {
-				name = "Art Contributions",
+				name = "Contributions",
                 text = {
+                    "{X:money,C:white}Art{}",
                     "- Jump Rope",
                     "- Green Tea",
                     "- Heart of Gold",
@@ -210,25 +212,25 @@ return {
 			hoh_fallen_hover = {
 				name = "Contributions",
                 text = {
-                    "Idea",
+                    "{X:green,C:white}Idea{}",
                 },
 			},
 			hoh_kei_hover = {
 				name = "Contributions",
                 text = {
-                    "Ideas",
+                    "{X:green,C:white}Ideas{}",
                 },
 			},
 			hoh_lava_hover = {
 				name = "Contributions",
                 text = {
-                    "Ideas, Code",
+                    "{X:green,C:white}Ideas{} {X:red,C:white}Code{}",
                 },
 			},
 			hoh_omega_hover = {
-				name = "Art Contributions",
+				name = "Contributions",
                 text = {
-                    "Ideas, Art",
+                    "{X:green,C:white}Ideas{} {X:money,C:white}Art{}",
                     "- Crimson Chip",
                     "- Share the Love",
                 },
@@ -236,8 +238,8 @@ return {
 			hoh_plagger_hover = {
 				name = "Contributions",
                 text = {
-                    "Ideas, Code",
-                    "Art",
+                    "{X:green,C:white}Ideas{} {X:red,C:white}Code{}",
+                    "{X:money,C:white}Art{}",
                     "- Cyclist",
                     "- Hemoglobin",
                 },
@@ -251,9 +253,10 @@ return {
 			hoh_wingcap_hover = {
 				name = "Contributions",
                 text = {
-                    "Ideas, Art",
+                    "{X:green,C:white}Ideas{} {X:money,C:white}Art{}",
                     "- Wayfarer",
                     "- Heartfelt Gift",
+                    "- Mod Icon",
                 },
 			},
         },
