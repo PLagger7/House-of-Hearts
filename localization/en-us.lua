@@ -149,18 +149,19 @@ return {
             hoh_credits = {
                 name = " ",
                 text = {
+                    " ",
                     "{C:green,T:hoh_alasbabylon_hover}AlasBabylon{}",
                     "{C:blue,button:hoh_kitty,u:blue,T:hoh_kitty_hover}dottykitty{}",
                     "{C:red,button:hoh_doc,u:red,T:hoh_doc_hover}drspectred{}",
 					"{C:blue,T:hoh_expelsword_hover}Expelsword{} and {C:hoh_teal,T:hoh_uselessreptile_hover}UselessReptile8{}",
-					"{C:hoh_pink,T:hoh_fallen_hover}Fallen{}",
+					"{C:hoh_pink,button:hoh_fallen,T:hoh_fallen_hover}Fallen{}",
 					"{C:green,T:hoh_honu_hover}HonuKane{}",
 					"{C:tarot,T:hoh_kei_hover}KeiFlox{}",
 					"{C:attention,button:hoh_lava,u:attention,T:hoh_lava_hover}KilledByLava{}",
 					"{C:money,button:hoh_omega,u:money,T:hoh_omega_hover}Omegaflowey18{}",
                     "{C:red,button:hoh_plagger,u:red,T:hoh_plagger_hover}PLagger{}",
                     "{C:blue,button:hoh_stupxd,u:blue,T:hoh_stupxd_hover}stupxd{}",
-                    "{C:red,button:hoh_wingcap,T:hoh_wingcap_hover}Wingcap{}",
+                    "{C:red,T:hoh_wingcap_hover}Wingcap{}",
                     " ",
                 },
             },
@@ -259,6 +260,31 @@ return {
                     "- Mod Icon",
                 },
 			},
+
+            hoh_about_aha = {
+                name = " ",
+                text = {
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    "Duis eget tempus ipsum. Mauris ornare magna ante, et varius",
+                    "mi accumsan ac. Fusce vulputate ornare dapibus. Nulla ut odio",
+                    "felis. Quisque placerat lobortis aliquam. Cras faucibus leo eu",
+                    "bibendum facilisis. Fusce nisi ex, maximus eu pellentesque", 
+                    "facilisis, pharetra ut arcu. Fusce vulputate sem nulla, ac",
+                    "imperdiet nisl porttitor et. ",
+                },
+            },
+            hoh_about_cpr = {
+                name = " ",
+                text = {
+                    "Nulla euismod efficitur libero, ut porttitor nunc vehicula vitae. Morbi aliquet mattis",
+                    "sapien, nec rhoncus urna sagittis id. Lorem ipsum dolor sit amet, consectetur adipiscing",
+                    "elit. Proin feugiat nibh turpis, a cursus nunc pellentesque tempor. Duis et turpis nisi.",
+                    "Maecenas a nisi eu nisl tincidunt tristique. Phasellus in est eleifend, aliquet lorem ac,",
+                    "pharetra tortor. Integer dictum enim purus, ac blandit nisl ultricies eget. Mauris consequat",
+                    "justo vel nisl pellentesque, ut sodales quam fermentum. In non placerat mi, et luctus enim.",
+                    "Morbi auctor posuere iaculis. Vivamus tempor eget tortor porta lobortis. ",
+                },
+            },
         },
     },
     misc = {
@@ -266,7 +292,11 @@ return {
             k_pumped_ex = "Pumped!",
             k_enhanced_ex = "Enhanced!",
             k_complete_ex = "Complete!",
-            k_gifted_ex = 'Gifted!'
+            k_gifted_ex = 'Gifted!',
+            k_hoh_credits = "Credits",
+            k_hoh_aha_header = "American Heart Association",
+            k_hoh_cpr_tutorial = "CPR Tutorial",
+            k_hoh_donate_aha = "Donate to AHA",
         }
     }
 }

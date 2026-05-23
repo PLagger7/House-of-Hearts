@@ -1,7 +1,10 @@
 local mod = SMODS.current_mod
 mod.no_marquee = true
 
-load(NFS.read(mod.path.."/ModInfo.lua"))()
+-- Temp mod reference for DebugPlus watch cmd
+HouseOfHearts = mod
+
+load(NFS.read(mod.path.."/ModInfo.lua"), "HouseOfHearts/ModInfo")()
 
 SMODS.Atlas {
     key = "atlas",
@@ -22,6 +25,13 @@ SMODS.Atlas {
     path = 'modicon.png',
     px = 154,
     py = 154,
+    atlas_table = 'ASSET_ATLAS'
+}
+SMODS.Atlas {
+    key = 'aha_logo',
+    path = 'aha_logo.png',
+    px = 624,
+    py = 633,
     atlas_table = 'ASSET_ATLAS'
 }
 -- JOKERS
