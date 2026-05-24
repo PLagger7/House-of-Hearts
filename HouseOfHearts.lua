@@ -5,6 +5,7 @@ mod.no_marquee = true
 HouseOfHearts = mod
 
 load(NFS.read(mod.path.."/ModInfo.lua"), "HouseOfHearts/ModInfo")()
+load(NFS.read(mod.path.."/achievements.lua"), "HouseOfHearts/Achievements")()
 
 SMODS.Atlas {
     key = "atlas",
@@ -41,8 +42,8 @@ SMODS.Joker{
     key = "keep_the_beat",
     config = {
         extra = {
-            m_mod = 1,
-            mult = 0
+            times_changed = 0,
+            xmult = 3
         }
     },
     pos = {
@@ -58,74 +59,118 @@ SMODS.Joker{
     atlas = 'atlas',
 
     loc_vars = function(self, info_queue, card)
-        return {vars = {card.ability.extra.m_mod, localize(G.GAME.ktb_suit or "Diamonds", 'suits_singular'), colours = {G.C.SUITS[G.GAME.ktb_suit or "Diamonds"]},
-        card.ability.extra.mult, localize("Diamonds", 'suits_plural'), localize("Clubs", 'suits_plural'), localize("Hearts", 'suits_plural'),
-        localize("Spades", 'suits_plural')}}
+        local suits_string = ("%s, %s, %s, %s"):format(
+            localize("Diamonds", 'suits_plural'),
+            localize("Clubs", 'suits_plural'),
+            localize("Hearts", 'suits_plural'),
+            localize("Spades", 'suits_plural')
+        )
+
+        return {vars = {
+            card.ability.extra.xmult,
+            localize(G.GAME.ktb_suit or "Diamonds", 'suits_singular'),
+            suits_string,
+            colours = {G.C.SUITS[G.GAME.ktb_suit or "Diamonds"]},
+        }}
+    end,
+
+    sprite_pos = {
+        Diamonds = {x = 0, y = 0},
+        Clubs = {x = 1, y = 3},
+        Hearts = {x = 2, y = 3},
+        Spades = {x = 3, y = 3},
+    },
+
+    draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) 
+                -- Make sure sprite doesn't update during animation
+                and not card.pause_sprite_updates then
+            card.children.center:set_sprite_pos(self.sprite_pos[G.GAME.ktb_suit])
+        end
+    end,
+
+    update_jiggle = function (self, card)
+        if #G.hand.highlighted >= 1 and not card.jiggling then
+            local eviljiggle = true
+            for i = 1, #G.hand.highlighted do
+                if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
+                    eviljiggle = false
+                    break
+                else
+                    eviljiggle = true
+                end
+            end
+            if eviljiggle then
+                card.jiggling = true
+                local eval = function (card)
+                    if #G.hand.highlighted == 0 then
+                        card.jiggling = nil
+                        return false
+                    end
+                    for i = 1, #G.hand.highlighted do
+                        if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
+                            eviljiggle = false
+                        break
+                        else
+                            eviljiggle = true
+                        end
+                    end
+                    if not eviljiggle then
+                        card.jiggling = nil
+                    end
+                    return eviljiggle
+                end
+                juice_card_until(card, eval, true)
+            end
+        end
     end,
 
     calculate = function(self, card, context)
         if context.cardarea == G.jokers then
+            self:update_jiggle(card)
 
-            if #G.hand.highlighted >= 1 and not card.jiggling then
-                local eviljiggle = true
-                for i = 1, #G.hand.highlighted do
-                    if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
-                        eviljiggle = false
-                        break
-                    else
-                        eviljiggle = true
+            if context.joker_main then
+                local destruct = true
+                for _, card in pairs(context.scoring_hand) do
+                    if card:is_suit(G.GAME.ktb_suit) and card:can_calculate() then
+                        destruct = false
                     end
                 end
-                if eviljiggle then
-                    card.jiggling = true
-                    local eval = function (card)
-                        if #G.hand.highlighted == 0 then
-                            card.jiggling = nil
-                            return false
-                        end
-                        for i = 1, #G.hand.highlighted do
-                            if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
-                                eviljiggle = false
-                            break
-                            else
-                                eviljiggle = true
-                            end
-                        end
-                        if not eviljiggle then
-                            card.jiggling = nil
-                        end
-                        return eviljiggle
-                    end
-                    juice_card_until(card, eval, true)
-                end
-            end
-            
-
-            if context.before and not context.blueprint then
-                local cards = false
-                for i = 1, #context.scoring_hand do
-                    if context.scoring_hand[i]:is_suit(G.GAME.ktb_suit) then cards = true end
-                end
-                if cards then
-                    card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.m_mod
+                if destruct then
+                    card.self_destruct = true
                     return {
-                        message = localize('k_upgrade_ex'),
-                        colour = G.C.RED,
+                        message = localize('k_missed')
                     }
-                else
-                    if card.ability.extra.mult > 0 then
-                        card.ability.extra.mult = 0
-                        return {
-                            message = localize('k_reset')
-                        }
-                    end
                 end
-            elseif context.joker_main and card.ability.extra.mult > 0 then
-                return{
-                    message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
-                    mult_mod = card.ability.extra.mult
+
+                card.pause_sprite_updates = true
+                G.GAME.hoh_update_ktb = true
+                return {
+                    xmult = card.ability.extra.xmult
                 }
             elseif context.after then
+                if card.self_destruct then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            play_sound('tarot1')
+                            SMODS.destroy_cards(card)
+                            return true
+                        end
+                    }))
+                    return
+                end
+                card.ability.extra.times_changed = card.ability.extra.times_changed + 1
+
+                check_for_unlock({type = 'keep_the_beat', amount = card.ability.extra.times_changed})
+
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        card.pause_sprite_updates = false
+                        card:juice_up()
+                        return true
+                    end
+                }))
+
                 change_ktb_suit()
             end
         end
@@ -174,7 +219,7 @@ SMODS.Joker{
     end
 }
 
-SMODS.Joker{
+SMODS.Joker {
     name = "Cyclist",
     key = "cyclist",
     config = {
@@ -273,9 +318,8 @@ SMODS.Joker{
     config = {
         extra = {
             chips = 0,
-            chips_mod = 15,
-            pack_size = 0,
-            skipped = false
+            chips_mod = 8,
+            original_pack_choices = 0,
         }
     },
     atlas = 'atlas',
@@ -293,32 +337,23 @@ SMODS.Joker{
     end,
 
     calculate = function (self, card, context)
-
         if context.open_booster and not context.blueprint then
-            card.ability.extra.pack_size = G.GAME.pack_choices
-            card.ability.extra.skipped = false
+            card.ability.extra.original_pack_choices = G.GAME.pack_choices
         end
 
-        if context.skipping_booster and not context.blueprint then
-            card.ability.extra.skipped = true
-        end
-
-        if not context.blueprint and G.GAME.pack_choices ~= nil and card.ability.extra.pack_size > G.GAME.pack_choices
-                then
-                card.ability.extra.pack_size = G.GAME.pack_choices
-                card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
-                return{
-                    message = localize('k_upgrade_ex'),
-                    color = G.C.CHIPS
-                }
+        if (context.skipping_booster or context.ending_booster) and not context.blueprint then
+            local cards_used
+            if context.skipping_booster then
+                cards_used = card.ability.extra.original_pack_choices - G.GAME.pack_choices
+            else
+                cards_used = card.ability.extra.original_pack_choices
             end
+            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod * cards_used
 
-        if context.ending_booster and not card.ability.extra.skipped and not context.blueprint then
-            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
-                return{
-                    message = localize('k_upgrade_ex'),
-                    color = G.C.CHIPS
-                }
+            return {
+                message = localize('k_upgrade_ex'),
+                color = G.C.CHIPS
+            }
         end
 
         if context.joker_main then
@@ -385,57 +420,72 @@ SMODS.Joker{
     discovered = true,
 
     calculate = function(self, card, context)
-        if context.after and not context.blueprint and
-        (next(context.poker_hands['Two Pair']) or next(context.poker_hands['Full House']) or next(context.poker_hands['Flush House'])) then
-            local ranks1 = {}
-            local ranks2 = {}
-            for i = 1, #context.full_hand do
-                if context.full_hand[i]:get_id() == context.full_hand[1]:get_id() then ranks1[#ranks1+1] = context.full_hand[i]
-                else ranks2[#ranks2+1] = context.full_hand[i] end
-            end
-            if ranks2[1]:get_id() > ranks1[1]:get_id() then -- janky but works
-                for i = 1, #ranks1 do
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            assert(SMODS.modify_rank(ranks1[i], -1))
-                            ranks1[i]:juice_up()
-                            card:juice_up()
-                            return true
-                        end
-                    }))
-                end
-                for i = 1, #ranks2 do
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            assert(SMODS.modify_rank(ranks2[i], 1))
-                            ranks2[i]:juice_up()
-                            card:juice_up()
-                            return true
-                        end
-                    }))
-                end
-            else
-                for i = 1, #ranks1 do
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            assert(SMODS.modify_rank(ranks1[i], 1))
-                            ranks1[i]:juice_up()
-                            card:juice_up()
-                            return true
-                        end
-                    }))
-                end
-                for i = 1, #ranks2 do
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            assert(SMODS.modify_rank(ranks2[i], -1))
-                            ranks2[i]:juice_up()
-                            card:juice_up()
-                            return true
-                        end
-                    }))
+        if context.after and not context.blueprint and next(context.poker_hands['Two Pair']) then
+            local highest_rank = {}
+            local other_ranks = {}
+
+            local highest_rank_id = 0
+
+            for _, card in pairs(context.scoring_hand) do
+                if not SMODS.has_no_rank(card) then
+                    local card_id = card:get_id()
+                    if card_id > highest_rank_id then
+                        highest_rank_id = card_id
+                    end
                 end
             end
+            for _, card in pairs(context.scoring_hand) do
+                if not SMODS.has_no_rank(card) then
+                    if card:get_id() == highest_rank_id then 
+                        highest_rank[#highest_rank+1] = card
+                    else
+                        other_ranks[#other_ranks+1] = card
+                    end
+                end
+            end
+            for i = 1, #other_ranks do
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        assert(SMODS.modify_rank(other_ranks[i], -1))
+                        other_ranks[i]:juice_up()
+                        card:juice_up()
+                        return true
+                    end
+                }))
+            end
+            for i = 1, #highest_rank do
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        assert(SMODS.modify_rank(highest_rank[i], 1))
+                        highest_rank[i]:juice_up()
+                        card:juice_up()
+                        return true
+                    end
+                }))
+            end
+
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    local has_ace = false
+                    local has_two = false
+                    for _, ranks in pairs({highest_rank, other_ranks}) do
+                        for _, card in pairs(ranks) do
+                            if card:get_id() == 2 then
+                                has_two = true
+                            elseif card:get_id() == 14 then
+                                has_ace = true
+                            end
+                        end
+                    end
+
+                    if has_ace and has_two then
+                        check_for_unlock({type = 'training_complete'})
+                    end
+                    return true
+                end
+            }))
+
+
             return{
                 message = localize("k_pumped_ex"),
                 colour = G.C.FILTER
@@ -700,7 +750,7 @@ SMODS.Joker{
     end,
 
     calculate = function(self, card, context)
-        if context.cardarea == G.play and context.repetition then
+        if context.cardarea == G.play and context.repetition and card.ability.extra.times > 0 then
             return {
                 message = localize('k_again_ex'),
                 repetitions = card.ability.extra.times,
@@ -714,7 +764,7 @@ SMODS.Joker{
                     message = localize('k_upgrade_ex'),
                 }
             end
-        elseif context.cardarea == G.jokers and context.end_of_round then
+        elseif context.cardarea == G.jokers and context.end_of_round and not context.blueprint then
             card.ability.extra.times = 0
             card.ability.extra.h_counter = card.ability.extra.h_mod
             return {
@@ -855,7 +905,8 @@ SMODS.Back{
 -- FUNCTIONS
 
 change_ktb_suit = function()
-    if G.GAME.ktb_suit then
+    if G.GAME.ktb_suit and G.GAME.hoh_update_ktb then
+        G.GAME.hoh_update_ktb = false
         local suits = {"Diamonds", "Clubs", "Hearts", "Spades"}
         local i = get_index(suits, G.GAME.ktb_suit)
         if i == #suits then i = 0 end

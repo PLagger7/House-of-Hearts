@@ -4,12 +4,11 @@ return {
             j_hoh_keep_the_beat = {
                 name = "Keep the Beat",
                 text = {
-                    "This Joker gains {C:mult}+#1#{} Mult",
-                    "per {C:attention}consecutive{} hand played with",
-                    "a scoring {V:1}#2#{} card,",
-                    "suit cycles every hand",
-                    "{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)",
-                    "{C:inactive, s:0.8}(#4#, #5#, #6#, #7#){}",
+                    "{X:mult,C:white}X#1#{} {C:mult}Mult{} if hand contains",
+                    "scoring {V:1}#2#{} card,",
+                    "otherwise {C:mult}self destructs",
+                    "{C:inactive}suit cycles every hand",
+                    "{C:inactive,s:0.8}(#3#){}",
                 },
             },
             j_hoh_wayfarer = {
@@ -60,7 +59,7 @@ return {
                 name = "CPR Training",
                 text = {
                     "If played hand contains a {C:attention}Two Pair{},",
-                    "{C:attention}increase{} the rank of {C:attention}higher{} ranked cards",
+                    "{C:attention}increase{} the rank of {C:attention}highest{} ranked cards",
                     "and {C:attention}decrease{} the rank of {C:attention}lower{} ranked cards",
                     "{C:inactive}(ex: {C:attention}8 8 5 5{C:inactive} -> {C:attention}9 9 4 4{C:inactive}){}"
                 },
@@ -298,10 +297,29 @@ return {
             k_enhanced_ex = "Enhanced!",
             k_complete_ex = "Complete!",
             k_gifted_ex = 'Gifted!',
+            k_missed = 'Missed',
             k_hoh_credits = "Credits",
             k_hoh_aha_header = "American Heart Association",
             k_hoh_cpr_tutorial = "CPR Tutorial",
             k_hoh_donate_aha = "Donate to AHA",
+        },
+        achievement_names = {
+            ach_hoh_test = 'Test',
+            ach_hoh_flavor_fanatic = 'Flavor Fanatic',
+            ach_hoh_training_complete = 'Training Complete',
+            ach_hoh_cross_fit = 'Cross Fit',
+            ach_hoh_long_walk = 'Long Walk',
+            ach_hoh_stayin_alive = "Stayin' Alive",
+            ach_hoh_beat_keeper = "Beat Keeper",
+        },
+        achievement_descriptions = {
+            ach_hoh_test = 'test',
+            ach_hoh_flavor_fanatic = 'Create 15 Enhanced Cards in a single round',
+            ach_hoh_refresher = 'Leave a Shop without buying anything or re-rolling twice in a row',
+            ach_hoh_cross_fit = 'Take at least 4 items from a Booster Pack in a single round',
+            ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
+            ach_hoh_stayin_alive = 'Play a hand of 9 - Ace - Ace in Hearts Suit',
+            ach_hoh_beat_keeper = 'Play 12 consecutive hands with Keep the Beat',
         }
     }
 }
