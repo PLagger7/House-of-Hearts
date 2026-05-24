@@ -19,6 +19,9 @@ Hemoglobin: Have at least 52 cards in your Deck that are Mult Cards, Holographic
 ]]
 
 
-SMODS.Achievements{
-    
+SMODS.Achievements{ --No Pressure
+    key = 'no_pressure',
+        bypass_all_unlocked = true,
+    hidden_name = false,
+    hidden_text = true,
 }
