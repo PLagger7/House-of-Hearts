@@ -130,7 +130,7 @@ return {
                 text = {
                     "Gives {X:mult,C:white} X#2# {} Mult",
                     "for each {C:attention}Mult Card{}, {C:dark_edition}Holographic{} card,",
-                    "or a card with a {C:red}Red Seal{}",
+                    "or card with a {C:red}Red Seal{}",
                     "in your {C:attention}full deck",
                     "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
                 },
@@ -154,7 +154,7 @@ return {
                     "{C:blue,button:hoh_kitty,u:blue,T:hoh_kitty_hover}dottykitty{}",
                     "{C:red,button:hoh_doc,u:red,T:hoh_doc_hover}drspectred{}",
 					"{C:blue,T:hoh_expelsword_hover}Expelsword{} and {C:hoh_teal,T:hoh_uselessreptile_hover}UselessReptile8{}",
-					"{C:hoh_pink,button:hoh_fallen,T:hoh_fallen_hover}Fallen{}",
+					"{C:hoh_pink,button:hoh_fallen,u:hoh_pink,T:hoh_fallen_hover}Fallen{}",
 					"{C:green,T:hoh_honu_hover}HonuKane{}",
 					"{C:tarot,T:hoh_kei_hover}KeiFlox{}",
 					"{C:attention,button:hoh_lava,u:attention,T:hoh_lava_hover}KilledByLava{}",
@@ -239,7 +239,12 @@ return {
 			hoh_plagger_hover = {
 				name = "Contributions",
                 text = {
-                    "{X:green,C:white}Ideas{} {X:red,C:white}Code{}",
+                    "{X:green,C:white}Ideas{}",
+                    "{X:red,C:white}Code{}",
+                    "- Jump Rope",
+                    "- Green Tea",
+                    "- Heartfelt Gift",
+                    "- Hemoglobin",
                     "{X:money,C:white}Art{}",
                     "- Cyclist",
                     "- Hemoglobin",
