@@ -18,15 +18,32 @@ Hemoglobin: Have at least 52 cards in your Deck that are Mult Cards, Holographic
 
 ]]
 
-
--- check_for_unlock({type = 'stew_true_communist'})
-
-SMODS.Achievement {
-    key = 'test',
+SMODS.Achievement { --No Pressure
+    key = 'no_pressure',
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
     unlock_condition = function (self, args)
-        return args.type == 'test'
+        return args.type == 'no_pressure'
     end
 }
+
+local game_update_ref = Game.update
+function Game:update(dt)
+    -- 
+    return game_update_ref(self, dt)
+end
+
+--[[
+game_update_ref()
+    if G.playing_cards then
+    local dark_suits = false
+    for _, card in pairs(G.playing_cards) do
+        if card.base.suit == 'Spades' or card.base.suit == 'Clubs' then
+        dark_suits = true
+        elseif not dark_suits then 
+            check_for_unlock({type = 'no_pressure'})
+        end
+    end
+end
+--]]
