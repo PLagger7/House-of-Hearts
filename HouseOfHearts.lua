@@ -715,7 +715,7 @@ SMODS.Joker{
                     message = localize('k_upgrade_ex'),
                 }
             end
-        elseif context.cardarea == G.jokers and context.end_of_round then
+        elseif context.cardarea == G.jokers and context.end_of_round and not context.blueprint then
             card.ability.extra.times = 0
             card.ability.extra.h_counter = card.ability.extra.h_mod
             return {
