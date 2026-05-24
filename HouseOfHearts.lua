@@ -65,6 +65,32 @@ SMODS.Joker{
 
     calculate = function(self, card, context)
         if context.cardarea == G.jokers then
+
+            local eviljiggle = true
+            for i = 1, #G.hand.highlighted do
+                if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
+                    eviljiggle = false
+                    break
+                else
+                    eviljiggle = true
+                end
+            end
+
+            if eviljiggle then
+                local eval = function (card)
+                    for i = 1, #G.hand.highlighted do
+                        if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
+                            eviljiggle = false
+                        break
+                        else
+                            eviljiggle = true
+                        end
+                    end
+                    return not eviljiggle
+                end 
+                    juice_card_until(card, eval, true)
+                end
+
             if context.before and not context.blueprint then
                 local cards = false
                 for i = 1, #context.scoring_hand do
@@ -482,7 +508,7 @@ SMODS.Joker{
     end,
 
     calculate = function (self, card, context)
-        if context.skip_blind then
+        if context.skip_blind and not context.blueprint then
             TeaTime = true
              SMODS.destroy_cards(card, nil, nil, true)
                 return {
@@ -517,7 +543,7 @@ SMODS.Joker{
     end,
 
     calculate = function(self, card, context)
-        if context.cards_destroyed and not context.bluerpint then
+        if context.cards_destroyed and not context.blueprint then
             local bl = 0
             for k, v in ipairs(context.glass_shattered) do
                 if v:is_suit("Spades") or v:is_suit("Clubs") then
