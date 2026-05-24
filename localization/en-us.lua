@@ -60,7 +60,7 @@ return {
                 name = "CPR Training",
                 text = {
                     "If played hand contains a {C:attention}Two Pair{},",
-                    "{C:attention}increase{} the rank of {C:attention}higher{} ranked cards",
+                    "{C:attention}increase{} the rank of {C:attention}highest{} ranked cards",
                     "and {C:attention}decrease{} the rank of {C:attention}lower{} ranked cards",
                     "{C:inactive}(ex: {C:attention}8 8 5 5{C:inactive} -> {C:attention}9 9 4 4{C:inactive}){}"
                 },
@@ -304,10 +304,15 @@ return {
             k_hoh_donate_aha = "Donate to AHA",
         },
         achievement_names = {
-            ach_hoh_test = 'Spaced Joker',
+            ach_hoh_test = 'Test',
+            ach_hoh_flavor_fanatic = 'Flavor Fanatic',
+            ach_hoh_training_complete = 'Training Complete',
         },
         achievement_descriptions = {
-            ach_hoh_test = 'Have a Space Joker with the Stellar edition',
+            ach_hoh_test = 'test',
+            ach_hoh_flavor_fanatic = 'Create 15 Enhanced Cards in a single round',
+            ach_hoh_refresher = 'Leave a Shop without buying anything or re-rolling twice in a row',
+            ach_hoh_training_complete = 'Create both Aces and 2s at the same time using CPR Training',
         }
     }
 }

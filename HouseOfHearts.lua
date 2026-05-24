@@ -390,57 +390,72 @@ SMODS.Joker{
     discovered = true,
 
     calculate = function(self, card, context)
-        if context.after and not context.blueprint and
-        (next(context.poker_hands['Two Pair']) or next(context.poker_hands['Full House']) or next(context.poker_hands['Flush House'])) then
-            local ranks1 = {}
-            local ranks2 = {}
-            for i = 1, #context.full_hand do
-                if context.full_hand[i]:get_id() == context.full_hand[1]:get_id() then ranks1[#ranks1+1] = context.full_hand[i]
-                else ranks2[#ranks2+1] = context.full_hand[i] end
-            end
-            if ranks2[1]:get_id() > ranks1[1]:get_id() then -- janky but works
-                for i = 1, #ranks1 do
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            assert(SMODS.modify_rank(ranks1[i], -1))
-                            ranks1[i]:juice_up()
-                            card:juice_up()
-                            return true
-                        end
-                    }))
-                end
-                for i = 1, #ranks2 do
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            assert(SMODS.modify_rank(ranks2[i], 1))
-                            ranks2[i]:juice_up()
-                            card:juice_up()
-                            return true
-                        end
-                    }))
-                end
-            else
-                for i = 1, #ranks1 do
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            assert(SMODS.modify_rank(ranks1[i], 1))
-                            ranks1[i]:juice_up()
-                            card:juice_up()
-                            return true
-                        end
-                    }))
-                end
-                for i = 1, #ranks2 do
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            assert(SMODS.modify_rank(ranks2[i], -1))
-                            ranks2[i]:juice_up()
-                            card:juice_up()
-                            return true
-                        end
-                    }))
+        if context.after and not context.blueprint and next(context.poker_hands['Two Pair']) then
+            local highest_rank = {}
+            local other_ranks = {}
+
+            local highest_rank_id = 0
+
+            for _, card in pairs(context.scoring_hand) do
+                if not SMODS.has_no_rank(card) then
+                    local card_id = card:get_id()
+                    if card_id > highest_rank_id then
+                        highest_rank_id = card_id
+                    end
                 end
             end
+            for _, card in pairs(context.scoring_hand) do
+                if not SMODS.has_no_rank(card) then
+                    if card:get_id() == highest_rank_id then 
+                        highest_rank[#highest_rank+1] = card
+                    else
+                        other_ranks[#other_ranks+1] = card
+                    end
+                end
+            end
+            for i = 1, #other_ranks do
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        assert(SMODS.modify_rank(other_ranks[i], -1))
+                        other_ranks[i]:juice_up()
+                        card:juice_up()
+                        return true
+                    end
+                }))
+            end
+            for i = 1, #highest_rank do
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        assert(SMODS.modify_rank(highest_rank[i], 1))
+                        highest_rank[i]:juice_up()
+                        card:juice_up()
+                        return true
+                    end
+                }))
+            end
+
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    local has_ace = false
+                    local has_two = false
+                    for _, ranks in pairs({highest_rank, other_ranks}) do
+                        for _, card in pairs(ranks) do
+                            if card:get_id() == 2 then
+                                has_two = true
+                            elseif card:get_id() == 14 then
+                                has_ace = true
+                            end
+                        end
+                    end
+
+                    if has_ace and has_two then
+                        check_for_unlock({type = 'training_complete'})
+                    end
+                    return true
+                end
+            }))
+
+
             return{
                 message = localize("k_pumped_ex"),
                 colour = G.C.FILTER

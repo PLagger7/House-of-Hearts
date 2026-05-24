@@ -51,6 +51,10 @@ game_update_ref()
 end
 --]]
 
+-----------------
+-- Flavor Fanatic
+-----------------
+
 SMODS.Achievement {
     key = 'flavor_fanatic',
     bypass_all_unlocked = true,
@@ -64,8 +68,13 @@ SMODS.Achievement {
 local card_set_ability = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
     if center and center.set == "Enhanced" and G.GAME.hoh_in_round then
-        G.GAME.hoh_enhanced_round = (G.GAME.hoh_enhanced_round or 0) + 1
-        check_for_unlock({type = 'enhanced_round', amount = G.GAME.hoh_enhanced_round})
+        if self.area == G.play or self.area == G.hand then
+            self.hoh_just_enhanced = nil
+            G.GAME.hoh_enhanced_round = (G.GAME.hoh_enhanced_round or 0) + 1
+            check_for_unlock({type = 'enhanced_round', amount = G.GAME.hoh_enhanced_round})
+        else
+            self.hoh_just_enhanced = true
+        end
     end
 
     return card_set_ability(self, center, initial, delay_sprites)
@@ -80,9 +89,46 @@ function new_round()
     return new_round_ref()
 end
 
+-----------------
+-- Refresher
+-----------------
+
+SMODS.Achievement {
+    key = 'abab',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'test'
+    end
+}
+
+-----------------
+-- Training Complete
+-----------------
+
+SMODS.Achievement {
+    key = 'training_complete',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'training_complete'
+    end
+}
+
 HouseOfHearts.calculate = function(self, context)
-    
     if context.end_of_round then
+        -- Check for any enhanced cards that were created mid round and added to the deck
+        for _, card in pairs(G.playing_cards) do
+            if card.hoh_just_enhanced then
+                card.hoh_just_enhanced = nil
+                G.GAME.hoh_enhanced_round = (G.GAME.hoh_enhanced_round or 0) + 1
+            end
+        end
+        check_for_unlock({type = 'enhanced_round', amount = G.GAME.hoh_enhanced_round})
+
+
         G.GAME.hoh_in_round = false
     end
 end
