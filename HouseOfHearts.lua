@@ -701,7 +701,7 @@ SMODS.Joker{
     end,
 
     calculate = function(self, card, context)
-        if context.cardarea == G.play and context.repetition then
+        if context.cardarea == G.play and context.repetition and card.ability.extra.times > 0 then
             return {
                 message = localize('k_again_ex'),
                 repetitions = card.ability.extra.times,
