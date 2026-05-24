@@ -21,7 +21,7 @@ end
 Certification (9)
 XXX Wayfarer: Use every Rank in a Straight at least once during a run. [Long Walk]
 Cyclist: Have 0 cards remaining in your deck during a round. [Recycled]
-BPM: Play a hand of 9 - Ace - Ace in Hearts Suit. [Stayin' Alive]
+XXX BPM: Play a hand of 9 - Ace - Ace in Hearts Suit. [Stayin' Alive]
 XXX Jump Rope: Take 4 or more items from a Booster Pack in a single round. [Cross Fit]
 XXX 5-A-Day: Create 6 Enhanced Cards in a single round. [Flavor Fanatic]
 ??? Green Tea: Leave a Shop without buying anything or re-rolling twice in a row [Refresher]
@@ -60,6 +60,20 @@ game_update_ref()
     end
 end
 --]]
+
+-----------------
+-- Stayin' Alive
+-----------------
+
+SMODS.Achievement {
+    key = 'stayin_alive',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'stayin_alive'
+    end
+}
 
 -----------------
 -- Long Walk
@@ -197,7 +211,7 @@ HouseOfHearts.calculate = function(self, context)
         check_for_unlock({type = 'pack_choices_round', amount = G.GAME.hoh_pack_choices_round})
     end
 
-    if context.after and next(context.poker_hands['Straight']) then
+    if context.before and next(context.poker_hands['Straight']) then
         G.GAME.straight_ranks_played = G.GAME.straight_ranks_played or {}
 
         for _, card in pairs(context.scoring_hand) do
@@ -209,6 +223,20 @@ HouseOfHearts.calculate = function(self, context)
             end
         end
         check_for_unlock({type = 'straight_ranks_played', amount = #G.GAME.straight_ranks_played})
+
+        if #context.full_hand == 3 then
+            local stayin_alive = true
+            for _, card in ipairs(context.full_hand) do
+                if not card:is_suit('Hearts') or SMODS.has_no_rank(card) then
+                    stayin_alive = false
+                    break
+                end
+            end
+
+            if stayin_alive and context.full_hand[1]:get_id() == 9 and context.full_hand[2]:get_id() == 14 and context.full_hand[3]:get_id() == 14 then
+                check_for_unlock({type = 'stayin_alive'})
+            end 
+        end
     end
 
 end

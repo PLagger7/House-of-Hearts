@@ -309,6 +309,7 @@ return {
             ach_hoh_training_complete = 'Training Complete',
             ach_hoh_cross_fit = 'Cross Fit',
             ach_hoh_long_walk = 'Long Walk',
+            ach_hoh_stayin_alive = "Stayin' Alive",
         },
         achievement_descriptions = {
             ach_hoh_test = 'test',
@@ -316,6 +317,7 @@ return {
             ach_hoh_refresher = 'Leave a Shop without buying anything or re-rolling twice in a row',
             ach_hoh_cross_fit = 'Take at least 4 items from a Booster Pack in a single round',
             ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
+            ach_hoh_stayin_alive = 'Play a hand of 9 - Ace - Ace in Hearts Suit',
         }
     }
 }
