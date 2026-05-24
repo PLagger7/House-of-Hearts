@@ -302,6 +302,12 @@ return {
             k_hoh_aha_header = "American Heart Association",
             k_hoh_cpr_tutorial = "CPR Tutorial",
             k_hoh_donate_aha = "Donate to AHA",
+        },
+        achievement_names = {
+            ach_hoh_test = 'Spaced Joker',
+        },
+        achievement_descriptions = {
+            ach_hoh_test = 'Have a Space Joker with the Stellar edition',
         }
     }
 }
