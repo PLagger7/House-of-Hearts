@@ -304,7 +304,7 @@ return {
             k_hoh_donate_aha = "Donate to AHA",
         },
         achievement_names = {
-            ach_hoh_test = 'Test',
+            ach_hoh_no_pressure = 'No Pressure [WIP]',
             ach_hoh_flavor_fanatic = 'Flavor Fanatic',
             ach_hoh_training_complete = 'Training Complete',
             ach_hoh_cross_fit = 'Cross Fit',
@@ -313,8 +313,9 @@ return {
             ach_hoh_beat_keeper = "Beat Keeper",
         },
         achievement_descriptions = {
-            ach_hoh_test = 'test',
+            ach_hoh_no_pressure = 'Have a deck with no Spade and Club cards',
             ach_hoh_flavor_fanatic = 'Create 15 Enhanced Cards in a single round',
+            ach_hoh_training_complete = 'Create both Aces and 2s at the same time using CPR Training',
             ach_hoh_refresher = 'Leave a Shop without buying anything or re-rolling twice in a row',
             ach_hoh_cross_fit = 'Take at least 4 items from a Booster Pack in a single round',
             ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
