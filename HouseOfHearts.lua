@@ -66,30 +66,40 @@ SMODS.Joker{
     calculate = function(self, card, context)
         if context.cardarea == G.jokers then
 
-            local eviljiggle = true
-            for i = 1, #G.hand.highlighted do
-                if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
-                    eviljiggle = false
-                    break
-                else
-                    eviljiggle = true
-                end
-            end
-
-            if eviljiggle then
-                local eval = function (card)
-                    for i = 1, #G.hand.highlighted do
-                        if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
-                            eviljiggle = false
+            if #G.hand.highlighted >= 1 and not card.jiggling then
+                local eviljiggle = true
+                for i = 1, #G.hand.highlighted do
+                    if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
+                        eviljiggle = false
                         break
-                        else
-                            eviljiggle = true
-                        end
+                    else
+                        eviljiggle = true
                     end
-                    return not eviljiggle
-                end 
+                end
+                if eviljiggle then
+                    card.jiggling = true
+                    local eval = function (card)
+                        if #G.hand.highlighted == 0 then
+                            card.jiggling = nil
+                            return false
+                        end
+                        for i = 1, #G.hand.highlighted do
+                            if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
+                                eviljiggle = false
+                            break
+                            else
+                                eviljiggle = true
+                            end
+                        end
+                        if not eviljiggle then
+                            card.jiggling = nil
+                        end
+                        return eviljiggle
+                    end
                     juice_card_until(card, eval, true)
                 end
+            end
+            
 
             if context.before and not context.blueprint then
                 local cards = false
