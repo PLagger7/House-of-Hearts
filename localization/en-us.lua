@@ -4,12 +4,11 @@ return {
             j_hoh_keep_the_beat = {
                 name = "Keep the Beat",
                 text = {
-                    "This Joker gains {C:mult}+#1#{} Mult",
-                    "per {C:attention}consecutive{} hand played with",
-                    "a scoring {V:1}#2#{} card,",
-                    "suit cycles every hand",
-                    "{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)",
-                    "{C:inactive, s:0.8}(#4#, #5#, #6#, #7#){}",
+                    "{X:mult,C:white}X#1#{} {C:mult}Mult{} if hand contains",
+                    "scoring {V:1}#2#{} card,",
+                    "otherwise {C:mult}self destructs",
+                    "{C:inactive}suit cycles every hand",
+                    "{C:inactive,s:0.8}(#3#){}",
                 },
             },
             j_hoh_wayfarer = {
@@ -298,6 +297,7 @@ return {
             k_enhanced_ex = "Enhanced!",
             k_complete_ex = "Complete!",
             k_gifted_ex = 'Gifted!',
+            k_missed = 'Missed',
             k_hoh_credits = "Credits",
             k_hoh_aha_header = "American Heart Association",
             k_hoh_cpr_tutorial = "CPR Tutorial",
@@ -310,6 +310,7 @@ return {
             ach_hoh_cross_fit = 'Cross Fit',
             ach_hoh_long_walk = 'Long Walk',
             ach_hoh_stayin_alive = "Stayin' Alive",
+            ach_hoh_beat_keeper = "Beat Keeper",
         },
         achievement_descriptions = {
             ach_hoh_test = 'test',
@@ -318,6 +319,7 @@ return {
             ach_hoh_cross_fit = 'Take at least 4 items from a Booster Pack in a single round',
             ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
             ach_hoh_stayin_alive = 'Play a hand of 9 - Ace - Ace in Hearts Suit',
+            ach_hoh_beat_keeper = 'Play 12 consecutive hands with Keep the Beat',
         }
     }
 }

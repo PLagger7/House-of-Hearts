@@ -42,8 +42,8 @@ SMODS.Joker{
     key = "keep_the_beat",
     config = {
         extra = {
-            m_mod = 1,
-            mult = 0
+            times_changed = 0,
+            xmult = 3
         }
     },
     pos = {
@@ -59,74 +59,118 @@ SMODS.Joker{
     atlas = 'atlas',
 
     loc_vars = function(self, info_queue, card)
-        return {vars = {card.ability.extra.m_mod, localize(G.GAME.ktb_suit or "Diamonds", 'suits_singular'), colours = {G.C.SUITS[G.GAME.ktb_suit or "Diamonds"]},
-        card.ability.extra.mult, localize("Diamonds", 'suits_plural'), localize("Clubs", 'suits_plural'), localize("Hearts", 'suits_plural'),
-        localize("Spades", 'suits_plural')}}
+        local suits_string = ("%s, %s, %s, %s"):format(
+            localize("Diamonds", 'suits_plural'),
+            localize("Clubs", 'suits_plural'),
+            localize("Hearts", 'suits_plural'),
+            localize("Spades", 'suits_plural')
+        )
+
+        return {vars = {
+            card.ability.extra.xmult,
+            localize(G.GAME.ktb_suit or "Diamonds", 'suits_singular'),
+            suits_string,
+            colours = {G.C.SUITS[G.GAME.ktb_suit or "Diamonds"]},
+        }}
+    end,
+
+    sprite_pos = {
+        Diamonds = {x = 0, y = 0},
+        Clubs = {x = 1, y = 3},
+        Hearts = {x = 2, y = 3},
+        Spades = {x = 3, y = 3},
+    },
+
+    draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) 
+                -- Make sure sprite doesn't update during animation
+                and not card.pause_sprite_updates then
+            card.children.center:set_sprite_pos(self.sprite_pos[G.GAME.ktb_suit])
+        end
+    end,
+
+    update_jiggle = function (self, card)
+        if #G.hand.highlighted >= 1 and not card.jiggling then
+            local eviljiggle = true
+            for i = 1, #G.hand.highlighted do
+                if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
+                    eviljiggle = false
+                    break
+                else
+                    eviljiggle = true
+                end
+            end
+            if eviljiggle then
+                card.jiggling = true
+                local eval = function (card)
+                    if #G.hand.highlighted == 0 then
+                        card.jiggling = nil
+                        return false
+                    end
+                    for i = 1, #G.hand.highlighted do
+                        if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
+                            eviljiggle = false
+                        break
+                        else
+                            eviljiggle = true
+                        end
+                    end
+                    if not eviljiggle then
+                        card.jiggling = nil
+                    end
+                    return eviljiggle
+                end
+                juice_card_until(card, eval, true)
+            end
+        end
     end,
 
     calculate = function(self, card, context)
         if context.cardarea == G.jokers then
+            self:update_jiggle(card)
 
-            if #G.hand.highlighted >= 1 and not card.jiggling then
-                local eviljiggle = true
-                for i = 1, #G.hand.highlighted do
-                    if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
-                        eviljiggle = false
-                        break
-                    else
-                        eviljiggle = true
+            if context.joker_main then
+                local destruct = true
+                for _, card in pairs(context.scoring_hand) do
+                    if card:is_suit(G.GAME.ktb_suit) and card:can_calculate() then
+                        destruct = false
                     end
                 end
-                if eviljiggle then
-                    card.jiggling = true
-                    local eval = function (card)
-                        if #G.hand.highlighted == 0 then
-                            card.jiggling = nil
-                            return false
-                        end
-                        for i = 1, #G.hand.highlighted do
-                            if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
-                                eviljiggle = false
-                            break
-                            else
-                                eviljiggle = true
-                            end
-                        end
-                        if not eviljiggle then
-                            card.jiggling = nil
-                        end
-                        return eviljiggle
-                    end
-                    juice_card_until(card, eval, true)
-                end
-            end
-            
-
-            if context.before and not context.blueprint then
-                local cards = false
-                for i = 1, #context.scoring_hand do
-                    if context.scoring_hand[i]:is_suit(G.GAME.ktb_suit) then cards = true end
-                end
-                if cards then
-                    card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.m_mod
+                if destruct then
+                    card.self_destruct = true
                     return {
-                        message = localize('k_upgrade_ex'),
-                        colour = G.C.RED,
+                        message = localize('k_missed')
                     }
-                else
-                    if card.ability.extra.mult > 0 then
-                        card.ability.extra.mult = 0
-                        return {
-                            message = localize('k_reset')
-                        }
-                    end
                 end
-            elseif context.joker_main and card.ability.extra.mult > 0 then
-                return{
-                    message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
-                    mult_mod = card.ability.extra.mult
+
+                card.pause_sprite_updates = true
+                G.GAME.hoh_update_ktb = true
+                return {
+                    xmult = card.ability.extra.xmult
                 }
             elseif context.after then
+                if card.self_destruct then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            play_sound('tarot1')
+                            SMODS.destroy_cards(card)
+                            return true
+                        end
+                    }))
+                    return
+                end
+                card.ability.extra.times_changed = card.ability.extra.times_changed + 1
+
+                check_for_unlock({type = 'keep_the_beat', amount = card.ability.extra.times_changed})
+
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        card.pause_sprite_updates = false
+                        card:juice_up()
+                        return true
+                    end
+                }))
+
                 change_ktb_suit()
             end
         end
@@ -175,7 +219,7 @@ SMODS.Joker{
     end
 }
 
-SMODS.Joker{
+SMODS.Joker {
     name = "Cyclist",
     key = "cyclist",
     config = {
@@ -861,7 +905,8 @@ SMODS.Back{
 -- FUNCTIONS
 
 change_ktb_suit = function()
-    if G.GAME.ktb_suit then
+    if G.GAME.ktb_suit and G.GAME.hoh_update_ktb then
+        G.GAME.hoh_update_ktb = false
         local suits = {"Diamonds", "Clubs", "Hearts", "Spades"}
         local i = get_index(suits, G.GAME.ktb_suit)
         if i == #suits then i = 0 end
