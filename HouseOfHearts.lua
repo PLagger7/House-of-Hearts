@@ -275,8 +275,7 @@ SMODS.Joker{
         extra = {
             chips = 0,
             chips_mod = 8,
-            pack_size = 0,
-            skipped = false
+            original_pack_choices = 0,
         }
     },
     atlas = 'atlas',
@@ -294,37 +293,24 @@ SMODS.Joker{
     end,
 
     calculate = function (self, card, context)
-
         if context.open_booster and not context.blueprint then
-            card.ability.extra.pack_size = G.GAME.pack_choices
-            card.ability.extra.skipped = false
+            card.ability.extra.original_pack_choices = G.GAME.pack_choices
         end
 
-
-
-        if context.skipping_booster and not context.blueprint then
-            card.ability.extra.skipped = true
-        end
-
-        if context.ending_booster and not context.blueprint then
-            if not card.ability.extra.skipped then
-                card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
-                return{
-                    message = localize('k_upgrade_ex'),
-                    color = G.C.CHIPS
-                }
+        if (context.skipping_booster or context.ending_booster) and not context.blueprint then
+            local cards_used
+            if context.skipping_booster then
+                cards_used = card.ability.extra.original_pack_choices - G.GAME.pack_choices
+            else
+                cards_used = card.ability.extra.original_pack_choices
             end
-        end
+            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod * cards_used
 
-        if not context.blueprint and G.GAME.pack_choices ~= nil
-            and card.ability.extra.pack_size > G.GAME.pack_choices then
-                card.ability.extra.pack_size = G.GAME.pack_choices
-                card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
-                return{
-                    message = localize('k_upgrade_ex'),
-                    color = G.C.CHIPS
-                }
-            end
+            return {
+                message = localize('k_upgrade_ex'),
+                color = G.C.CHIPS
+            }
+        end
 
         if context.joker_main then
             return{
