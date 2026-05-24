@@ -274,7 +274,7 @@ SMODS.Joker{
     config = {
         extra = {
             chips = 0,
-            chips_mod = 15,
+            chips_mod = 8,
             pack_size = 0,
             skipped = false
         }
@@ -304,11 +304,6 @@ SMODS.Joker{
 
         if context.skipping_booster and not context.blueprint then
             card.ability.extra.skipped = true
-            card.ability.extra.chips = 0
-            return{
-                message = localize{'k_reset'},
-                color = G.C.CHIPS
-            }
         end
 
         if context.ending_booster and not context.blueprint then
@@ -318,17 +313,11 @@ SMODS.Joker{
                     message = localize('k_upgrade_ex'),
                     color = G.C.CHIPS
                 }
-            elseif card.ability.extra.skipped then
-                card.ability.extra.chips = 0
-                return{
-                    message = localize('k_reset')
-                }
             end
         end
 
         if not context.blueprint and G.GAME.pack_choices ~= nil
-            and card.ability.extra.pack_size > G.GAME.pack_choices 
-            and not card.ability.extra.skipped then
+            and card.ability.extra.pack_size > G.GAME.pack_choices then
                 card.ability.extra.pack_size = G.GAME.pack_choices
                 card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
                 return{

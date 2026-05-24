@@ -51,7 +51,7 @@ return {
                 name = "Jump Rope",
                 text = {
                     "This Joker gains {C:chips}+#1#{} Chips",
-                    "per consecutive {C:attention}Card{} chosen",
+                    "when any {C:attention}Card{} is chosen",
                     "from a {C:attention}Booster Pack{}",
                     "{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
                 },
@@ -304,12 +304,10 @@ return {
             k_hoh_donate_aha = "Donate to AHA",
         },
         achievement_names = {
-            ach_hoh_test = 'Test',
-            ach_hoh_flavor_fanatic = 'Flavor Fanatic',
+            ach_hoh_test = 'Spaced Joker',
         },
         achievement_descriptions = {
-            ach_hoh_test = 'test',
-            ach_hoh_flavor_fanatic = 'Create 15 Enhanced Cards in a single round',
+            ach_hoh_test = 'Have a Space Joker with the Stellar edition',
         }
     }
 }
