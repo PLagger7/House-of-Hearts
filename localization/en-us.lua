@@ -304,10 +304,12 @@ return {
             k_hoh_donate_aha = "Donate to AHA",
         },
         achievement_names = {
-            ach_hoh_test = 'Spaced Joker',
+            ach_hoh_test = 'Test',
+            ach_hoh_flavor_fanatic = 'Flavor Fanatic',
         },
         achievement_descriptions = {
-            ach_hoh_test = 'Have a Space Joker with the Stellar edition',
+            ach_hoh_test = 'test',
+            ach_hoh_flavor_fanatic = 'Create 15 Enhanced Cards in a single round',
         }
     }
 }
