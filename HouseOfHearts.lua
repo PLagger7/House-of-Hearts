@@ -5,6 +5,7 @@ mod.no_marquee = true
 HouseOfHearts = mod
 
 load(NFS.read(mod.path.."/ModInfo.lua"), "HouseOfHearts/ModInfo")()
+load(NFS.read(mod.path.."/achievements.lua"), "HouseOfHearts/Achievements")()
 
 SMODS.Atlas {
     key = "atlas",
