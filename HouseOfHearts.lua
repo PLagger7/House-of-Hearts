@@ -173,9 +173,11 @@ SMODS.Joker{
                 elseif context.other_card:is_suit("Clubs") or context.other_card:is_suit("Spades") then
                     card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.ch_mod
                 end
+                if context.other_card == context.full_hand[#context.full_hand] then
                 return{
                     message = localize("k_upgrade_ex")
                 }
+                end
             end
             if context.joker_main and (card.ability.extra.chips > 0 or card.ability.extra.mult > 0) then
                 return {
@@ -261,11 +263,11 @@ SMODS.Joker{
             card.ability.extra.skipped = false
         end
 
-        if context.skipping_booster then
+        if context.skipping_booster and not context.blueprint then
             card.ability.extra.skipped = true
         end
 
-        if G.GAME.pack_choices ~= nil and card.ability.extra.pack_size > G.GAME.pack_choices
+        if not context.blueprint and G.GAME.pack_choices ~= nil and card.ability.extra.pack_size > G.GAME.pack_choices
                 then
                 card.ability.extra.pack_size = G.GAME.pack_choices
                 card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
@@ -275,7 +277,7 @@ SMODS.Joker{
                 }
             end
 
-        if context.ending_booster and not card.ability.extra.skipped then
+        if context.ending_booster and not card.ability.extra.skipped and not context.blueprint then
             card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
                 return{
                     message = localize('k_upgrade_ex'),
