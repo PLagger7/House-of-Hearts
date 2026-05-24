@@ -274,7 +274,7 @@ SMODS.Joker{
     config = {
         extra = {
             chips = 0,
-            chips_mod = 15,
+            chips_mod = 8,
             pack_size = 0,
             skipped = false
         }
