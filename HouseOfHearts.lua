@@ -5,7 +5,7 @@ mod.no_marquee = true
 HouseOfHearts = mod
 
 load(NFS.read(mod.path.."/ModInfo.lua"), "HouseOfHearts/ModInfo")()
-load(NFS.read(mod.path.."/achievements.lua"), "HouseOfHearts/Achievements")()
+load(NFS.read(mod.path.."/Achievements.lua"), "HouseOfHearts/Achievements")()
 
 SMODS.Atlas {
     key = "atlas",
@@ -341,19 +341,20 @@ SMODS.Joker{
             card.ability.extra.original_pack_choices = G.GAME.pack_choices
         end
 
-        if (context.skipping_booster or context.ending_booster) and not context.blueprint then
-            local cards_used
-            if context.skipping_booster then
-                cards_used = card.ability.extra.original_pack_choices - G.GAME.pack_choices
-            else
-                cards_used = card.ability.extra.original_pack_choices
-            end
-            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod * cards_used
+        if context.skipping_booster and not context.blueprint then
+            -- When skipped, not all choices were used.
+            card.ability.extra.original_pack_choices = card.ability.extra.original_pack_choices - G.GAME.pack_choices
+        end
 
-            return {
-                message = localize('k_upgrade_ex'),
-                color = G.C.CHIPS
-            }
+        if context.ending_booster and not context.blueprint then
+            local cards_used = card.ability.extra.original_pack_choices
+            if cards_used > 0 then
+                card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod * cards_used
+                return {
+                    message = localize('k_upgrade_ex'),
+                    color = G.C.CHIPS
+                }
+            end
         end
 
         if context.joker_main then

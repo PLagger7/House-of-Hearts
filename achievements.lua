@@ -211,16 +211,14 @@ HouseOfHearts.calculate = function(self, context)
 
     if context.open_booster then
         G.GAME.hoh_original_pack_choices = G.GAME.pack_choices
+        print("set pack choices to "..tostring(G.GAME.hoh_original_pack_choices))
     end
 
-    if context.skipping_booster or context.ending_booster then
-        local cards_used
-        if context.skipping_booster then
-            cards_used = G.GAME.hoh_original_pack_choices - G.GAME.pack_choices
-        else
-            cards_used = G.GAME.hoh_original_pack_choices
-        end
-        G.GAME.hoh_original_pack_choices = nil
+    if context.skipping_booster then
+        G.GAME.hoh_original_pack_choices = G.GAME.hoh_original_pack_choices - G.GAME.pack_choices
+    end
+    if context.ending_booster then
+        local cards_used = G.GAME.hoh_original_pack_choices
         G.GAME.hoh_pack_choices_round = G.GAME.hoh_pack_choices_round + cards_used
         check_for_unlock({type = 'pack_choices_round', amount = G.GAME.hoh_pack_choices_round})
     end

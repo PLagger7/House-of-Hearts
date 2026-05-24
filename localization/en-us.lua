@@ -50,8 +50,8 @@ return {
                 name = "Jump Rope",
                 text = {
                     "This Joker gains {C:chips}+#1#{} Chips",
-                    "when any {C:attention}Card{} is chosen",
-                    "from a {C:attention}Booster Pack{}",
+                    "for every {C:attention}Card{} chosen",
+                    "in a {C:attention}Booster Pack{}",
                     "{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
                 },
             },
