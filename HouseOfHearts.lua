@@ -173,6 +173,9 @@ SMODS.Joker{
                 elseif context.other_card:is_suit("Clubs") or context.other_card:is_suit("Spades") then
                     card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.ch_mod
                 end
+                return{
+                    message = localize("k_upgrade_ex")
+                }
             end
             if context.joker_main and (card.ability.extra.chips > 0 or card.ability.extra.mult > 0) then
                 return {
