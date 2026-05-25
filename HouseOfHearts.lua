@@ -50,7 +50,7 @@ SMODS.Joker{
         x = 0, y = 0
     },
     cost = 5,
-    rarity = 1,
+    rarity = 2,
     blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = false,
@@ -90,7 +90,7 @@ SMODS.Joker{
     end,
 
     update_jiggle = function (self, card)
-        if #G.hand.highlighted >= 1 and not card.jiggling then
+        if #G.hand.highlighted >= 1 and not card.jiggling and G.GAME.blind then
             local eviljiggle = true
             for i = 1, #G.hand.highlighted do
                 if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
@@ -224,8 +224,8 @@ SMODS.Joker {
     key = "cyclist",
     config = {
         extra = {
-            m_mod = 4,
-            ch_mod = 10,
+            m_mod = 3,
+            ch_mod = 7,
             mult = 0,
             chips = 0
         }
@@ -249,7 +249,11 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.cardarea == G.jokers then
             if context.discard and not context.other_card.debuff  and not context.blueprint then
-                if context.other_card:is_suit("Diamonds") or context.other_card:is_suit("Hearts") then
+                if context.other_card:is_suit("Diamonds") and context.other_card:is_suit("Hearts")
+                    and context.other_card:is_suit("Clubs") and context.other_card:is_suit("Spades") then
+                     card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.m_mod
+                     card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.ch_mod
+                elseif context.other_card:is_suit("Diamonds") or context.other_card:is_suit("Hearts") then
                     card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.m_mod
                 elseif context.other_card:is_suit("Clubs") or context.other_card:is_suit("Spades") then
                     card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.ch_mod
