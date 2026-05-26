@@ -216,19 +216,19 @@ SMODS.Achievement {
     end
 }
 
+-----------------
+-- Circulatory System
+-----------------
 
-
-
-
-
-local function contains(t, value)
-    for _, v in pairs(t) do
-        if v == value then
-            return true
-        end
+SMODS.Achievement {
+    key = 'circulatory_system',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'circulatory_system'
     end
-end
-
+}
 
 HouseOfHearts.calculate = function(self, context)
     if G.playing_cards and (context.playing_card_added or context.change_suit or context.remove_playing_cards) then
@@ -300,16 +300,34 @@ HouseOfHearts.calculate = function(self, context)
 
     if context.before and next(context.poker_hands['Flush Five']) then
         local smiles = true
-            for _, card in ipairs(context.full_hand) do
-                if not card:is_suit('Hearts') or SMODS.has_no_rank(card) then
-                    smiles = false
-                    break
-                end
+        for _, card in ipairs(context.full_hand) do
+            if not card:is_suit('Hearts') or SMODS.has_no_rank(card) then
+                smiles = false
+                break
             end
+        end
 
-            if smiles then
-                check_for_unlock({type = 'contagious_smile'})
+        if smiles then
+            check_for_unlock({type = 'contagious_smile'})
+        end
+    end
+
+    if G.playing_cards and (context.playing_card_added or context.change_suit or context.remove_playing_cards) then
+        local reds = 0
+        for _, card in pairs(G.playing_cards) do
+            if SMODS.has_enhancement(card, 'm_mult') then
+                reds = reds + 1
             end
+            if card.edition and card.edition.key == 'e_holo' then
+                reds = reds + 1
+            end
+            if card.seal == 'Red' then
+                reds = reds + 1
+            end
+        end
+        if reds >= 52 then
+            check_for_unlock({type = 'circulatory_system'})
+        end
     end
 
 end
