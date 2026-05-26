@@ -30,27 +30,20 @@ Heart of Gold: Earn $40 or more at Cashout during a run. [Dono-thon]
 Share the Love: Play a Flush Five in Hearts Suit. [Contagious Smile]
 ]]
 
+-----------------
+-- No Pressure
+-----------------
 
-SMODS.Achievement { --No Pressure
+SMODS.Achievement {
     key = 'no_pressure',
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
-    reset_on_startup = true,
     unlock_condition = function (self, args)
         return args.type == 'no_pressure'
     end
 }
 
-local game_update_ref = Game.update
-function Game:update(dt)
-    -- 
-    return game_update_ref(self, dt)
-end
-
---[[
-
-    --]]
 -----------------
 -- Stayin' Alive
 -----------------
@@ -135,7 +128,33 @@ SMODS.Achievement {
     end
 }
 
+-----------------
+-- Recycled
+-----------------
 
+SMODS.Achievement {
+    key = 'recycled',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'recycled'
+    end
+}
+
+-----------------
+-- Dono-thon
+-----------------
+
+SMODS.Achievement {
+    key = 'donothon',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'donothon'
+    end
+}
 
 --  ==================================================================================================================
 --  Mastery Achievements (6)
@@ -199,7 +218,6 @@ end
 
 HouseOfHearts.calculate = function(self, context)
     if G.playing_cards and (context.playing_card_added or context.change_suit or context.remove_playing_cards) then
-        print'DECK MODIFIED'
         local dark_suits = false
         local decksize = 0
         for _, card in pairs(G.playing_cards) do
@@ -213,6 +231,16 @@ HouseOfHearts.calculate = function(self, context)
                 check_for_unlock({type = 'no_pressure'})
             end
         end
+    end
+
+    if G.STATES.SELECTING_HAND and #G.deck.cards <= 0 then
+        check_for_unlock({type = 'recycled'})
+    end
+
+    local donothon_complete = false
+    if G.GAME.current_round.dollars >= 40 and not donothon_complete then
+        check_for_unlock({type = 'donothon'})
+        donothon_complete = true --This is so it doesn't continue checking after you get the achievement
     end
 
     if context.open_booster then

@@ -311,6 +311,8 @@ return {
             ach_hoh_long_walk = 'Long Walk',
             ach_hoh_stayin_alive = "Stayin' Alive",
             ach_hoh_beat_keeper = "Beat Keeper",
+            ach_hoh_recycled = 'Recycled',
+            ach_hoh_donothon = 'Dono-thon'
         },
         achievement_descriptions = {
             ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
@@ -321,6 +323,8 @@ return {
             ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
             ach_hoh_stayin_alive = 'Play a hand of 9 - Ace - Ace in Hearts Suit',
             ach_hoh_beat_keeper = 'Play 12 consecutive hands with Keep the Beat',
+            ach_hoh_recycled = 'Have 0 cards remaining in your deck during a round',
+            ach_hoh_donothon = 'Earn $40 or more at Cashout during a run'
         }
     }
 }
