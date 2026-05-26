@@ -156,6 +156,20 @@ SMODS.Achievement {
     end
 }
 
+-----------------
+-- Contagious Smile
+-----------------
+
+SMODS.Achievement {
+    key = 'contagious_smile',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'contagious_smile'
+    end
+}
+
 --  ==================================================================================================================
 --  Mastery Achievements (6)
 --  ==================================================================================================================
@@ -282,6 +296,20 @@ HouseOfHearts.calculate = function(self, context)
                 check_for_unlock({type = 'stayin_alive'})
             end 
         end
+    end
+
+    if context.before and next(context.poker_hands['Flush Five']) then
+        local smiles = true
+            for _, card in ipairs(context.full_hand) do
+                if not card:is_suit('Hearts') or SMODS.has_no_rank(card) then
+                    smiles = false
+                    break
+                end
+            end
+
+            if smiles then
+                check_for_unlock({type = 'contagious_smile'})
+            end
     end
 
 end
