@@ -36,6 +36,7 @@ SMODS.Achievement { --No Pressure
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
+    reset_on_startup = true,
     unlock_condition = function (self, args)
         return args.type == 'no_pressure'
     end
@@ -48,19 +49,8 @@ function Game:update(dt)
 end
 
 --[[
-game_update_ref()
-    if G.playing_cards then
-    local dark_suits = false
-    for _, card in pairs(G.playing_cards) do
-        if card.base.suit == 'Spades' or card.base.suit == 'Clubs' then
-        dark_suits = true
-        elseif not dark_suits then 
-            check_for_unlock({type = 'no_pressure'})
-        end
-    end
-end
---]]
 
+    --]]
 -----------------
 -- Stayin' Alive
 -----------------
@@ -208,6 +198,22 @@ end
 
 
 HouseOfHearts.calculate = function(self, context)
+    if G.playing_cards and (context.playing_card_added or context.change_suit or context.remove_playing_cards) then
+        print'DECK MODIFIED'
+        local dark_suits = false
+        local decksize = 0
+        for _, card in pairs(G.playing_cards) do
+            if card.base.suit == 'Spades' or card.base.suit == 'Clubs' then
+                dark_suits = true
+                decksize = decksize + 1
+            elseif not dark_suits then 
+                decksize = decksize + 1
+            end
+            if decksize == #G.playing_cards and not dark_suits then
+                check_for_unlock({type = 'no_pressure'})
+            end
+        end
+    end
 
     if context.open_booster then
         G.GAME.hoh_original_pack_choices = G.GAME.pack_choices

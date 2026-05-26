@@ -58,9 +58,9 @@ return {
             j_hoh_cpr_training = {
                 name = "CPR Training",
                 text = {
-                    "If played hand contains a {C:attention}Two Pair{},",
-                    "{C:attention}increase{} the rank of {C:attention}highest{} ranked cards",
-                    "and {C:attention}decrease{} the rank of {C:attention}lower{} ranked cards",
+                    "If played hand contains a {C:attention}Two Pair{} or {C:attention}Full House,",
+                    "{C:attention}increase{} the ranks of the {C:attention}higher{} ranked group",
+                    "and {C:attention}decrease{} the ranks of the {C:attention}lower{} ranked group",
                     "{C:inactive}(ex: {C:attention}8 8 5 5{C:inactive} -> {C:attention}9 9 4 4{C:inactive}){}"
                 },
             },
@@ -118,7 +118,7 @@ return {
             j_hoh_share_the_love = {
                 name = "Share the Love",
                 text = {
-                    "If played hand contains exactly",
+                    "If {C:attention}first hand{} of round contains exactly",
                     "1 {C:hearts}Heart{} card and 1 {C:attention}non-Heart{} card,",
                     "convert the {C:attention}non-Heart{} card",
                     "into the {C:hearts}Heart{} card"
@@ -140,7 +140,7 @@ return {
                 name = "Heartbeat Deck",
                 text = {
                     "All {C:hearts}Heart{} cards",
-                    'start with a {C:attention}Red Seal'
+                    'start with a {C:attention,T_set:Other,T:red_seal}Red Seal'
                 },
             },
         },
@@ -304,7 +304,7 @@ return {
             k_hoh_donate_aha = "Donate to AHA",
         },
         achievement_names = {
-            ach_hoh_no_pressure = 'No Pressure [WIP]',
+            ach_hoh_no_pressure = 'No Pressure',
             ach_hoh_flavor_fanatic = 'Flavor Fanatic',
             ach_hoh_training_complete = 'Training Complete',
             ach_hoh_cross_fit = 'Cross Fit',
@@ -313,11 +313,11 @@ return {
             ach_hoh_beat_keeper = "Beat Keeper",
         },
         achievement_descriptions = {
-            ach_hoh_no_pressure = 'Have a deck with no Spade and Club cards',
+            ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
             ach_hoh_flavor_fanatic = 'Create 15 Enhanced Cards in a single round',
             ach_hoh_training_complete = 'Create both Aces and 2s at the same time using CPR Training',
             ach_hoh_refresher = 'Leave a Shop without buying anything or re-rolling twice in a row',
-            ach_hoh_cross_fit = 'Take at least 4 items from a Booster Pack in a single round',
+            ach_hoh_cross_fit = 'Take at least 4 items from Booster Packs in a single round',
             ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
             ach_hoh_stayin_alive = 'Play a hand of 9 - Ace - Ace in Hearts Suit',
             ach_hoh_beat_keeper = 'Play 12 consecutive hands with Keep the Beat',

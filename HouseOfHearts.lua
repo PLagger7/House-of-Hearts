@@ -795,7 +795,12 @@ SMODS.Joker{
     discovered = true,
 
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and context.after then
+        if context.first_hand_drawn and not context.blueprint then
+            local eval = function() return G.GAME.current_round.hands_played == 0 and not G.RESET_JIGGLES end
+            juice_card_until(card, eval, true)
+        end
+
+        if context.cardarea == G.jokers and context.after and G.GAME.current_round.hands_played == 0 then
             if #context.full_hand == 2 then
                 local heart_card = {}
                 local nonheart_card = {}
