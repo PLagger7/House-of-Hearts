@@ -170,6 +170,20 @@ SMODS.Achievement {
     end
 }
 
+-----------------
+-- Refresher
+-----------------
+
+SMODS.Achievement{
+    key = 'refresher',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'refresher'
+    end
+}
+
 --  ==================================================================================================================
 --  Mastery Achievements (6)
 --  ==================================================================================================================

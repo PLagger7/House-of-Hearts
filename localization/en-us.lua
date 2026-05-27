@@ -307,13 +307,14 @@ return {
             ach_hoh_recycled = 'Recycled',
             ach_hoh_donothon = 'Dono-thon',
             ach_hoh_contagious_smile = 'Contagious Smile',
-            ach_hoh_circulatory_system = 'Circulatory System'
+            ach_hoh_circulatory_system = 'Circulatory System',
+            ach_hoh_refresher = 'Refresher'
         },
         achievement_descriptions = {
             ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
             ach_hoh_flavor_fanatic = 'Create 6 Enhanced Cards in a single round',
             ach_hoh_training_complete = 'Create both Aces and 2s at the same time using CPR Training',
-            ach_hoh_refresher = 'Leave a Shop without buying anything or re-rolling twice in a row',
+            ach_hoh_refresher = 'Leave the Shop without buying anything or rerolling twice in a row',
             ach_hoh_cross_fit = 'Take at least 4 items from Booster Packs in a single round',
             ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
             ach_hoh_stayin_alive = 'Play a hand of 9 - Ace - Ace in Hearts Suit',
@@ -321,7 +322,7 @@ return {
             ach_hoh_recycled = 'Have 0 cards remaining in your deck during a round',
             ach_hoh_donothon = 'Earn $40 or more at Cashout during a run',
             ach_hoh_contagious_smile = 'Play a Flush Five in Hearts Suit',
-            ach_hoh_circulatory_system = 'Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards'
+            ach_hoh_circulatory_system = 'Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards',
         }
     }
 }
