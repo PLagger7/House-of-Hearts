@@ -272,30 +272,29 @@ HouseOfHearts.calculate = function(self, context)
 
     if context.before and next(context.poker_hands['Straight']) then
         G.GAME.straight_ranks_played = G.GAME.straight_ranks_played or {}
-
         for _, card in pairs(context.scoring_hand) do
             if not SMODS.has_no_rank(card) then
                 local rank = card:get_id()
-                if not contains(G.GAME.straight_ranks_played, rank) then
+                if not G.GAME.straight_ranks_played[rank] ~= nil then
                     table.insert(G.GAME.straight_ranks_played, rank)
                 end
             end
         end
         check_for_unlock({type = 'straight_ranks_played', amount = #G.GAME.straight_ranks_played})
+    end
 
-        if #context.full_hand == 3 then
-            local stayin_alive = true
-            for _, card in ipairs(context.full_hand) do
-                if not card:is_suit('Hearts') or SMODS.has_no_rank(card) then
-                    stayin_alive = false
-                    break
-                end
+    if context.before and #context.full_hand == 3 then
+        local stayin_alive = true
+        for _, card in ipairs(context.full_hand) do
+            if not card:is_suit('Hearts') or SMODS.has_no_rank(card) then
+                stayin_alive = false
+                break
             end
-
-            if stayin_alive and context.full_hand[1]:get_id() == 9 and context.full_hand[2]:get_id() == 14 and context.full_hand[3]:get_id() == 14 then
-                check_for_unlock({type = 'stayin_alive'})
-            end 
         end
+
+        if stayin_alive and context.full_hand[1]:get_id() == 9 and context.full_hand[2]:get_id() == 14 and context.full_hand[3]:get_id() == 14 then
+            check_for_unlock({type = 'stayin_alive'})
+        end 
     end
 
     if context.before and next(context.poker_hands['Flush Five']) then
