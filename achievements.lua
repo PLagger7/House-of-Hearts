@@ -5,17 +5,27 @@ local function reset_round_globals()
     G.GAME.hoh_pack_choices_round = 0
 end
 
-local function reset_game_globals(run_start) --somebody please help me figure this out
+local mod = SMODS.current_mod
+
+function mod.reset_game_globals(run_start)
     if run_start then
         G.GAME.hoh_windowshopped = 0
     end
 end
 
+
 local new_round_ref = new_round
 function new_round()
     reset_round_globals()
-
     return new_round_ref()
+end
+
+local function contains(t, value)
+    for _, v in pairs(t) do
+        if v == value then
+            return true
+        end
+    end   
 end
 
 --  ==================================================================================================================
@@ -295,7 +305,7 @@ HouseOfHearts.calculate = function(self, context)
         for _, card in pairs(context.scoring_hand) do
             if not SMODS.has_no_rank(card) then
                 local rank = card:get_id()
-                if not G.GAME.straight_ranks_played[rank] ~= nil then
+                if not contains(G.GAME.straight_ranks_played, rank) then
                     table.insert(G.GAME.straight_ranks_played, rank)
                 end
             end
@@ -349,7 +359,7 @@ HouseOfHearts.calculate = function(self, context)
         end 
     end
 
---[[ Refresher achievement code here, send help
+---[[ Refresher achievement code here, send help
     local shopping = false
     if context.starting_shop then
         shopping = false
