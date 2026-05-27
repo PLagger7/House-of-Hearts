@@ -359,7 +359,7 @@ HouseOfHearts.calculate = function(self, context)
         end 
     end
 
----[[ Refresher achievement code here, send help
+--[[ Refresher achievement code here, send help
     local shopping = false
     if context.starting_shop then
         shopping = false
