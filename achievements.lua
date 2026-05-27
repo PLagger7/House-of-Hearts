@@ -5,6 +5,12 @@ local function reset_round_globals()
     G.GAME.hoh_pack_choices_round = 0
 end
 
+local function reset_game_globals(run_start) --somebody please help me figure this out
+    if run_start then
+        G.GAME.hoh_windowshopped = 0
+    end
+end
+
 local new_round_ref = new_round
 function new_round()
     reset_round_globals()
@@ -180,7 +186,7 @@ SMODS.Achievement{
     hidden_text = false,
     hidden_name = false,
     unlock_condition = function (self, args)
-        return args.type == 'refresher'
+        return args.type == 'refresher' and args.amount >= 2
     end
 }
 
@@ -343,4 +349,20 @@ HouseOfHearts.calculate = function(self, context)
         end 
     end
 
+--[[ Refresher achievement code here, send help
+    local shopping = false
+    if context.starting_shop then
+        shopping = false
+    end
+    if context.buying_card or context.open_booster or context.reroll_shop then
+        print'cahching'
+        G.GAME.hoh_windowshopped = 0
+        shopping = true
+    end
+    if context.ending_shop and not shopping then
+        G.GAME.hoh_windowshopped = 1 + G.GAME.hoh_windowshopped
+        print(tostring(G.GAME.hoh_windowshopped))
+        check_for_unlock({type = 'refresher', amount = G.GAME.hoh_windowshopped})
+    end
+--]]
 end
