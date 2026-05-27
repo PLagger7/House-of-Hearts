@@ -34,7 +34,7 @@ function G.FUNCS.hoh_aha(e)
 end
 
 function G.FUNCS.hoh_cpr_tutorial(e)
-    love.system.openURL("https://youtu.be/dQw4w9WgXcQ")
+    love.system.openURL("https://www.youtube.com/watch?v=M4ACYp75mjU")
 end
 
 -- Custom Loc Colours
@@ -90,9 +90,9 @@ HouseOfHearts.custom_ui = function(modNodes)
     -- Run this command in console:
     -- watch lua Mods/House-Of-Hearts/ModInfo.lua
     -- Then, every time you save this file, reopen menu in-game
-    
+
     local menu_width = 9
-    local text_scale = 0.78
+    local text_scale = 1.25
     local image_scale = 2.35
     local image_spacing = 0.65
 

@@ -327,7 +327,7 @@ HouseOfHearts.calculate = function(self, context)
         end
         if reds >= 52 then
             check_for_unlock({type = 'circulatory_system'})
-        end
+        end 
     end
 
 end

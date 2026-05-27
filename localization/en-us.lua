@@ -268,25 +268,18 @@ return {
             hoh_about_aha = {
                 name = " ",
                 text = {
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    "Duis eget tempus ipsum. Mauris ornare magna ante, et varius",
-                    "mi accumsan ac. Fusce vulputate ornare dapibus. Nulla ut odio",
-                    "felis. Quisque placerat lobortis aliquam. Cras faucibus leo eu",
-                    "bibendum facilisis. Fusce nisi ex, maximus eu pellentesque", 
-                    "facilisis, pharetra ut arcu. Fusce vulputate sem nulla, ac",
-                    "imperdiet nisl porttitor et. ",
+                    "The AHA is a worldwide leader in first aid,",
+                    "CPR, and AED training - educating more than",
+                    "22 million people globally in CPR each year.",
                 },
             },
             hoh_about_cpr = {
                 name = " ",
                 text = {
-                    "Nulla euismod efficitur libero, ut porttitor nunc vehicula vitae. Morbi aliquet mattis",
-                    "sapien, nec rhoncus urna sagittis id. Lorem ipsum dolor sit amet, consectetur adipiscing",
-                    "elit. Proin feugiat nibh turpis, a cursus nunc pellentesque tempor. Duis et turpis nisi.",
-                    "Maecenas a nisi eu nisl tincidunt tristique. Phasellus in est eleifend, aliquet lorem ac,",
-                    "pharetra tortor. Integer dictum enim purus, ac blandit nisl ultricies eget. Mauris consequat",
-                    "justo vel nisl pellentesque, ut sodales quam fermentum. In non placerat mi, et luctus enim.",
-                    "Morbi auctor posuere iaculis. Vivamus tempor eget tortor porta lobortis. ",
+                    "7 out of 10 cardiac arrests outside of the hospital happen at home.",
+                    "That means if you witness one, it will most likely be someone you love.",
+                    "Immediate CPR can double or even triple survival chances.",
+                    "You can make a difference by learning Hands-Only CPR today!"
                 },
             },
         },
@@ -318,7 +311,7 @@ return {
         },
         achievement_descriptions = {
             ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
-            ach_hoh_flavor_fanatic = 'Create 15 Enhanced Cards in a single round',
+            ach_hoh_flavor_fanatic = 'Create 6 Enhanced Cards in a single round',
             ach_hoh_training_complete = 'Create both Aces and 2s at the same time using CPR Training',
             ach_hoh_refresher = 'Leave a Shop without buying anything or re-rolling twice in a row',
             ach_hoh_cross_fit = 'Take at least 4 items from Booster Packs in a single round',
