@@ -308,7 +308,8 @@ return {
             ach_hoh_donothon = 'Dono-thon',
             ach_hoh_contagious_smile = 'Contagious Smile',
             ach_hoh_circulatory_system = 'Circulatory System',
-            ach_hoh_refresher = 'Refresher'
+            ach_hoh_refresher = 'Refresher [WIP]',
+            ach_hoh_rebuffed = 'Rebuffed'
         },
         achievement_descriptions = {
             ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
@@ -323,6 +324,7 @@ return {
             ach_hoh_donothon = 'Earn $40 or more at Cashout during a run',
             ach_hoh_contagious_smile = 'Play a Flush Five in Hearts Suit',
             ach_hoh_circulatory_system = 'Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards',
+            ach_hoh_rebuffed = 'Use Crimson Chip to retrigger played cards twice or more in the same hand'
         }
     }
 }

@@ -260,6 +260,20 @@ SMODS.Achievement {
     end
 }
 
+-----------------
+-- Rebuffed
+-----------------
+
+SMODS.Achievement {
+    key = 'rebuffed',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'rebuffed' and args.amount >= 2
+    end
+}
+
 HouseOfHearts.calculate = function(self, context)
     if G.playing_cards and (context.playing_card_added or context.change_suit or context.remove_playing_cards) then
         local dark_suits = false

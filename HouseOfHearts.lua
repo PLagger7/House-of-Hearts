@@ -762,6 +762,7 @@ SMODS.Joker{
             }
         elseif context.after and not context.blueprint then
             card.ability.extra.h_counter = card.ability.extra.h_counter - 1
+            check_for_unlock({type = 'rebuffed', amount = card.ability.extra.times})
             if card.ability.extra.h_counter == 0 then
                 card.ability.extra.times = card.ability.extra.times + card.ability.extra.r_mod
                 card.ability.extra.h_counter = card.ability.extra.h_mod
