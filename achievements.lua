@@ -30,8 +30,11 @@ Heart of Gold: Earn $40 or more at Cashout during a run. [Dono-thon]
 Share the Love: Play a Flush Five in Hearts Suit. [Contagious Smile]
 ]]
 
+-----------------
+-- No Pressure
+-----------------
 
-SMODS.Achievement { --No Pressure
+SMODS.Achievement {
     key = 'no_pressure',
     bypass_all_unlocked = true,
     hidden_text = false,
@@ -40,26 +43,6 @@ SMODS.Achievement { --No Pressure
         return args.type == 'no_pressure'
     end
 }
-
-local game_update_ref = Game.update
-function Game:update(dt)
-    -- 
-    return game_update_ref(self, dt)
-end
-
---[[
-game_update_ref()
-    if G.playing_cards then
-    local dark_suits = false
-    for _, card in pairs(G.playing_cards) do
-        if card.base.suit == 'Spades' or card.base.suit == 'Clubs' then
-        dark_suits = true
-        elseif not dark_suits then 
-            check_for_unlock({type = 'no_pressure'})
-        end
-    end
-end
---]]
 
 -----------------
 -- Stayin' Alive
@@ -145,7 +128,61 @@ SMODS.Achievement {
     end
 }
 
+-----------------
+-- Recycled
+-----------------
 
+SMODS.Achievement {
+    key = 'recycled',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'recycled'
+    end
+}
+
+-----------------
+-- Dono-thon
+-----------------
+
+SMODS.Achievement {
+    key = 'donothon',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'donothon'
+    end
+}
+
+-----------------
+-- Contagious Smile
+-----------------
+
+SMODS.Achievement {
+    key = 'contagious_smile',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'contagious_smile'
+    end
+}
+
+-----------------
+-- Refresher
+-----------------
+
+SMODS.Achievement{
+    key = 'refresher',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'refresher'
+    end
+}
 
 --  ==================================================================================================================
 --  Mastery Achievements (6)
@@ -193,64 +230,117 @@ SMODS.Achievement {
     end
 }
 
+-----------------
+-- Circulatory System
+-----------------
 
-
-
-
-
-local function contains(t, value)
-    for _, v in pairs(t) do
-        if v == value then
-            return true
-        end
+SMODS.Achievement {
+    key = 'circulatory_system',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'circulatory_system'
     end
-end
-
+}
 
 HouseOfHearts.calculate = function(self, context)
+    if G.playing_cards and (context.playing_card_added or context.change_suit or context.remove_playing_cards) then
+        local dark_suits = false
+        local decksize = 0
+        for _, card in pairs(G.playing_cards) do
+            if card.base.suit == 'Spades' or card.base.suit == 'Clubs' then
+                dark_suits = true
+                decksize = decksize + 1
+            elseif not dark_suits then 
+                decksize = decksize + 1
+            end
+            if decksize == #G.playing_cards and not dark_suits then
+                check_for_unlock({type = 'no_pressure'})
+            end
+        end
+    end
+
+    if G.STATES.SELECTING_HAND and #G.deck.cards <= 0 then
+        check_for_unlock({type = 'recycled'})
+    end
+
+    local donothon_complete = false
+    if G.GAME.current_round.dollars >= 40 and not donothon_complete then
+        check_for_unlock({type = 'donothon'})
+        donothon_complete = true --This is so it doesn't continue checking after you get the achievement
+    end
 
     if context.open_booster then
         G.GAME.hoh_original_pack_choices = G.GAME.pack_choices
     end
 
-    if context.skipping_booster or context.ending_booster then
-        local cards_used
-        if context.skipping_booster then
-            cards_used = G.GAME.hoh_original_pack_choices - G.GAME.pack_choices
-        else
-            cards_used = G.GAME.hoh_original_pack_choices
-        end
-        G.GAME.hoh_original_pack_choices = nil
+    if context.skipping_booster then
+        G.GAME.hoh_original_pack_choices = G.GAME.hoh_original_pack_choices - G.GAME.pack_choices
+    end
+    if context.ending_booster then
+        local cards_used = G.GAME.hoh_original_pack_choices
         G.GAME.hoh_pack_choices_round = G.GAME.hoh_pack_choices_round + cards_used
         check_for_unlock({type = 'pack_choices_round', amount = G.GAME.hoh_pack_choices_round})
     end
 
     if context.before and next(context.poker_hands['Straight']) then
         G.GAME.straight_ranks_played = G.GAME.straight_ranks_played or {}
-
         for _, card in pairs(context.scoring_hand) do
             if not SMODS.has_no_rank(card) then
                 local rank = card:get_id()
-                if not contains(G.GAME.straight_ranks_played, rank) then
+                if not G.GAME.straight_ranks_played[rank] ~= nil then
                     table.insert(G.GAME.straight_ranks_played, rank)
                 end
             end
         end
         check_for_unlock({type = 'straight_ranks_played', amount = #G.GAME.straight_ranks_played})
+    end
 
-        if #context.full_hand == 3 then
-            local stayin_alive = true
-            for _, card in ipairs(context.full_hand) do
-                if not card:is_suit('Hearts') or SMODS.has_no_rank(card) then
-                    stayin_alive = false
-                    break
-                end
+    if context.before and #context.full_hand == 3 then
+        local stayin_alive = true
+        for _, card in ipairs(context.full_hand) do
+            if not card:is_suit('Hearts') or SMODS.has_no_rank(card) then
+                stayin_alive = false
+                break
             end
-
-            if stayin_alive and context.full_hand[1]:get_id() == 9 and context.full_hand[2]:get_id() == 14 and context.full_hand[3]:get_id() == 14 then
-                check_for_unlock({type = 'stayin_alive'})
-            end 
         end
+
+        if stayin_alive and context.full_hand[1]:get_id() == 9 and context.full_hand[2]:get_id() == 14 and context.full_hand[3]:get_id() == 14 then
+            check_for_unlock({type = 'stayin_alive'})
+        end 
+    end
+
+    if context.before and next(context.poker_hands['Flush Five']) then
+        local smiles = true
+        for _, card in ipairs(context.full_hand) do
+            if not card:is_suit('Hearts') or SMODS.has_no_rank(card) then
+                smiles = false
+                break
+            end
+        end
+
+        if smiles then
+            check_for_unlock({type = 'contagious_smile'})
+        end
+    end
+
+    if G.playing_cards and (context.playing_card_added or context.change_suit or context.remove_playing_cards) then
+        local reds = 0
+        for _, card in pairs(G.playing_cards) do
+            if SMODS.has_enhancement(card, 'm_mult') then
+                reds = reds + 1
+            end
+            if card.edition and card.edition.key == 'e_holo' then
+                reds = reds + 1
+            end
+            if card.seal == 'Red' then
+                reds = reds + 1
+            end
+        end
+        if reds >= 52 then
+            check_for_unlock({type = 'circulatory_system'})
+        end 
     end
 
 end

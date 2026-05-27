@@ -50,17 +50,17 @@ return {
                 name = "Jump Rope",
                 text = {
                     "This Joker gains {C:chips}+#1#{} Chips",
-                    "when any {C:attention}Card{} is chosen",
-                    "from a {C:attention}Booster Pack{}",
+                    "for every {C:attention}Card{} chosen",
+                    "in a {C:attention}Booster Pack{}",
                     "{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
                 },
             },
             j_hoh_cpr_training = {
                 name = "CPR Training",
                 text = {
-                    "If played hand contains a {C:attention}Two Pair{},",
-                    "{C:attention}increase{} the rank of {C:attention}highest{} ranked cards",
-                    "and {C:attention}decrease{} the rank of {C:attention}lower{} ranked cards",
+                    "If played hand contains a {C:attention}Two Pair{} or {C:attention}Full House,",
+                    "{C:attention}increase{} the ranks of the {C:attention}higher{} ranked group",
+                    "and {C:attention}decrease{} the ranks of the {C:attention}lower{} ranked group",
                     "{C:inactive}(ex: {C:attention}8 8 5 5{C:inactive} -> {C:attention}9 9 4 4{C:inactive}){}"
                 },
             },
@@ -118,7 +118,7 @@ return {
             j_hoh_share_the_love = {
                 name = "Share the Love",
                 text = {
-                    "If played hand contains exactly",
+                    "If {C:attention}first hand{} of round contains exactly",
                     "1 {C:hearts}Heart{} card and 1 {C:attention}non-Heart{} card,",
                     "convert the {C:attention}non-Heart{} card",
                     "into the {C:hearts}Heart{} card"
@@ -140,7 +140,7 @@ return {
                 name = "Heartbeat Deck",
                 text = {
                     "All {C:hearts}Heart{} cards",
-                    'start with a {C:attention}Red Seal'
+                    'start with a {C:attention,T_set:Other,T:red_seal}Red Seal'
                 },
             },
         },
@@ -268,25 +268,18 @@ return {
             hoh_about_aha = {
                 name = " ",
                 text = {
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    "Duis eget tempus ipsum. Mauris ornare magna ante, et varius",
-                    "mi accumsan ac. Fusce vulputate ornare dapibus. Nulla ut odio",
-                    "felis. Quisque placerat lobortis aliquam. Cras faucibus leo eu",
-                    "bibendum facilisis. Fusce nisi ex, maximus eu pellentesque", 
-                    "facilisis, pharetra ut arcu. Fusce vulputate sem nulla, ac",
-                    "imperdiet nisl porttitor et. ",
+                    "The AHA is a worldwide leader in first aid,",
+                    "CPR, and AED training - educating more than",
+                    "22 million people globally in CPR each year.",
                 },
             },
             hoh_about_cpr = {
                 name = " ",
                 text = {
-                    "Nulla euismod efficitur libero, ut porttitor nunc vehicula vitae. Morbi aliquet mattis",
-                    "sapien, nec rhoncus urna sagittis id. Lorem ipsum dolor sit amet, consectetur adipiscing",
-                    "elit. Proin feugiat nibh turpis, a cursus nunc pellentesque tempor. Duis et turpis nisi.",
-                    "Maecenas a nisi eu nisl tincidunt tristique. Phasellus in est eleifend, aliquet lorem ac,",
-                    "pharetra tortor. Integer dictum enim purus, ac blandit nisl ultricies eget. Mauris consequat",
-                    "justo vel nisl pellentesque, ut sodales quam fermentum. In non placerat mi, et luctus enim.",
-                    "Morbi auctor posuere iaculis. Vivamus tempor eget tortor porta lobortis. ",
+                    "7 out of 10 cardiac arrests outside of the hospital happen at home.",
+                    "That means if you witness one, it will most likely be someone you love.",
+                    "Immediate CPR can double or even triple survival chances.",
+                    "You can make a difference by learning Hands-Only CPR today!"
                 },
             },
         },
@@ -304,22 +297,32 @@ return {
             k_hoh_donate_aha = "Donate to AHA",
         },
         achievement_names = {
-            ach_hoh_test = 'Test',
+            ach_hoh_no_pressure = 'No Pressure',
             ach_hoh_flavor_fanatic = 'Flavor Fanatic',
             ach_hoh_training_complete = 'Training Complete',
             ach_hoh_cross_fit = 'Cross Fit',
             ach_hoh_long_walk = 'Long Walk',
             ach_hoh_stayin_alive = "Stayin' Alive",
             ach_hoh_beat_keeper = "Beat Keeper",
+            ach_hoh_recycled = 'Recycled',
+            ach_hoh_donothon = 'Dono-thon',
+            ach_hoh_contagious_smile = 'Contagious Smile',
+            ach_hoh_circulatory_system = 'Circulatory System',
+            ach_hoh_refresher = 'Refresher'
         },
         achievement_descriptions = {
-            ach_hoh_test = 'test',
-            ach_hoh_flavor_fanatic = 'Create 15 Enhanced Cards in a single round',
-            ach_hoh_refresher = 'Leave a Shop without buying anything or re-rolling twice in a row',
-            ach_hoh_cross_fit = 'Take at least 4 items from a Booster Pack in a single round',
+            ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
+            ach_hoh_flavor_fanatic = 'Create 6 Enhanced Cards in a single round',
+            ach_hoh_training_complete = 'Create both Aces and 2s at the same time using CPR Training',
+            ach_hoh_refresher = 'Leave the Shop without buying anything or rerolling twice in a row',
+            ach_hoh_cross_fit = 'Take at least 4 items from Booster Packs in a single round',
             ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
             ach_hoh_stayin_alive = 'Play a hand of 9 - Ace - Ace in Hearts Suit',
             ach_hoh_beat_keeper = 'Play 12 consecutive hands with Keep the Beat',
+            ach_hoh_recycled = 'Have 0 cards remaining in your deck during a round',
+            ach_hoh_donothon = 'Earn $40 or more at Cashout during a run',
+            ach_hoh_contagious_smile = 'Play a Flush Five in Hearts Suit',
+            ach_hoh_circulatory_system = 'Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards',
         }
     }
 }

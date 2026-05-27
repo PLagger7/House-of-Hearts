@@ -5,7 +5,7 @@ mod.no_marquee = true
 HouseOfHearts = mod
 
 load(NFS.read(mod.path.."/ModInfo.lua"), "HouseOfHearts/ModInfo")()
-load(NFS.read(mod.path.."/achievements.lua"), "HouseOfHearts/Achievements")()
+load(NFS.read(mod.path.."/Achievements.lua"), "HouseOfHearts/Achievements")()
 
 SMODS.Atlas {
     key = "atlas",
@@ -50,7 +50,7 @@ SMODS.Joker{
         x = 0, y = 0
     },
     cost = 5,
-    rarity = 1,
+    rarity = 2,
     blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = false,
@@ -90,7 +90,7 @@ SMODS.Joker{
     end,
 
     update_jiggle = function (self, card)
-        if #G.hand.highlighted >= 1 and not card.jiggling then
+        if #G.hand.highlighted >= 1 and not card.jiggling and G.GAME.blind then
             local eviljiggle = true
             for i = 1, #G.hand.highlighted do
                 if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
@@ -224,8 +224,8 @@ SMODS.Joker {
     key = "cyclist",
     config = {
         extra = {
-            m_mod = 4,
-            ch_mod = 10,
+            m_mod = 3,
+            ch_mod = 7,
             mult = 0,
             chips = 0
         }
@@ -249,7 +249,11 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.cardarea == G.jokers then
             if context.discard and not context.other_card.debuff  and not context.blueprint then
-                if context.other_card:is_suit("Diamonds") or context.other_card:is_suit("Hearts") then
+                if context.other_card:is_suit("Diamonds") and context.other_card:is_suit("Hearts")
+                    and context.other_card:is_suit("Clubs") and context.other_card:is_suit("Spades") then
+                     card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.m_mod
+                     card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.ch_mod
+                elseif context.other_card:is_suit("Diamonds") or context.other_card:is_suit("Hearts") then
                     card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.m_mod
                 elseif context.other_card:is_suit("Clubs") or context.other_card:is_suit("Spades") then
                     card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.ch_mod
@@ -341,19 +345,20 @@ SMODS.Joker{
             card.ability.extra.original_pack_choices = G.GAME.pack_choices
         end
 
-        if (context.skipping_booster or context.ending_booster) and not context.blueprint then
-            local cards_used
-            if context.skipping_booster then
-                cards_used = card.ability.extra.original_pack_choices - G.GAME.pack_choices
-            else
-                cards_used = card.ability.extra.original_pack_choices
-            end
-            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod * cards_used
+        if context.skipping_booster and not context.blueprint then
+            -- When skipped, not all choices were used.
+            card.ability.extra.original_pack_choices = card.ability.extra.original_pack_choices - G.GAME.pack_choices
+        end
 
-            return {
-                message = localize('k_upgrade_ex'),
-                color = G.C.CHIPS
-            }
+        if context.ending_booster and not context.blueprint then
+            local cards_used = card.ability.extra.original_pack_choices
+            if cards_used > 0 then
+                card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod * cards_used
+                return {
+                    message = localize('k_upgrade_ex'),
+                    color = G.C.CHIPS
+                }
+            end
         end
 
         if context.joker_main then
@@ -790,7 +795,12 @@ SMODS.Joker{
     discovered = true,
 
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and context.after then
+        if context.first_hand_drawn and not context.blueprint then
+            local eval = function() return G.GAME.current_round.hands_played == 0 and not G.RESET_JIGGLES end
+            juice_card_until(card, eval, true)
+        end
+
+        if context.cardarea == G.jokers and context.after and G.GAME.current_round.hands_played == 0 then
             if #context.full_hand == 2 then
                 local heart_card = {}
                 local nonheart_card = {}
