@@ -574,7 +574,7 @@ SMODS.Joker{
 
     calculate = function (self, card, context)
         if context.skip_blind and not context.blueprint then
-            TeaTime = true
+            TeaTime = false
              SMODS.destroy_cards(card, nil, nil, true)
                 return {
                     message = localize('k_drank_ex'),
@@ -964,6 +964,7 @@ function G.FUNCS.skip_blind(e)
             }))
         end
     return ref_skip_blind(e)
+    
 end
 
 -- RESETS
