@@ -36,14 +36,14 @@ end
 
 Certification (9)
 XXX Wayfarer: Use every Rank in a Straight at least once during a run. [Long Walk]
-Cyclist: Have 0 cards remaining in your deck during a round. [Recycled]
+XXX Cyclist: Have 0 cards remaining in your deck during a round. [Recycled]
 XXX BPM: Play a hand of 9 - Ace - Ace in Hearts Suit. [Stayin' Alive]
 XXX Jump Rope: Take 4 or more items from a Booster Pack in a single round. [Cross Fit]
 XXX 5-A-Day: Create 6 Enhanced Cards in a single round. [Flavor Fanatic]
-??? Green Tea: Leave a Shop without buying anything or re-rolling twice in a row [Refresher]
-Pressure Cuff: Have a deck with no Black Cards. [No Pressure]
-Heart of Gold: Earn $40 or more at Cashout during a run. [Dono-thon]
-Share the Love: Play a Flush Five in Hearts Suit. [Contagious Smile]
+??? Green Tea: Skip 5 times throughout 4 consecutive antes [Refresher]
+XXX Pressure Cuff: Have a deck with no Black Cards. [No Pressure]
+XXX Heart of Gold: Earn $40 or more at Cashout during a run. [Dono-thon]
+XXX Share the Love: Play a Flush Five in Hearts Suit. [Contagious Smile]
 ]]
 
 -----------------
@@ -196,7 +196,7 @@ SMODS.Achievement{
     hidden_text = false,
     hidden_name = false,
     unlock_condition = function (self, args)
-        return args.type == 'refresher' and args.amount >= 2
+        return args.type == 'refresher'
     end
 }
 
@@ -211,8 +211,8 @@ XXX Keep the Beat: Win a run with Keep the Beat without it ever having reset. [B
 Stethoscope: Trigger the Stethoscope using a card with the same Rank and Suit during all three Blinds of an Ante. [Checkup]
 XXX CPR Training: Create both Aces and 2s at the same time using CPR Training [Training Complete]
 Heartfelt Gift: Receive each gift at least once from Heartfelt Gift during a run. [Thoughtfulness]
-Crimson Chip: Use Crimson Chip to retrigger played cards twice or more in the same hand. [Re-buffed]
-Hemoglobin: Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards. [Circulatory System]
+XXX Crimson Chip: Use Crimson Chip to retrigger played cards twice or more in the same hand. [Re-buffed]
+XXX Hemoglobin: Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards. [Circulatory System]
 
 ]]
 
@@ -370,23 +370,22 @@ HouseOfHearts.calculate = function(self, context)
         end
         if reds >= 52 then
             check_for_unlock({type = 'circulatory_system'})
-        end 
+        end
+
+        if context.skip_blind then
+            local ante = G.GAME.round_resets.ante
+            G.GAME.blinds_skipped_ante[ante] = G.GAME.blinds_skipped_ante[ante] + 1
+
+            local total_skips = 0
+
+            for i = ante, ante - 4, -1 do
+                total_skips = total_skips + (G.GAME.blinds_skipped_ante[i] or 0)
+            end
+            
+            if total_skips >= 5 then
+                check_for_unlock({type = 'refresher'})
+            end
+        end
     end
 
---[[ Refresher achievement code here, send help
-    local shopping = false
-    if context.starting_shop then
-        shopping = false
-    end
-    if context.buying_card or context.open_booster or context.reroll_shop then
-        print'cahching'
-        G.GAME.hoh_windowshopped = 0
-        shopping = true
-    end
-    if context.ending_shop and not shopping then
-        G.GAME.hoh_windowshopped = 1 + G.GAME.hoh_windowshopped
-        print(tostring(G.GAME.hoh_windowshopped))
-        check_for_unlock({type = 'refresher', amount = G.GAME.hoh_windowshopped})
-    end
---]]
 end

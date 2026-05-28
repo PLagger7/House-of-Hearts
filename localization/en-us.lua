@@ -102,9 +102,9 @@ return {
             j_hoh_heartfelt_gift = {
                 name = "Heartfelt Gift",
                 text = {
-                    "If played hand is a {C:attention}Three of a Kind{},",
+                    "If played hand contains a {C:attention}Three of a Kind{},",
                     "create a {C:planet, T:c_venus}Venus{}, {C:tarot, T:c_lovers}The Lovers{},",
-                    "{C:tarot, T:c_sun}The Sun{}, or {C:spectral, T:c_deja_vu}Deja Vu{} card",
+                    "{C:tarot, T:c_fool}The Fool{}, or {C:spectral, T:c_deja_vu}Deja Vu{} card",
                 },
             },
             j_hoh_crimson_chip = {
@@ -324,14 +324,14 @@ return {
             ach_hoh_donothon = 'Dono-thon',
             ach_hoh_contagious_smile = 'Contagious Smile',
             ach_hoh_circulatory_system = 'Circulatory System',
-            ach_hoh_refresher = 'Refresher [WIP]',
+            ach_hoh_refresher = 'Refresher (name pending)',
             ach_hoh_rebuffed = 'Rebuffed'
         },
         achievement_descriptions = {
             ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
             ach_hoh_flavor_fanatic = 'Create 6 Enhanced Cards in a single round',
             ach_hoh_training_complete = 'Create both Aces and 2s at the same time using CPR Training',
-            ach_hoh_refresher = 'Leave the Shop without buying anything or rerolling twice in a row',
+            ach_hoh_refresher = 'Skip 5 times within 4 consecutive antes',
             ach_hoh_cross_fit = 'Take at least 4 items from Booster Packs in a single round',
             ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
             ach_hoh_stayin_alive = 'Play a hand of 9 - Ace - Ace in Hearts Suit',
