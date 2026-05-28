@@ -282,7 +282,7 @@ SMODS.Achievement {
     key = 'thoughtfulness',
     bypass_all_unlocked = true,
     hidden_text = false,
-    hidden_name = false,
+    hidden_name = false, reset_on_startup = true,
     unlock_condition = function (self, args)
         return args.type == 'thoughtfulness'
     end

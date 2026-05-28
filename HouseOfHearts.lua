@@ -748,7 +748,7 @@ SMODS.Joker{
 SMODS.Joker{
     name = 'Heartfelt Gift',
     key = 'heartfelt_gift',
-    config = {extra = {poker_hand = 'Three of a Kind'}},
+    config = {extra = {poker_hand = 'Three of a Kind', fool = false, venus = false, lovers = false, deja_vu = false}},
     atlas = 'atlas',
     pos = {x = 1, y = 2},
     cost = 6,
@@ -771,10 +771,18 @@ SMODS.Joker{
 
     calculate = function (self, card, context)
         local gift_pool = {'c_venus', 'c_lovers', 'c_fool', 'c_deja_vu'}
-        
         if context.joker_main and next(context.poker_hands[card.ability.extra.poker_hand]) and
         #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
             local gift = pseudorandom_element(gift_pool, 'hoh_heartfelt_gift')
+            if gift == 'c_venus' then card.ability.extra.venus = true   --really channeling my inner localthunk here
+            elseif gift == 'c_lovers' then card.ability.extra.lovers = true
+            elseif gift == 'c_fool' then card.ability.extra.fool = true
+            elseif gift == 'c_deja_vu' then card.ability.extra.deja_vu = true
+            end
+            if card.ability.extra.venus and card.ability.extra.lovers and card.ability.extra.fool 
+            and card.ability.extra.deja_vu then
+            check_for_unlock({type = 'thoughtfulness'})
+            end
             G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
             G.E_MANAGER:add_event(Event({
                 trigger = 'before',
