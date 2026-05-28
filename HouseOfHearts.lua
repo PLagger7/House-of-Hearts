@@ -89,11 +89,43 @@ SMODS.Joker{
         end
     end,
 
+    get_scoring_cards_from_highlighted = function (self)        
+        local cards = G.hand.highlighted
+        local _, _, _,scoring_hand, _ = G.FUNCS.get_poker_hand_info(cards)
+        local final_scoring_hand = {}
+        for i=1, #cards do
+            local splashed = SMODS.always_scores(cards[i]) or next(find_joker('Splash'))
+            local unsplashed = SMODS.never_scores(cards[i])
+            if unsplashed then
+                goto continue
+            end
+            if not splashed then
+                for _, card in pairs(scoring_hand) do
+                    if card == cards[i] then splashed = true end
+                end
+            end
+
+            local effects = {}
+            SMODS.calculate_context({eviljiggle = true, modify_scoring_hand = true, other_card =  cards[i], full_hand = cards, scoring_hand = scoring_hand, in_scoring = true, ignore_other_debuff = true}, effects)
+            local flags = SMODS.trigger_effects(effects, cards[i])
+            if flags.add_to_hand then splashed = true end
+            if flags.remove_from_hand then unsplashed = true end
+            if splashed and not unsplashed then table.insert(final_scoring_hand, cards[i]) end
+            ::continue::
+        end
+
+        return final_scoring_hand
+    end,
+
     update_jiggle = function (self, card)
         if #G.hand.highlighted >= 1 and not card.jiggling and G.GAME.blind then
+            card.ignore_jiggle_updates = true
             local eviljiggle = true
-            for i = 1, #G.hand.highlighted do
-                if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
+            
+            local final_scoring_hand = self:get_scoring_cards_from_highlighted()
+            card.ignore_jiggle_updates = nil
+            for i = 1, #final_scoring_hand do
+                if final_scoring_hand[i]:is_suit(G.GAME.ktb_suit) then
                     eviljiggle = false
                     break
                 else
@@ -107,8 +139,11 @@ SMODS.Joker{
                         card.jiggling = nil
                         return false
                     end
-                    for i = 1, #G.hand.highlighted do
-                        if G.hand.highlighted[i]:is_suit(G.GAME.ktb_suit) then
+
+                    local final_scoring_hand = self:get_scoring_cards_from_highlighted()
+                    -- print ("highlighted total : "..(#final_scoring_hand))
+                    for i = 1, #final_scoring_hand do
+                        if final_scoring_hand[i]:is_suit(G.GAME.ktb_suit) then
                             eviljiggle = false
                         break
                         else
@@ -127,7 +162,11 @@ SMODS.Joker{
 
     calculate = function(self, card, context)
         if context.cardarea == G.jokers then
-            self:update_jiggle(card)
+
+            -- no stackoverflow pls thanks :)
+            if not card.ignore_jiggle_updates and not context.check_eternal then
+                self:update_jiggle(card)
+            end
 
             if context.joker_main then
                 local destruct = true
