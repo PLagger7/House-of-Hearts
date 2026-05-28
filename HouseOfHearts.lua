@@ -496,8 +496,11 @@ SMODS.Joker{
             local highest_ranks = rank_groups[highest_rank_id]
             local lowest_ranks = rank_groups[lowest_rank_id]
 
+            local triggered = false
+
             -- Cannot wrap around to aces
             if lowest_rank_id > 2 then
+                triggered = true
                 for i = 1, #lowest_ranks do
                     G.E_MANAGER:add_event(Event({
                         func = function()
@@ -512,6 +515,7 @@ SMODS.Joker{
 
             -- Cannot wrap around to 2s
             if highest_rank_id < 14 then
+                triggered = true
                 for i = 1, #highest_ranks do
                     G.E_MANAGER:add_event(Event({
                         func = function()
@@ -545,11 +549,17 @@ SMODS.Joker{
                 end
             }))
 
-
-            return{
-                message = localize("k_pumped_ex"),
-                colour = G.C.FILTER
-            }
+            if triggered then
+                return {
+                    message = localize("k_pumped_ex"),
+                    colour = G.C.FILTER
+                }
+            else
+                return {
+                    message = localize("k_safe_ex"),
+                    colour = G.C.FILTER
+                }
+            end
         end
     end
 }
