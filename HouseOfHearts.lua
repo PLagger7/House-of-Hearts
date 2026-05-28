@@ -953,6 +953,7 @@ function G.FUNCS.skip_blind(e)
                     G.STATE = G.STATES.SHOP
                     G.GAME.shop_free = nil
                     G.GAME.shop_d6ed = nil
+                    G.GAME.current_round.used_packs = {}
 
                     G.blind_select:remove() -- from somewhere else
                     G.blind_prompt_box:remove()
@@ -964,7 +965,6 @@ function G.FUNCS.skip_blind(e)
             }))
         end
     return ref_skip_blind(e)
-    
 end
 
 -- RESETS
