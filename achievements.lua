@@ -5,11 +5,27 @@ local function reset_round_globals()
     G.GAME.hoh_pack_choices_round = 0
 end
 
+local mod = SMODS.current_mod
+
+function mod.reset_game_globals(run_start)
+    if run_start then
+        G.GAME.hoh_windowshopped = 0
+    end
+end
+
+
 local new_round_ref = new_round
 function new_round()
     reset_round_globals()
-
     return new_round_ref()
+end
+
+local function contains(t, value)
+    for _, v in pairs(t) do
+        if v == value then
+            return true
+        end
+    end   
 end
 
 --  ==================================================================================================================
@@ -180,7 +196,7 @@ SMODS.Achievement{
     hidden_text = false,
     hidden_name = false,
     unlock_condition = function (self, args)
-        return args.type == 'refresher'
+        return args.type == 'refresher' and args.amount >= 2
     end
 }
 
@@ -244,6 +260,20 @@ SMODS.Achievement {
     end
 }
 
+-----------------
+-- Rebuffed
+-----------------
+
+SMODS.Achievement {
+    key = 'rebuffed',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'rebuffed' and args.amount >= 2
+    end
+}
+
 HouseOfHearts.calculate = function(self, context)
     if G.playing_cards and (context.playing_card_added or context.change_suit or context.remove_playing_cards) then
         local dark_suits = false
@@ -289,7 +319,7 @@ HouseOfHearts.calculate = function(self, context)
         for _, card in pairs(context.scoring_hand) do
             if not SMODS.has_no_rank(card) then
                 local rank = card:get_id()
-                if not G.GAME.straight_ranks_played[rank] ~= nil then
+                if not contains(G.GAME.straight_ranks_played, rank) then
                     table.insert(G.GAME.straight_ranks_played, rank)
                 end
             end
@@ -343,4 +373,20 @@ HouseOfHearts.calculate = function(self, context)
         end 
     end
 
+--[[ Refresher achievement code here, send help
+    local shopping = false
+    if context.starting_shop then
+        shopping = false
+    end
+    if context.buying_card or context.open_booster or context.reroll_shop then
+        print'cahching'
+        G.GAME.hoh_windowshopped = 0
+        shopping = true
+    end
+    if context.ending_shop and not shopping then
+        G.GAME.hoh_windowshopped = 1 + G.GAME.hoh_windowshopped
+        print(tostring(G.GAME.hoh_windowshopped))
+        check_for_unlock({type = 'refresher', amount = G.GAME.hoh_windowshopped})
+    end
+--]]
 end

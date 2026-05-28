@@ -574,7 +574,7 @@ SMODS.Joker{
 
     calculate = function (self, card, context)
         if context.skip_blind and not context.blueprint then
-            TeaTime = true
+            TeaTime = false
              SMODS.destroy_cards(card, nil, nil, true)
                 return {
                     message = localize('k_drank_ex'),
@@ -762,6 +762,7 @@ SMODS.Joker{
             }
         elseif context.after and not context.blueprint then
             card.ability.extra.h_counter = card.ability.extra.h_counter - 1
+            check_for_unlock({type = 'rebuffed', amount = card.ability.extra.times})
             if card.ability.extra.h_counter == 0 then
                 card.ability.extra.times = card.ability.extra.times + card.ability.extra.r_mod
                 card.ability.extra.h_counter = card.ability.extra.h_mod
@@ -952,6 +953,7 @@ function G.FUNCS.skip_blind(e)
                     G.STATE = G.STATES.SHOP
                     G.GAME.shop_free = nil
                     G.GAME.shop_d6ed = nil
+                    G.GAME.current_round.used_packs = {}
 
                     G.blind_select:remove() -- from somewhere else
                     G.blind_prompt_box:remove()

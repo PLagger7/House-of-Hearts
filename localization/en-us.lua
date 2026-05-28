@@ -225,6 +225,17 @@ return {
 				name = "Contributions",
                 text = {
                     "{X:green,C:white}Ideas{} {X:red,C:white}Code{}",
+                    "- Keep the Beat",
+                    "- Wayfarer",
+                    "- Cyclist",
+                    "- BPM",
+                    "- Stethoscope",
+                    "- CPR Guide",
+                    "- 5-A-Day",
+                    "- Pressure Cuff",
+                    "- Heart of Gold",
+                    "- Crimson Chip",
+                    "- Share the Love"
                 },
 			},
 			hoh_omega_hover = {
@@ -244,6 +255,8 @@ return {
                     "- Green Tea",
                     "- Heartfelt Gift",
                     "- Hemoglobin",
+                    "- Heartbeat Deck",
+                    "- Achievements",
                     "{X:money,C:white}Art{}",
                     "- Cyclist",
                     "- Hemoglobin",
@@ -252,7 +265,9 @@ return {
 			hoh_stupxd_hover = {
 				name = "Contributions",
                 text = {
-                    "This menu :3",
+                    "{X:red,C:white}Code{}",
+                    "- This menu :3",
+                    "- Achievements"
                 },
 			},
 			hoh_wingcap_hover = {
@@ -261,6 +276,7 @@ return {
                     "{X:green,C:white}Ideas{} {X:money,C:white}Art{}",
                     "- Wayfarer",
                     "- Heartfelt Gift",
+                    "- Pressure Cuff",
                     "- Mod Icon",
                 },
 			},
@@ -308,7 +324,8 @@ return {
             ach_hoh_donothon = 'Dono-thon',
             ach_hoh_contagious_smile = 'Contagious Smile',
             ach_hoh_circulatory_system = 'Circulatory System',
-            ach_hoh_refresher = 'Refresher'
+            ach_hoh_refresher = 'Refresher [WIP]',
+            ach_hoh_rebuffed = 'Rebuffed'
         },
         achievement_descriptions = {
             ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
@@ -323,6 +340,7 @@ return {
             ach_hoh_donothon = 'Earn $40 or more at Cashout during a run',
             ach_hoh_contagious_smile = 'Play a Flush Five in Hearts Suit',
             ach_hoh_circulatory_system = 'Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards',
+            ach_hoh_rebuffed = 'Use Crimson Chip to retrigger played cards twice or more in the same hand'
         }
     }
 }
