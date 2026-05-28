@@ -465,54 +465,70 @@ SMODS.Joker{
 
     calculate = function(self, card, context)
         if context.after and not context.blueprint and next(context.poker_hands['Two Pair']) then
-            local highest_rank = {}
-            local other_ranks = {}
 
-            local highest_rank_id = 0
+            local rank_groups = {}
 
+            -- Group all cards by their rank
             for _, card in pairs(context.scoring_hand) do
                 if not SMODS.has_no_rank(card) then
                     local card_id = card:get_id()
-                    if card_id > highest_rank_id then
-                        highest_rank_id = card_id
-                    end
+
+                    local rank_cards = rank_groups[card_id] or {}
+                    rank_groups[card_id] = rank_cards
+
+                    table.insert(rank_cards, card)
                 end
             end
-            for _, card in pairs(context.scoring_hand) do
-                if not SMODS.has_no_rank(card) then
-                    if card:get_id() == highest_rank_id then 
-                        highest_rank[#highest_rank+1] = card
-                    else
-                        other_ranks[#other_ranks+1] = card
-                    end
+
+            -- Now find groups with highest & lowest ranks
+            local highest_rank_id = 0
+            local lowest_rank_id = 9999
+            for rank, cards in pairs (rank_groups) do
+                if #cards > 1 and rank > highest_rank_id then
+                    highest_rank_id = rank
+                end
+
+                if #cards > 1 and rank < lowest_rank_id then
+                    lowest_rank_id = rank
                 end
             end
-            for i = 1, #other_ranks do
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        assert(SMODS.modify_rank(other_ranks[i], -1))
-                        other_ranks[i]:juice_up()
-                        card:juice_up()
-                        return true
-                    end
-                }))
+
+            local highest_ranks = rank_groups[highest_rank_id]
+            local lowest_ranks = rank_groups[lowest_rank_id]
+
+            -- Cannot wrap around to aces
+            if lowest_rank_id > 2 then
+                for i = 1, #lowest_ranks do
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            assert(SMODS.modify_rank(lowest_ranks[i], -1))
+                            lowest_ranks[i]:juice_up()
+                            card:juice_up()
+                            return true
+                        end
+                    }))
+                end
             end
-            for i = 1, #highest_rank do
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        assert(SMODS.modify_rank(highest_rank[i], 1))
-                        highest_rank[i]:juice_up()
-                        card:juice_up()
-                        return true
-                    end
-                }))
+
+            -- Cannot wrap around to 2s
+            if highest_rank_id < 14 then
+                for i = 1, #highest_ranks do
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            assert(SMODS.modify_rank(highest_ranks[i], 1))
+                            highest_ranks[i]:juice_up()
+                            card:juice_up()
+                            return true
+                        end
+                    }))
+                end
             end
 
             G.E_MANAGER:add_event(Event({
                 func = function()
                     local has_ace = false
                     local has_two = false
-                    for _, ranks in pairs({highest_rank, other_ranks}) do
+                    for _, ranks in pairs({highest_ranks, lowest_ranks}) do
                         for _, card in pairs(ranks) do
                             if card:get_id() == 2 then
                                 has_two = true
