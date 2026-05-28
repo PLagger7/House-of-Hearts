@@ -772,7 +772,8 @@ SMODS.Joker{
     calculate = function (self, card, context)
         local gift_pool = {'c_venus', 'c_lovers', 'c_fool', 'c_deja_vu'}
         
-        if context.joker_main and next(context.poker_hands[card.ability.extra.poker_hand]) then
+        if context.joker_main and next(context.poker_hands[card.ability.extra.poker_hand]) and
+        #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
             local gift = pseudorandom_element(gift_pool, 'hoh_heartfelt_gift')
             G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
             G.E_MANAGER:add_event(Event({

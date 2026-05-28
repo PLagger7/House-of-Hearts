@@ -4,10 +4,10 @@ return {
             j_hoh_keep_the_beat = {
                 name = "Keep the Beat",
                 text = {
-                    "{X:mult,C:white}X#1#{} {C:mult}Mult{} if hand contains",
+                    "{X:mult,C:white}X#1#{} Mult if hand contains",
                     "scoring {V:1}#2#{} card,",
-                    "otherwise {C:mult}self destructs",
-                    "{C:inactive}suit cycles every hand",
+                    "otherwise {C:mult}self destructs,",
+                    "suit cycles every hand",
                     "{C:inactive,s:0.8}(#3#){}",
                 },
             },
@@ -94,8 +94,8 @@ return {
                 name = "Heart of Gold",
                 text = {
                     "When {C:attention}Boss Blind{} is defeated,",
-                    "earn {C:money}$1{} for every {C:money}$2000{}",
-                    "raised during {C:attention}House of Hearts 2025{}",
+                    "earn {C:money}$1{} for every {C:attention}$2000{}",
+                    "raised during {C:dark_edition}House of Hearts 2025{}",
                     "{C:inactive}({C:money}$#1#{C:inactive}){}"
                 },
             },
@@ -105,6 +105,7 @@ return {
                     "If played hand contains a {C:attention}Three of a Kind{},",
                     "create a {C:planet, T:c_venus}Venus{}, {C:tarot, T:c_lovers}The Lovers{},",
                     "{C:tarot, T:c_fool}The Fool{}, or {C:spectral, T:c_deja_vu}Deja Vu{} card",
+                    "{C:inactive}(Must have room)"
                 },
             },
             j_hoh_crimson_chip = {
@@ -324,14 +325,14 @@ return {
             ach_hoh_donothon = 'Dono-thon',
             ach_hoh_contagious_smile = 'Contagious Smile',
             ach_hoh_circulatory_system = 'Circulatory System',
-            ach_hoh_refresher = 'Refresher (name pending)',
+            ach_hoh_break_time = 'Break Time',
             ach_hoh_rebuffed = 'Rebuffed'
         },
         achievement_descriptions = {
             ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
             ach_hoh_flavor_fanatic = 'Create 6 Enhanced Cards in a single round',
             ach_hoh_training_complete = 'Create both Aces and 2s at the same time using CPR Training',
-            ach_hoh_refresher = 'Skip 5 times within 4 consecutive antes',
+            ach_hoh_break_time = 'Skip 5 times within 4 consecutive antes',
             ach_hoh_cross_fit = 'Take at least 4 items from Booster Packs in a single round',
             ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
             ach_hoh_stayin_alive = 'Play a hand of 9 - Ace - Ace in Hearts Suit',

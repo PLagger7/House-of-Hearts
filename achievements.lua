@@ -40,7 +40,7 @@ XXX Cyclist: Have 0 cards remaining in your deck during a round. [Recycled]
 XXX BPM: Play a hand of 9 - Ace - Ace in Hearts Suit. [Stayin' Alive]
 XXX Jump Rope: Take 4 or more items from a Booster Pack in a single round. [Cross Fit]
 XXX 5-A-Day: Create 6 Enhanced Cards in a single round. [Flavor Fanatic]
-??? Green Tea: Skip 5 times throughout 4 consecutive antes [Refresher]
+XXX Green Tea: Skip 5 times throughout 4 consecutive antes [Break Time]
 XXX Pressure Cuff: Have a deck with no Black Cards. [No Pressure]
 XXX Heart of Gold: Earn $40 or more at Cashout during a run. [Dono-thon]
 XXX Share the Love: Play a Flush Five in Hearts Suit. [Contagious Smile]
@@ -187,16 +187,16 @@ SMODS.Achievement {
 }
 
 -----------------
--- Refresher
+-- Break Time
 -----------------
 
 SMODS.Achievement{
-    key = 'refresher',
+    key = 'break_time',
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
     unlock_condition = function (self, args)
-        return args.type == 'refresher'
+        return args.type == 'break_time'
     end
 }
 
@@ -271,6 +271,20 @@ SMODS.Achievement {
     hidden_name = false,
     unlock_condition = function (self, args)
         return args.type == 'rebuffed' and args.amount >= 2
+    end
+}
+
+-----------------
+-- Thoughtfulness
+-----------------
+
+SMODS.Achievement {
+    key = 'thoughtfulness',
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'thoughtfulness'
     end
 }
 
@@ -383,7 +397,7 @@ HouseOfHearts.calculate = function(self, context)
             end
             
             if total_skips >= 5 then
-                check_for_unlock({type = 'refresher'})
+                check_for_unlock({type = 'break_time'})
             end
         end
     end
