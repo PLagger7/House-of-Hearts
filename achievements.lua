@@ -210,7 +210,7 @@ SMODS.Achievement{
 XXX Keep the Beat: Win a run with Keep the Beat without it ever having reset. [Beat Keeper]
 Stethoscope: Trigger the Stethoscope using a card with the same Rank and Suit during all three Blinds of an Ante. [Checkup]
 XXX CPR Training: Create both Aces and 2s at the same time using CPR Training [Training Complete]
-Heartfelt Gift: Receive each gift at least once from Heartfelt Gift during a run. [Thoughtfulness]
+XXX Heartfelt Gift: Receive each gift at least once from Heartfelt Gift during a run. [Thoughtfulness]
 XXX Crimson Chip: Use Crimson Chip to retrigger played cards twice or more in the same hand. [Re-buffed]
 XXX Hemoglobin: Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards. [Circulatory System]
 
@@ -282,7 +282,7 @@ SMODS.Achievement {
     key = 'thoughtfulness',
     bypass_all_unlocked = true,
     hidden_text = false,
-    hidden_name = false, reset_on_startup = true,
+    hidden_name = false,
     unlock_condition = function (self, args)
         return args.type == 'thoughtfulness'
     end
