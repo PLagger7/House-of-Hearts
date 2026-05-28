@@ -697,7 +697,7 @@ SMODS.Joker{
     loc_vars = function (self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS['c_venus']
         info_queue[#info_queue+1] = G.P_CENTERS['c_lovers']
-        info_queue[#info_queue+1] = G.P_CENTERS['c_sun']
+        info_queue[#info_queue+1] = G.P_CENTERS['c_fool']
         info_queue[#info_queue+1] = G.P_CENTERS['c_deja_vu']
         return{
             vars = {localize(card.ability.extra.poker_hand, 'poker_hands')}
@@ -705,9 +705,9 @@ SMODS.Joker{
     end,
 
     calculate = function (self, card, context)
-        local gift_pool = {'c_venus', 'c_lovers', 'c_sun', 'c_deja_vu'}
+        local gift_pool = {'c_venus', 'c_lovers', 'c_fool', 'c_deja_vu'}
         
-        if context.joker_main and context.scoring_name == card.ability.extra.poker_hand then
+        if context.joker_main and next(context.poker_hands[card.ability.extra.poker_hand]) then
             local gift = pseudorandom_element(gift_pool, 'hoh_heartfelt_gift')
             G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
             G.E_MANAGER:add_event(Event({
