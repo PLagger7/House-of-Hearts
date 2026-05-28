@@ -225,6 +225,17 @@ return {
 				name = "Contributions",
                 text = {
                     "{X:green,C:white}Ideas{} {X:red,C:white}Code{}",
+                    "- Keep the Beat",
+                    "- Wayfarer",
+                    "- Cyclist",
+                    "- BPM",
+                    "- Stethoscope",
+                    "- CPR Guide",
+                    "- 5-A-Day",
+                    "- Pressure Cuff",
+                    "- Heart of Gold",
+                    "- Crimson Chip",
+                    "- Share the Love"
                 },
 			},
 			hoh_omega_hover = {
@@ -244,6 +255,8 @@ return {
                     "- Green Tea",
                     "- Heartfelt Gift",
                     "- Hemoglobin",
+                    "- Heartbeat Deck",
+                    "- Achievements",
                     "{X:money,C:white}Art{}",
                     "- Cyclist",
                     "- Hemoglobin",
@@ -252,7 +265,9 @@ return {
 			hoh_stupxd_hover = {
 				name = "Contributions",
                 text = {
-                    "This menu :3",
+                    "{X:red,C:white}Code{}",
+                    "- This menu :3",
+                    "- Achievements"
                 },
 			},
 			hoh_wingcap_hover = {
@@ -261,6 +276,7 @@ return {
                     "{X:green,C:white}Ideas{} {X:money,C:white}Art{}",
                     "- Wayfarer",
                     "- Heartfelt Gift",
+                    "- Pressure Cuff",
                     "- Mod Icon",
                 },
 			},
