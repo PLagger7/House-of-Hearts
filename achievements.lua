@@ -305,7 +305,7 @@ HouseOfHearts.calculate = function(self, context)
         end
     end
 
-    if G.STATES.SELECTING_HAND and #G.deck.cards <= 0 then
+    if context.hand_drawn and #G.deck.cards <= 0 then
         check_for_unlock({type = 'recycled'})
     end
 
