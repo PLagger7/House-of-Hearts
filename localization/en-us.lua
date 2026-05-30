@@ -316,6 +316,7 @@ return {
             hoh_reset_achievements = "Reset Achievements",
             hoh_are_you_sure = "Are you sure?",
             hoh_no = "No",
+            hoh_created_by = "Created By: Balatro University Discord",
         },
         achievement_names = {
             ach_hoh_no_pressure = 'No Pressure',

@@ -166,6 +166,7 @@ end
 
 HouseOfHearts.custom_ui = function(modNodes)
     modNodes[1].nodes[1].config.colour = G.C.RED
+    modNodes[1].nodes[1].config.text = localize('hoh_created_by')
 
     -- Remove mod description text mode
     modNodes[#modNodes] = nil
@@ -179,7 +180,8 @@ HouseOfHearts.custom_ui = function(modNodes)
     local menu_width = 9
     local text_scale = 1.25
     local image_scale = 2.35
-    local image_spacing = 1.85
+    local image_spacing_R = 0.9
+    local image_spacing_L = 0.9
     local yt_scale = 0.6
 
 
@@ -219,10 +221,10 @@ HouseOfHearts.custom_ui = function(modNodes)
                     },
                 }
             },
-            -- Spacing
+            -- Spacing (Left)
             {
                 n = G.UIT.C,
-                config = { padding = 0.01, align = "lm", minw = image_spacing },
+                config = { padding = 0.01, align = "lm", minw = image_spacing_L },
                 nodes = {
                 }
             },
@@ -235,6 +237,13 @@ HouseOfHearts.custom_ui = function(modNodes)
                         n = G.UIT.O,
                         config = { object = aha_logo }
                     }
+                }
+            },
+            -- Spacing (Right)
+            {
+                n = G.UIT.C,
+                config = { padding = 0.01, align = "lm", minw = image_spacing_R },
+                nodes = {
                 }
             },
         }
@@ -321,7 +330,7 @@ HouseOfHearts.custom_ui = function(modNodes)
                             align = "cm",
                             colour = G.C.WHITE,
                             r = 0.1,
-                            minw = 3.7,
+                            minw = 4.05,
                             hover = true,
                             shadow = true,
                             button = "hoh_aha"
