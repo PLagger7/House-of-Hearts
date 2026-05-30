@@ -474,11 +474,10 @@ SMODS.Joker{
         
                         local played_blinds = G.GAME.hoh_stethoscope_procs[key]
                         played_blinds[G.GAME.blind_on_deck] = true
+                        if played_blinds.Small and played_blinds.Big and played_blinds.Boss then
+                            check_for_unlock({type = 'checkup'})
+                        end
                     end
-                end
-
-                if played_blinds.Small and played_blinds.Big and played_blinds.Boss then
-                    check_for_unlock({type = 'checkup'})
                 end
 
                 return {
