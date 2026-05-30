@@ -35,6 +35,23 @@ SMODS.Atlas {
     py = 633,
     atlas_table = 'ASSET_ATLAS'
 }
+
+SMODS.Atlas {
+    key = "achievements_atlas",
+    path = "achievement_icons.png",
+    px = 66,
+    py = 66,
+    atlas_table = "ASSET_ATLAS"
+}
+
+SMODS.Atlas {
+    key = "youtube",
+    path = "youtube.png",
+    px = 234,
+    py = 234,
+    atlas_table = "ASSET_ATLAS"
+}
+
 -- JOKERS
 
 SMODS.Joker{

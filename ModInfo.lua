@@ -179,7 +179,8 @@ HouseOfHearts.custom_ui = function(modNodes)
     local menu_width = 9
     local text_scale = 1.25
     local image_scale = 2.35
-    local image_spacing = 0.65
+    local image_spacing = 1.85
+    local yt_scale = 0.6
 
 
     -- UI Code
@@ -259,6 +260,8 @@ HouseOfHearts.custom_ui = function(modNodes)
             },
         }
     }
+    
+    local yt_icon = Sprite(0, 0, yt_scale, yt_scale, G.ASSET_ATLAS["hoh_youtube"], {x = 0, y = 0})
 
     local row3 = {
         n = G.UIT.R,
@@ -283,6 +286,13 @@ HouseOfHearts.custom_ui = function(modNodes)
                         },
                         nodes = {
                             {
+                                n = G.UIT.O,
+                                config = {
+                                    object = yt_icon,
+                                    shadow = false,
+                                }
+                            },
+                            {
                                 n = G.UIT.T,
                                 config = {
                                     text = localize('k_hoh_cpr_tutorial'),
@@ -290,7 +300,7 @@ HouseOfHearts.custom_ui = function(modNodes)
                                     colour = G.C.WHITE,
                                     scale = 0.6,
                                 }
-                            }
+                            },
                         }
                     }
                 }
