@@ -332,7 +332,8 @@ return {
             ach_hoh_circulatory_system = 'Circulatory System',
             ach_hoh_break_time = 'Break Time',
             ach_hoh_rebuffed = 'Rebuffed',
-            ach_hoh_thoughtfulness = 'Thoughtfulness'
+            ach_hoh_thoughtfulness = 'Thoughtfulness',
+            ach_hoh_checkup = 'Checkup',
         },
         achievement_descriptions = {
             ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
@@ -348,7 +349,8 @@ return {
             ach_hoh_contagious_smile = 'Play a Flush Five in Hearts Suit',
             ach_hoh_circulatory_system = 'Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards',
             ach_hoh_rebuffed = 'Use Crimson Chip to retrigger played cards twice or more in the same hand',
-            ach_hoh_thoughtfulness = 'Receive each gift at least once from Heartfelt Gift during a run'
+            ach_hoh_thoughtfulness = 'Receive each gift at least once from Heartfelt Gift during a run',
+            ach_hoh_checkup = 'Trigger the Stethoscope using a card with the same Rank and Suit during all three Blinds of an Ante',
         }
     }
 }

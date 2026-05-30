@@ -237,6 +237,23 @@ SMODS.Achievement {
     end
 }
 
+SMODS.Achievement {
+    key = 'checkup',
+    atlas = "achievements_atlas",
+    pos = { x = 1, y = 0 },
+    hidden_pos = { x = 1, y = 1 },
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'checkup'
+    end
+}
+
+HouseOfHearts.stethoscope_triggered = function (card)
+    
+end
+
 -----------------
 -- Training Complete
 -----------------
@@ -417,6 +434,11 @@ HouseOfHearts.calculate = function(self, context)
                 check_for_unlock({type = 'break_time'})
             end
         end
+    end
+
+    -- Reset stethoscope procs at the end of the ante
+    if context.ante_end then
+        G.GAME.hoh_stethoscope_procs = {}
     end
 
 end

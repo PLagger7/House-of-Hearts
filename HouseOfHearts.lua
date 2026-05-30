@@ -451,13 +451,37 @@ SMODS.Joker{
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.joker_main then
             local cards = 0
+            local face_card = nil
             for i = 1, #context.full_hand do
-                if context.full_hand[i]:get_id() == 11 then cards = cards + 1 -- can't use is_face() because of debuff interaction
-                elseif context.full_hand[i]:get_id() == 12 then cards = cards + 1
-                elseif context.full_hand[i]:get_id() == 13 then cards = cards + 1 end
+                local id = not SMODS.has_no_rank(context.full_hand[i]) and context.full_hand[i]:get_id() or -1
+
+                if id == 11 or id == 12 or id == 13 then
+                    cards = cards + 1 -- can't use is_face() because of debuff interaction
+                    face_card = context.full_hand[i]
+                end
             end
-            if cards == 1 then
-                return{
+            if cards == 1 and face_card then
+                G.GAME.hoh_stethoscope_procs = G.GAME.hoh_stethoscope_procs or {}
+
+                local rank = face_card:get_id()
+
+                for suit, _ in pairs(SMODS.Suits) do
+                    -- Compatible with Wild cards, but also counts debuffed
+                    if face_card:is_suit(suit) or face_card.base.suit == suit and not SMODS.has_no_suit(face_card) then
+                        local key = tostring(suit).."_"..tostring(rank)
+        
+                        G.GAME.hoh_stethoscope_procs[key] = G.GAME.hoh_stethoscope_procs[key] or {}
+        
+                        local played_blinds = G.GAME.hoh_stethoscope_procs[key]
+                        played_blinds[G.GAME.blind_on_deck] = true
+                    end
+                end
+
+                if played_blinds.Small and played_blinds.Big and played_blinds.Boss then
+                    check_for_unlock({type = 'checkup'})
+                end
+
+                return {
                     message = localize{type='variable',key='a_mult',vars={card.ability.extra}},
                     mult_mod = card.ability.extra
                 }
