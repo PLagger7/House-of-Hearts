@@ -312,6 +312,10 @@ return {
             k_hoh_aha_header = "American Heart Association",
             k_hoh_cpr_tutorial = "CPR Tutorial",
             k_hoh_donate_aha = "Donate to AHA",
+
+            hoh_reset_achievements = "Reset Achievements",
+            hoh_are_you_sure = "Are you sure?",
+            hoh_no = "No",
         },
         achievement_names = {
             ach_hoh_no_pressure = 'No Pressure',

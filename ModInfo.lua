@@ -42,6 +42,7 @@ loc_colour()
 G.ARGS.LOC_COLOURS.hoh_pink = HEX('E59CD0')
 G.ARGS.LOC_COLOURS.hoh_teal = HEX('3AB7B7')
 
+----------------------------------------------------------------------------------------------------------------
 -- Credits Page
 
 HouseOfHearts.extra_tabs = function()
@@ -77,6 +78,90 @@ HouseOfHearts.extra_tabs = function()
 end
 
 
+----------------------------------------------------------------------------------------------------------------
+-- Mod Config
+
+
+HouseOfHearts.config_tab = function ()
+
+    local reset_achievements = UIBox_button({
+        minw = 5,
+        id = "hoh_reset_achievements",
+        button = "hoh_reset_achievements",
+        label = {
+            localize("hoh_reset_achievements")
+        }
+    })
+
+    return {n = G.UIT.ROOT, config = {r = 0.1, align = "cm", padding = 0.1, colour = G.C.BLACK, minw = 8, minh = 6}, nodes = {
+        {n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+            reset_achievements
+        }},
+    }}
+end
+
+-- Copied from Ankh because I can :)
+local function custom_overlay_infotip(args)
+  local message = args.message or args
+  local align = args.align or "bm"
+  local offset = args.offset or {x=0,y=0}
+
+  local _infotip_object = G.OVERLAY_MENU:get_UIE_by_ID('overlay_menu_infotip')
+  _infotip_object.config.object:remove()
+  _infotip_object.config.object = UIBox{
+    definition = overlay_infotip(message),
+    config = {offset = offset, align = align, parent = _infotip_object}
+  }
+  _infotip_object.config.object.UIRoot:juice_up()
+  _infotip_object.config.set = true
+end
+
+local function create_UIBox_reset_achievements_confirm()
+  local yes = UIBox_button{ button = "hoh_reset_achievements_actually", label = { localize('hoh_reset_achievements') }, minw = 5}
+  local no = UIBox_button({button = 'exit_overlay_menu', label = { localize('hoh_no') }, minw = 5, focus_args = {snap_to = true}})
+
+  local t = create_UIBox_generic_options {
+        contents = {
+            yes,
+            no
+        },
+        no_back = true,
+  }
+
+  G.E_MANAGER:add_event(Event({
+    trigger = 'after',
+    func = function()
+        custom_overlay_infotip {
+            message = {localize('hoh_are_you_sure')},
+            align = "tm",
+            offset = {x = 0, y = -3.3}
+        }
+        return true
+    end
+  }))
+
+  return t
+end
+
+function G.FUNCS.hoh_reset_achievements(e)
+    G.FUNCS.overlay_menu {
+        definition = create_UIBox_reset_achievements_confirm(),
+    }
+end
+
+function G.FUNCS.hoh_reset_achievements_actually(e)
+    for _, ach_info in pairs(G.ACHIEVEMENTS) do
+        if ach_info.original_mod and ach_info.original_mod.id == HouseOfHearts.id then
+            print("Resetting House-of-Hearts achievement "..ach_info.key)
+            G.SETTINGS.ACHIEVEMENTS_EARNED[ach_info.key] = nil
+            ach_info.earned = false
+        end
+    end
+
+    G.FUNCS.exit_overlay_menu()
+end
+
+----------------------------------------------------------------------------------------------------------------
 -- Front page
 
 HouseOfHearts.custom_ui = function(modNodes)
