@@ -455,7 +455,7 @@ SMODS.Joker{
             for i = 1, #context.full_hand do
                 local id = not SMODS.has_no_rank(context.full_hand[i]) and context.full_hand[i]:get_id() or -1
 
-                if id == 11 or id == 12 or id == 13 then
+                if id == 11 or id == 12 or id == 13 or context.full_hand[i]:is_face() then
                     cards = cards + 1 -- can't use is_face() because of debuff interaction
                     face_card = context.full_hand[i]
                 end

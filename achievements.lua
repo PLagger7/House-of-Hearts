@@ -54,6 +54,9 @@ XXX Share the Love: Play a Flush Five in Hearts Suit. [Contagious Smile]
 
 SMODS.Achievement {
     key = 'no_pressure',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -68,6 +71,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'stayin_alive',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -82,6 +88,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'long_walk',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -96,6 +105,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'flavor_fanatic',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -138,6 +150,9 @@ end
 
 SMODS.Achievement {
     key = 'cross_fit',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -152,6 +167,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'recycled',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -166,6 +184,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'donothon',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -180,6 +201,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'contagious_smile',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -194,6 +218,9 @@ SMODS.Achievement {
 
 SMODS.Achievement{
     key = 'break_time',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
