@@ -268,6 +268,7 @@ return {
                 text = {
                     "{X:red,C:white}Code{}",
                     "- This menu :3",
+                    "- Joker rewrites/modifications",
                     "- Achievements"
                 },
 			},
