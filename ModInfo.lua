@@ -2,7 +2,7 @@
 -- Links
 
 function G.FUNCS.hoh_kitty(e)
-    love.system.openURL("https://vgen.co/DottyKitty")
+    love.system.openURL("https://dottykitty.co.uk/")
 end
 
 function G.FUNCS.hoh_omega(e)
