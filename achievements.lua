@@ -1,6 +1,3 @@
-
-
-
 -- Reset achievements tracking for this round
 local function reset_round_globals()
     G.GAME.hoh_enhanced_round = 0
@@ -33,20 +30,6 @@ end
 --  ==================================================================================================================
 --  Certification Achievements (9)
 --  ==================================================================================================================
-
---[[
-
-Certification (9)
-XXX Wayfarer: Use every Rank in a Straight at least once during a run. [Long Walk]
-XXX Cyclist: Have 0 cards remaining in your deck during a round. [Recycled]
-XXX BPM: Play a hand of 9 - Ace - Ace in Hearts Suit. [Stayin' Alive]
-XXX Jump Rope: Take 4 or more items from a Booster Pack in a single round. [Cross Fit]
-XXX 5-A-Day: Create 6 Enhanced Cards in a single round. [Flavor Fanatic]
-XXX Green Tea: Skip 5 times throughout 4 consecutive antes [Break Time]
-XXX Pressure Cuff: Have a deck with no Black Cards. [No Pressure]
-XXX Heart of Gold: Earn $40 or more at Cashout during a run. [Dono-thon]
-XXX Share the Love: Play a Flush Five in Hearts Suit. [Contagious Smile]
-]]
 
 -----------------
 -- No Pressure
@@ -233,20 +216,6 @@ SMODS.Achievement{
 --  Mastery Achievements (6)
 --  ==================================================================================================================
 
-
---[[
-
-XXX Keep the Beat: Win a run with Keep the Beat without it ever having reset. [Beat Keeper]
-Stethoscope: Trigger the Stethoscope using a card with the same Rank and Suit during all three Blinds of an Ante. [Checkup]
-XXX CPR Training: Create both Aces and 2s at the same time using CPR Training [Training Complete]
-XXX Heartfelt Gift: Receive each gift at least once from Heartfelt Gift during a run. [Thoughtfulness]
-XXX Crimson Chip: Use Crimson Chip to retrigger played cards twice or more in the same hand. [Re-buffed]
-XXX Hemoglobin: Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards. [Circulatory System]
-
-]]
-
-
-
 -----------------
 -- Beat Keeper
 -----------------
@@ -278,7 +247,6 @@ SMODS.Achievement {
 }
 
 HouseOfHearts.stethoscope_triggered = function (card)
-    
 end
 
 -----------------
@@ -413,7 +381,7 @@ HouseOfHearts.calculate = function(self, context)
 
         if stayin_alive and context.full_hand[1]:get_id() == 9 and context.full_hand[2]:get_id() == 14 and context.full_hand[3]:get_id() == 14 then
             check_for_unlock({type = 'stayin_alive'})
-        end 
+        end
     end
 
     if context.before and next(context.poker_hands['Flush Five']) then
@@ -456,7 +424,7 @@ HouseOfHearts.calculate = function(self, context)
             for i = ante, ante - 4, -1 do
                 total_skips = total_skips + (G.GAME.blinds_skipped_ante[i] or 0)
             end
-            
+
             if total_skips >= 5 then
                 check_for_unlock({type = 'break_time'})
             end

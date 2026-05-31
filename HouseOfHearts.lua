@@ -106,7 +106,7 @@ SMODS.Joker{
         end
     end,
 
-    get_scoring_cards_from_highlighted = function (self)        
+    get_scoring_cards_from_highlighted = function (self)    
         local cards = G.hand.highlighted
         local _, _, _,scoring_hand, _ = G.FUNCS.get_poker_hand_info(cards)
         local final_scoring_hand = {}
@@ -138,7 +138,7 @@ SMODS.Joker{
         if #G.hand.highlighted >= 1 and not card.jiggling and G.GAME.blind then
             card.ignore_jiggle_updates = true
             local eviljiggle = true
-            
+
             local final_scoring_hand = self:get_scoring_cards_from_highlighted()
             card.ignore_jiggle_updates = nil
             for i = 1, #final_scoring_hand do
@@ -469,9 +469,9 @@ SMODS.Joker{
                     -- Compatible with Wild cards, but also counts debuffed
                     if face_card:is_suit(suit) or face_card.base.suit == suit and not SMODS.has_no_suit(face_card) then
                         local key = tostring(suit).."_"..tostring(rank)
-        
+
                         G.GAME.hoh_stethoscope_procs[key] = G.GAME.hoh_stethoscope_procs[key] or {}
-        
+
                         local played_blinds = G.GAME.hoh_stethoscope_procs[key]
                         played_blinds[G.GAME.blind_on_deck] = true
                         if played_blinds.Small and played_blinds.Big and played_blinds.Boss then
@@ -680,7 +680,7 @@ SMODS.Joker{
     calculate = function (self, card, context)
         if context.skip_blind and not context.blueprint then
             TeaTime = false
-             SMODS.destroy_cards(card, nil, nil, true)
+            SMODS.destroy_cards(card, nil, nil, true)
                 return {
                     message = localize('k_drank_ex'),
                     colour = G.C.FILTER
