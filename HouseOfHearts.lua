@@ -916,35 +916,33 @@ SMODS.Joker{
         end
 
         if context.cardarea == G.jokers and context.after and (G.GAME.current_round.hands_played == 0 or true) then
-            if #context.full_hand == 2 then
-                local heart_card = {}
-                local nonheart_card = {}
-                for k, v in ipairs(context.full_hand) do
-                    if v.shattered or v.destroyed then
-                        -- ignore
-                    elseif v:is_suit("Hearts") then
-                        heart_card[#heart_card+1] = v
-                    else
-                        nonheart_card[#nonheart_card+1] = v
-                    end
+            local heart_card = {}
+            local nonheart_card = {}
+            for k, v in ipairs(context.full_hand) do
+                if v.shattered or v.destroyed then
+                    -- ignore
+                elseif v:is_suit("Hearts") then
+                    heart_card[#heart_card+1] = v
+                else
+                    nonheart_card[#nonheart_card+1] = v
                 end
-                if #heart_card == 1 and #nonheart_card == 1 then
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            if nonheart_card[1] ~= heart_card[1] then
-                                copy_card(heart_card[1], nonheart_card[1])
-                                heart_card[1]:juice_up()
-                                nonheart_card[1]:juice_up()
-                                card:juice_up()
-                            end
-                            return true
+            end
+            if #heart_card == 1 and #nonheart_card == 1 then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        if nonheart_card[1] ~= heart_card[1] then
+                            copy_card(heart_card[1], nonheart_card[1])
+                            heart_card[1]:juice_up()
+                            nonheart_card[1]:juice_up()
+                            card:juice_up()
                         end
-                    }))
-                    return {
-                        message = localize('k_copied_ex'),
-                        colour = G.C.RED
-                    }
-                end
+                        return true
+                    end
+                }))
+                return {
+                    message = localize('k_copied_ex'),
+                    colour = G.C.RED
+                }
             end
         end
     end
