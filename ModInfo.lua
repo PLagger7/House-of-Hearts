@@ -117,8 +117,8 @@ local function custom_overlay_infotip(args)
 end
 
 local function create_UIBox_reset_achievements_confirm()
-  local yes = UIBox_button{ button = "hoh_reset_achievements_actually", label = { localize('hoh_reset_achievements') }, minw = 5}
-  local no = UIBox_button({button = 'exit_overlay_menu', label = { localize('hoh_no') }, minw = 5, focus_args = {snap_to = true}})
+  local yes = UIBox_button { button = "hoh_reset_achievements_actually", label = { localize('hoh_reset_achievements') }, minw = 5}
+  local no = UIBox_button {button = 'exit_overlay_menu', label = { localize('hoh_no') }, minw = 5, focus_args = {snap_to = true} }
 
   local t = create_UIBox_generic_options {
         contents = {
@@ -158,7 +158,8 @@ function G.FUNCS.hoh_reset_achievements_actually(e)
         end
     end
 
-    G.FUNCS.exit_overlay_menu()
+    G:save_progress()
+    G.CONTROLLER:key_press('escape')
 end
 
 ----------------------------------------------------------------------------------------------------------------
