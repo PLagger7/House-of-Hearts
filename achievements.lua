@@ -418,20 +418,22 @@ HouseOfHearts.calculate = function(self, context)
         if reds >= 52 then
             check_for_unlock({type = 'circulatory_system'})
         end
+    end
 
-        if context.skip_blind then
-            local ante = G.GAME.round_resets.ante
-            G.GAME.blinds_skipped_ante[ante] = G.GAME.blinds_skipped_ante[ante] + 1
+    if context.skip_blind then
+        local ante = G.GAME.round_resets.ante
+        G.GAME.blinds_skipped_ante[ante] = G.GAME.blinds_skipped_ante[ante] + 1
+        print(ante)
+        print(G.GAME.blinds_skipped_ante[ante])
 
-            local total_skips = 0
+        local total_skips = 0
 
-            for i = ante, ante - 4, -1 do
-                total_skips = total_skips + (G.GAME.blinds_skipped_ante[i] or 0)
-            end
+        for i = ante, ante - 4, -1 do
+            total_skips = total_skips + (G.GAME.blinds_skipped_ante[i] or 0)
+        end
 
-            if total_skips >= 5 then
-                check_for_unlock({type = 'break_time'})
-            end
+        if total_skips >= 5 then
+            check_for_unlock({type = 'break_time'})
         end
     end
 
