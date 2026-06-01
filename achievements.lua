@@ -357,7 +357,7 @@ HouseOfHearts.calculate = function(self, context)
     end
     if context.ending_booster then
         local cards_used = G.GAME.hoh_original_pack_choices
-        G.GAME.hoh_pack_choices_round = G.GAME.hoh_pack_choices_round + cards_used
+        G.GAME.hoh_pack_choices_round = (G.GAME.hoh_pack_choices_round or 0) + cards_used
         check_for_unlock({type = 'pack_choices_round', amount = G.GAME.hoh_pack_choices_round})
     end
 
