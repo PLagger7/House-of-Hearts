@@ -391,7 +391,7 @@ SMODS.Joker{
     end,
 
     update_jiggle = function (self, card)
-        if #G.hand.highlighted >= 1 and not card.jiggling and G.GAME.blind then
+        if #G.hand.highlighted >= 1 and not card.jiggling and G.STATE == G.STATES.SELECTING_HAND then
             card.ignore_jiggle_updates = true
             local eviljiggle = true
 
@@ -1046,7 +1046,7 @@ SMODS.Back{
 
 local ref_skip_blind = G.FUNCS.skip_blind
 function G.FUNCS.skip_blind(e)
-    local tea_jokers = find_joker("j_hoh_green_tea")
+    local tea_jokers = SMODS.find_card("j_hoh_green_tea")
     if next(tea_jokers) then
         local tea_joker = tea_jokers[next(tea_jokers)]
         tea_joker.should_trigger = true
