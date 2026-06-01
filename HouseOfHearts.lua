@@ -1086,10 +1086,19 @@ end
 
 -- RESETS
 
+reset_skip_count = function()
+    G.GAME.blinds_skipped_ante = {}
+    for i = 1, 39 do
+        G.GAME.blinds_skipped_ante[i] = G.GAME.blinds_skipped_ante[i] or 0
+        print(i)
+    end
+end
+
 reset_ktb_suit = function()
     G.GAME.ktb_suit = G.GAME.ktb_suit or "Diamonds"
 end
 
 mod.reset_game_globals = function(run_start)
 	reset_ktb_suit()
+    reset_skip_count()
 end
