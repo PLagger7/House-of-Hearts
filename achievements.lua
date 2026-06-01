@@ -1,4 +1,3 @@
-
 -- Reset achievements tracking for this round
 local function reset_round_globals()
     G.GAME.hoh_enhanced_round = 0
@@ -32,26 +31,15 @@ end
 --  Certification Achievements (9)
 --  ==================================================================================================================
 
---[[
-
-Certification (9)
-XXX Wayfarer: Use every Rank in a Straight at least once during a run. [Long Walk]
-XXX Cyclist: Have 0 cards remaining in your deck during a round. [Recycled]
-XXX BPM: Play a hand of 9 - Ace - Ace in Hearts Suit. [Stayin' Alive]
-XXX Jump Rope: Take 4 or more items from a Booster Pack in a single round. [Cross Fit]
-XXX 5-A-Day: Create 6 Enhanced Cards in a single round. [Flavor Fanatic]
-??? Green Tea: Skip 5 times throughout 4 consecutive antes [Refresher]
-XXX Pressure Cuff: Have a deck with no Black Cards. [No Pressure]
-XXX Heart of Gold: Earn $40 or more at Cashout during a run. [Dono-thon]
-XXX Share the Love: Play a Flush Five in Hearts Suit. [Contagious Smile]
-]]
-
 -----------------
 -- No Pressure
 -----------------
 
 SMODS.Achievement {
     key = 'no_pressure',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -66,6 +54,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'stayin_alive',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -80,6 +71,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'long_walk',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -94,21 +88,28 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'flavor_fanatic',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
     unlock_condition = function (self, args)
-        return args.type == 'enhanced_round' and args.amount >= 6
+        return args.type == 'hoh_enhanced_round' and args.amount >= 6
     end
 }
 
+local function is_enhancement(center_key)
+    return G.P_CENTERS[center_key] and G.P_CENTERS[center_key].set == "Enhanced"
+end
+
 local card_set_ability = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
-    if center and center.set == "Enhanced" then
+    if type(center) == "table" and center.set == "Enhanced" or type(center) == "string" and is_enhancement(center) then
         if self.area == G.play or self.area == G.hand then
             self.hoh_just_enhanced = nil
             G.GAME.hoh_enhanced_round = (G.GAME.hoh_enhanced_round or 0) + 1
-            check_for_unlock({type = 'enhanced_round', amount = G.GAME.hoh_enhanced_round})
+            check_for_unlock({type = 'hoh_enhanced_round', amount = G.GAME.hoh_enhanced_round})
         else
             -- Cache newly created enhanced cards (i.e. when creating one with DNA / Standard pack / etc.)
             self.hoh_just_enhanced = true
@@ -123,7 +124,7 @@ function CardArea:emplace(card, location, stay_flipped)
     if card.hoh_just_enhanced and (self == G.play or self == G.hand or self == G.deck) then
         card.hoh_just_enhanced = nil
         G.GAME.hoh_enhanced_round = (G.GAME.hoh_enhanced_round or 0) + 1
-        check_for_unlock({type = 'enhanced_round', amount = G.GAME.hoh_enhanced_round})
+        check_for_unlock({type = 'hoh_enhanced_round', amount = G.GAME.hoh_enhanced_round})
     else
         card.hoh_just_enhanced = nil
     end
@@ -136,6 +137,9 @@ end
 
 SMODS.Achievement {
     key = 'cross_fit',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -150,6 +154,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'recycled',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -164,6 +171,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'donothon',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -178,6 +188,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'contagious_smile',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -187,16 +200,19 @@ SMODS.Achievement {
 }
 
 -----------------
--- Refresher
+-- Break Time
 -----------------
 
 SMODS.Achievement{
-    key = 'refresher',
+    key = 'break_time',
+    atlas = "achievements_atlas",
+    pos = { x = 0, y = 0 },
+    hidden_pos = { x = 0, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
     unlock_condition = function (self, args)
-        return args.type == 'refresher'
+        return args.type == 'break_time'
     end
 }
 
@@ -204,26 +220,15 @@ SMODS.Achievement{
 --  Mastery Achievements (6)
 --  ==================================================================================================================
 
-
---[[
-
-XXX Keep the Beat: Win a run with Keep the Beat without it ever having reset. [Beat Keeper]
-Stethoscope: Trigger the Stethoscope using a card with the same Rank and Suit during all three Blinds of an Ante. [Checkup]
-XXX CPR Training: Create both Aces and 2s at the same time using CPR Training [Training Complete]
-Heartfelt Gift: Receive each gift at least once from Heartfelt Gift during a run. [Thoughtfulness]
-XXX Crimson Chip: Use Crimson Chip to retrigger played cards twice or more in the same hand. [Re-buffed]
-XXX Hemoglobin: Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards. [Circulatory System]
-
-]]
-
-
-
 -----------------
 -- Beat Keeper
 -----------------
 
 SMODS.Achievement {
     key = 'beat_keeper',
+    atlas = "achievements_atlas",
+    pos = { x = 1, y = 0 },
+    hidden_pos = { x = 1, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -232,12 +237,31 @@ SMODS.Achievement {
     end
 }
 
+SMODS.Achievement {
+    key = 'checkup',
+    atlas = "achievements_atlas",
+    pos = { x = 1, y = 0 },
+    hidden_pos = { x = 1, y = 1 },
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'checkup'
+    end
+}
+
+HouseOfHearts.stethoscope_triggered = function (card)
+end
+
 -----------------
 -- Training Complete
 -----------------
 
 SMODS.Achievement {
     key = 'training_complete',
+    atlas = "achievements_atlas",
+    pos = { x = 1, y = 0 },
+    hidden_pos = { x = 1, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -252,6 +276,9 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'circulatory_system',
+    atlas = "achievements_atlas",
+    pos = { x = 1, y = 0 },
+    hidden_pos = { x = 1, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
@@ -266,11 +293,31 @@ SMODS.Achievement {
 
 SMODS.Achievement {
     key = 'rebuffed',
+    atlas = "achievements_atlas",
+    pos = { x = 1, y = 0 },
+    hidden_pos = { x = 1, y = 1 },
     bypass_all_unlocked = true,
     hidden_text = false,
     hidden_name = false,
     unlock_condition = function (self, args)
         return args.type == 'rebuffed' and args.amount >= 2
+    end
+}
+
+-----------------
+-- Thoughtfulness
+-----------------
+
+SMODS.Achievement {
+    key = 'thoughtfulness',
+    atlas = "achievements_atlas",
+    pos = { x = 1, y = 0 },
+    hidden_pos = { x = 1, y = 1 },
+    bypass_all_unlocked = true,
+    hidden_text = false,
+    hidden_name = false,
+    unlock_condition = function (self, args)
+        return args.type == 'thoughtfulness'
     end
 }
 
@@ -291,7 +338,7 @@ HouseOfHearts.calculate = function(self, context)
         end
     end
 
-    if G.STATES.SELECTING_HAND and #G.deck.cards <= 0 then
+    if context.hand_drawn and #G.deck.cards <= 0 then
         check_for_unlock({type = 'recycled'})
     end
 
@@ -310,7 +357,7 @@ HouseOfHearts.calculate = function(self, context)
     end
     if context.ending_booster then
         local cards_used = G.GAME.hoh_original_pack_choices
-        G.GAME.hoh_pack_choices_round = G.GAME.hoh_pack_choices_round + cards_used
+        G.GAME.hoh_pack_choices_round = (G.GAME.hoh_pack_choices_round or 0) + cards_used
         check_for_unlock({type = 'pack_choices_round', amount = G.GAME.hoh_pack_choices_round})
     end
 
@@ -338,7 +385,7 @@ HouseOfHearts.calculate = function(self, context)
 
         if stayin_alive and context.full_hand[1]:get_id() == 9 and context.full_hand[2]:get_id() == 14 and context.full_hand[3]:get_id() == 14 then
             check_for_unlock({type = 'stayin_alive'})
-        end 
+        end
     end
 
     if context.before and next(context.poker_hands['Flush Five']) then
@@ -381,11 +428,16 @@ HouseOfHearts.calculate = function(self, context)
             for i = ante, ante - 4, -1 do
                 total_skips = total_skips + (G.GAME.blinds_skipped_ante[i] or 0)
             end
-            
+
             if total_skips >= 5 then
-                check_for_unlock({type = 'refresher'})
+                check_for_unlock({type = 'break_time'})
             end
         end
+    end
+
+    -- Reset stethoscope procs at the end of the ante
+    if context.ante_end then
+        G.GAME.hoh_stethoscope_procs = {}
     end
 
 end

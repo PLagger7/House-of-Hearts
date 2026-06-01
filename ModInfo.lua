@@ -2,7 +2,7 @@
 -- Links
 
 function G.FUNCS.hoh_kitty(e)
-    love.system.openURL("https://vgen.co/DottyKitty")
+    love.system.openURL("https://dottykitty.co.uk/")
 end
 
 function G.FUNCS.hoh_omega(e)
@@ -42,6 +42,7 @@ loc_colour()
 G.ARGS.LOC_COLOURS.hoh_pink = HEX('E59CD0')
 G.ARGS.LOC_COLOURS.hoh_teal = HEX('3AB7B7')
 
+----------------------------------------------------------------------------------------------------------------
 -- Credits Page
 
 HouseOfHearts.extra_tabs = function()
@@ -77,10 +78,96 @@ HouseOfHearts.extra_tabs = function()
 end
 
 
+----------------------------------------------------------------------------------------------------------------
+-- Mod Config
+
+
+HouseOfHearts.config_tab = function ()
+
+    local reset_achievements = UIBox_button({
+        minw = 5,
+        id = "hoh_reset_achievements",
+        button = "hoh_reset_achievements",
+        label = {
+            localize("hoh_reset_achievements")
+        }
+    })
+
+    return {n = G.UIT.ROOT, config = {r = 0.1, align = "cm", padding = 0.1, colour = G.C.BLACK, minw = 8, minh = 6}, nodes = {
+        {n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+            reset_achievements
+        }},
+    }}
+end
+
+-- Copied from Ankh because I can :)
+local function custom_overlay_infotip(args)
+  local message = args.message or args
+  local align = args.align or "bm"
+  local offset = args.offset or {x=0,y=0}
+
+  local _infotip_object = G.OVERLAY_MENU:get_UIE_by_ID('overlay_menu_infotip')
+  _infotip_object.config.object:remove()
+  _infotip_object.config.object = UIBox{
+    definition = overlay_infotip(message),
+    config = {offset = offset, align = align, parent = _infotip_object}
+  }
+  _infotip_object.config.object.UIRoot:juice_up()
+  _infotip_object.config.set = true
+end
+
+local function create_UIBox_reset_achievements_confirm()
+  local yes = UIBox_button { button = "hoh_reset_achievements_actually", label = { localize('hoh_reset_achievements') }, minw = 5}
+  local no = UIBox_button {button = 'exit_overlay_menu', label = { localize('hoh_no') }, minw = 5, focus_args = {snap_to = true} }
+
+  local t = create_UIBox_generic_options {
+        contents = {
+            yes,
+            no
+        },
+        no_back = true,
+  }
+
+  G.E_MANAGER:add_event(Event({
+    trigger = 'after',
+    func = function()
+        custom_overlay_infotip {
+            message = {localize('hoh_are_you_sure')},
+            align = "tm",
+            offset = {x = 0, y = -3.3}
+        }
+        return true
+    end
+  }))
+
+  return t
+end
+
+function G.FUNCS.hoh_reset_achievements(e)
+    G.FUNCS.overlay_menu {
+        definition = create_UIBox_reset_achievements_confirm(),
+    }
+end
+
+function G.FUNCS.hoh_reset_achievements_actually(e)
+    for _, ach_info in pairs(G.ACHIEVEMENTS) do
+        if ach_info.original_mod and ach_info.original_mod.id == HouseOfHearts.id then
+            print("Resetting House-of-Hearts achievement "..ach_info.key)
+            G.SETTINGS.ACHIEVEMENTS_EARNED[ach_info.key] = nil
+            ach_info.earned = false
+        end
+    end
+
+    G:save_progress()
+    G.CONTROLLER:key_press('escape')
+end
+
+----------------------------------------------------------------------------------------------------------------
 -- Front page
 
 HouseOfHearts.custom_ui = function(modNodes)
     modNodes[1].nodes[1].config.colour = G.C.RED
+    modNodes[1].nodes[1].config.text = localize('hoh_created_by')
 
     -- Remove mod description text mode
     modNodes[#modNodes] = nil
@@ -94,7 +181,9 @@ HouseOfHearts.custom_ui = function(modNodes)
     local menu_width = 9
     local text_scale = 1.25
     local image_scale = 2.35
-    local image_spacing = 0.65
+    local image_spacing_R = 0.9
+    local image_spacing_L = 0.9
+    local yt_scale = 0.6
 
 
     -- UI Code
@@ -133,10 +222,10 @@ HouseOfHearts.custom_ui = function(modNodes)
                     },
                 }
             },
-            -- Spacing
+            -- Spacing (Left)
             {
                 n = G.UIT.C,
-                config = { padding = 0.01, align = "lm", minw = image_spacing },
+                config = { padding = 0.01, align = "lm", minw = image_spacing_L },
                 nodes = {
                 }
             },
@@ -149,6 +238,13 @@ HouseOfHearts.custom_ui = function(modNodes)
                         n = G.UIT.O,
                         config = { object = aha_logo }
                     }
+                }
+            },
+            -- Spacing (Right)
+            {
+                n = G.UIT.C,
+                config = { padding = 0.01, align = "lm", minw = image_spacing_R },
+                nodes = {
                 }
             },
         }
@@ -174,6 +270,8 @@ HouseOfHearts.custom_ui = function(modNodes)
             },
         }
     }
+    
+    local yt_icon = Sprite(0, 0, yt_scale, yt_scale, G.ASSET_ATLAS["hoh_youtube"], {x = 0, y = 0})
 
     local row3 = {
         n = G.UIT.R,
@@ -198,6 +296,13 @@ HouseOfHearts.custom_ui = function(modNodes)
                         },
                         nodes = {
                             {
+                                n = G.UIT.O,
+                                config = {
+                                    object = yt_icon,
+                                    shadow = false,
+                                }
+                            },
+                            {
                                 n = G.UIT.T,
                                 config = {
                                     text = localize('k_hoh_cpr_tutorial'),
@@ -205,7 +310,7 @@ HouseOfHearts.custom_ui = function(modNodes)
                                     colour = G.C.WHITE,
                                     scale = 0.6,
                                 }
-                            }
+                            },
                         }
                     }
                 }
@@ -226,7 +331,7 @@ HouseOfHearts.custom_ui = function(modNodes)
                             align = "cm",
                             colour = G.C.WHITE,
                             r = 0.1,
-                            minw = 3.7,
+                            minw = 4.05,
                             hover = true,
                             shadow = true,
                             button = "hoh_aha"

@@ -35,186 +35,24 @@ SMODS.Atlas {
     py = 633,
     atlas_table = 'ASSET_ATLAS'
 }
--- JOKERS
 
-SMODS.Joker{
-    name = "Keep The Beat",
-    key = "keep_the_beat",
-    config = {
-        extra = {
-            times_changed = 0,
-            xmult = 3
-        }
-    },
-    pos = {
-        x = 0, y = 0
-    },
-    cost = 5,
-    rarity = 2,
-    blueprint_compat = true,
-    eternal_compat = true,
-    perishable_compat = false,
-    unlocked = true,
-    discovered = true,
-    atlas = 'atlas',
-
-    loc_vars = function(self, info_queue, card)
-        local suits_string = ("%s, %s, %s, %s"):format(
-            localize("Diamonds", 'suits_plural'),
-            localize("Clubs", 'suits_plural'),
-            localize("Hearts", 'suits_plural'),
-            localize("Spades", 'suits_plural')
-        )
-
-        return {vars = {
-            card.ability.extra.xmult,
-            localize(G.GAME.ktb_suit or "Diamonds", 'suits_singular'),
-            suits_string,
-            colours = {G.C.SUITS[G.GAME.ktb_suit or "Diamonds"]},
-        }}
-    end,
-
-    sprite_pos = {
-        Diamonds = {x = 0, y = 0},
-        Clubs = {x = 1, y = 3},
-        Hearts = {x = 2, y = 3},
-        Spades = {x = 3, y = 3},
-    },
-
-    draw = function(self, card, layer)
-        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) 
-                -- Make sure sprite doesn't update during animation
-                and not card.pause_sprite_updates then
-            card.children.center:set_sprite_pos(self.sprite_pos[G.GAME.ktb_suit])
-        end
-    end,
-
-    get_scoring_cards_from_highlighted = function (self)        
-        local cards = G.hand.highlighted
-        local _, _, _,scoring_hand, _ = G.FUNCS.get_poker_hand_info(cards)
-        local final_scoring_hand = {}
-        for i=1, #cards do
-            local splashed = SMODS.always_scores(cards[i]) or next(find_joker('Splash'))
-            local unsplashed = SMODS.never_scores(cards[i])
-            if unsplashed then
-                goto continue
-            end
-            if not splashed then
-                for _, card in pairs(scoring_hand) do
-                    if card == cards[i] then splashed = true end
-                end
-            end
-
-            local effects = {}
-            SMODS.calculate_context({eviljiggle = true, modify_scoring_hand = true, other_card =  cards[i], full_hand = cards, scoring_hand = scoring_hand, in_scoring = true, ignore_other_debuff = true}, effects)
-            local flags = SMODS.trigger_effects(effects, cards[i])
-            if flags.add_to_hand then splashed = true end
-            if flags.remove_from_hand then unsplashed = true end
-            if splashed and not unsplashed then table.insert(final_scoring_hand, cards[i]) end
-            ::continue::
-        end
-
-        return final_scoring_hand
-    end,
-
-    update_jiggle = function (self, card)
-        if #G.hand.highlighted >= 1 and not card.jiggling and G.GAME.blind then
-            card.ignore_jiggle_updates = true
-            local eviljiggle = true
-            
-            local final_scoring_hand = self:get_scoring_cards_from_highlighted()
-            card.ignore_jiggle_updates = nil
-            for i = 1, #final_scoring_hand do
-                if final_scoring_hand[i]:is_suit(G.GAME.ktb_suit) then
-                    eviljiggle = false
-                    break
-                else
-                    eviljiggle = true
-                end
-            end
-            if eviljiggle then
-                card.jiggling = true
-                local eval = function (card)
-                    if #G.hand.highlighted == 0 then
-                        card.jiggling = nil
-                        return false
-                    end
-
-                    local final_scoring_hand = self:get_scoring_cards_from_highlighted()
-                    -- print ("highlighted total : "..(#final_scoring_hand))
-                    for i = 1, #final_scoring_hand do
-                        if final_scoring_hand[i]:is_suit(G.GAME.ktb_suit) then
-                            eviljiggle = false
-                        break
-                        else
-                            eviljiggle = true
-                        end
-                    end
-                    if not eviljiggle then
-                        card.jiggling = nil
-                    end
-                    return eviljiggle
-                end
-                juice_card_until(card, eval, true)
-            end
-        end
-    end,
-
-    calculate = function(self, card, context)
-        if context.cardarea == G.jokers then
-
-            -- no stackoverflow pls thanks :)
-            if not card.ignore_jiggle_updates and not context.check_eternal then
-                self:update_jiggle(card)
-            end
-
-            if context.joker_main then
-                local destruct = true
-                for _, card in pairs(context.scoring_hand) do
-                    if card:is_suit(G.GAME.ktb_suit) and card:can_calculate() then
-                        destruct = false
-                    end
-                end
-                if destruct then
-                    card.self_destruct = true
-                    return {
-                        message = localize('k_missed')
-                    }
-                end
-
-                card.pause_sprite_updates = true
-                G.GAME.hoh_update_ktb = true
-                return {
-                    xmult = card.ability.extra.xmult
-                }
-            elseif context.after then
-                if card.self_destruct then
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            play_sound('tarot1')
-                            SMODS.destroy_cards(card)
-                            return true
-                        end
-                    }))
-                    return
-                end
-                card.ability.extra.times_changed = card.ability.extra.times_changed + 1
-
-                check_for_unlock({type = 'keep_the_beat', amount = card.ability.extra.times_changed})
-
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        card.pause_sprite_updates = false
-                        card:juice_up()
-                        return true
-                    end
-                }))
-
-                change_ktb_suit()
-            end
-        end
-    end
+SMODS.Atlas {
+    key = "achievements_atlas",
+    path = "achievement_icons.png",
+    px = 66,
+    py = 66,
+    atlas_table = "ASSET_ATLAS"
 }
+
+SMODS.Atlas {
+    key = "youtube",
+    path = "youtube.png",
+    px = 234,
+    py = 234,
+    atlas_table = "ASSET_ATLAS"
+}
+
+-- JOKERS
 
 SMODS.Joker{
     name = "Wayfarer",
@@ -434,16 +272,218 @@ SMODS.Joker{
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.joker_main then
             local cards = 0
+            local face_card = nil
             for i = 1, #context.full_hand do
-                if context.full_hand[i]:get_id() == 11 then cards = cards + 1 -- can't use is_face() because of debuff interaction
-                elseif context.full_hand[i]:get_id() == 12 then cards = cards + 1
-                elseif context.full_hand[i]:get_id() == 13 then cards = cards + 1 end
+                local id = not SMODS.has_no_rank(context.full_hand[i]) and context.full_hand[i]:get_id() or -1
+
+                if id == 11 or id == 12 or id == 13 or context.full_hand[i]:is_face() then
+                    cards = cards + 1 -- can't use is_face() because of debuff interaction
+                    face_card = context.full_hand[i]
+                end
             end
-            if cards == 1 then
-                return{
+            if cards == 1 and face_card then
+                G.GAME.hoh_stethoscope_procs = G.GAME.hoh_stethoscope_procs or {}
+
+                local rank = face_card:get_id()
+
+                for suit, _ in pairs(SMODS.Suits) do
+                    -- Compatible with Wild cards, but also counts debuffed
+                    if face_card:is_suit(suit) or face_card.base.suit == suit and not SMODS.has_no_suit(face_card) then
+                        local key = tostring(suit).."_"..tostring(rank)
+
+                        G.GAME.hoh_stethoscope_procs[key] = G.GAME.hoh_stethoscope_procs[key] or {}
+
+                        local played_blinds = G.GAME.hoh_stethoscope_procs[key]
+                        played_blinds[G.GAME.blind_on_deck] = true
+                        if played_blinds.Small and played_blinds.Big and played_blinds.Boss then
+                            check_for_unlock({type = 'checkup'})
+                        end
+                    end
+                end
+
+                return {
                     message = localize{type='variable',key='a_mult',vars={card.ability.extra}},
                     mult_mod = card.ability.extra
                 }
+            end
+        end
+    end
+}
+
+SMODS.Joker{
+    name = "Keep The Beat",
+    key = "keep_the_beat",
+    config = {
+        extra = {
+            times_changed = 0,
+            xmult = 3
+        }
+    },
+    pos = {
+        x = 0, y = 0
+    },
+    cost = 5,
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = false,
+    unlocked = true,
+    discovered = true,
+    atlas = 'atlas',
+
+    loc_vars = function(self, info_queue, card)
+        local suits_string = ("%s, %s, %s, %s"):format(
+            localize("Diamonds", 'suits_plural'),
+            localize("Clubs", 'suits_plural'),
+            localize("Hearts", 'suits_plural'),
+            localize("Spades", 'suits_plural')
+        )
+
+        return {vars = {
+            card.ability.extra.xmult,
+            localize(G.GAME.ktb_suit or "Diamonds", 'suits_singular'),
+            suits_string,
+            colours = {G.C.SUITS[G.GAME.ktb_suit or "Diamonds"]},
+        }}
+    end,
+
+    sprite_pos = {
+        Diamonds = {x = 0, y = 0},
+        Clubs = {x = 1, y = 3},
+        Hearts = {x = 2, y = 3},
+        Spades = {x = 3, y = 3},
+    },
+
+    draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) 
+                -- Make sure sprite doesn't update during animation
+                and not card.pause_sprite_updates then
+            card.children.center:set_sprite_pos(self.sprite_pos[G.GAME.ktb_suit])
+        end
+    end,
+
+    get_scoring_cards_from_highlighted = function (self)    
+        local cards = G.hand.highlighted
+        local _, _, _,scoring_hand, _ = G.FUNCS.get_poker_hand_info(cards)
+        local final_scoring_hand = {}
+        for i=1, #cards do
+            local splashed = SMODS.always_scores(cards[i]) or next(find_joker('Splash'))
+            local unsplashed = SMODS.never_scores(cards[i])
+            if unsplashed then
+                goto continue
+            end
+            if not splashed then
+                for _, card in pairs(scoring_hand) do
+                    if card == cards[i] then splashed = true end
+                end
+            end
+
+            local effects = {}
+            SMODS.calculate_context({eviljiggle = true, modify_scoring_hand = true, other_card =  cards[i], full_hand = cards, scoring_hand = scoring_hand, in_scoring = true, ignore_other_debuff = true}, effects)
+            local flags = SMODS.trigger_effects(effects, cards[i])
+            if flags.add_to_hand then splashed = true end
+            if flags.remove_from_hand then unsplashed = true end
+            if splashed and not unsplashed then table.insert(final_scoring_hand, cards[i]) end
+            ::continue::
+        end
+
+        return final_scoring_hand
+    end,
+
+    update_jiggle = function (self, card)
+        if #G.hand.highlighted >= 1 and not card.jiggling and G.GAME.blind then
+            card.ignore_jiggle_updates = true
+            local eviljiggle = true
+
+            local final_scoring_hand = self:get_scoring_cards_from_highlighted()
+            card.ignore_jiggle_updates = nil
+            for i = 1, #final_scoring_hand do
+                if final_scoring_hand[i]:is_suit(G.GAME.ktb_suit) then
+                    eviljiggle = false
+                    break
+                else
+                    eviljiggle = true
+                end
+            end
+            if eviljiggle then
+                card.jiggling = true
+                local eval = function (card)
+                    if #G.hand.highlighted == 0 then
+                        card.jiggling = nil
+                        return false
+                    end
+
+                    local final_scoring_hand = self:get_scoring_cards_from_highlighted()
+                    -- print ("highlighted total : "..(#final_scoring_hand))
+                    for i = 1, #final_scoring_hand do
+                        if final_scoring_hand[i]:is_suit(G.GAME.ktb_suit) then
+                            eviljiggle = false
+                        break
+                        else
+                            eviljiggle = true
+                        end
+                    end
+                    if not eviljiggle then
+                        card.jiggling = nil
+                    end
+                    return eviljiggle
+                end
+                juice_card_until(card, eval, true)
+            end
+        end
+    end,
+
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers then
+
+            -- no stackoverflow pls thanks :)
+            if not card.ignore_jiggle_updates and not context.check_eternal then
+                self:update_jiggle(card)
+            end
+
+            if context.joker_main then
+                local destruct = true
+                for _, card in pairs(context.scoring_hand) do
+                    if card:is_suit(G.GAME.ktb_suit) and card:can_calculate() then
+                        destruct = false
+                    end
+                end
+                if destruct then
+                    card.self_destruct = true
+                    return {
+                        message = localize('k_missed')
+                    }
+                end
+
+                card.pause_sprite_updates = true
+                G.GAME.hoh_update_ktb = true
+                return {
+                    xmult = card.ability.extra.xmult
+                }
+            elseif context.after then
+                if card.self_destruct then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            play_sound('tarot1')
+                            SMODS.destroy_cards(card)
+                            return true
+                        end
+                    }))
+                    return
+                end
+                card.ability.extra.times_changed = card.ability.extra.times_changed + 1
+
+                check_for_unlock({type = 'keep_the_beat', amount = card.ability.extra.times_changed})
+
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        card.pause_sprite_updates = false
+                        card:juice_up()
+                        return true
+                    end
+                }))
+
+                change_ktb_suit()
             end
         end
     end
@@ -496,11 +536,11 @@ SMODS.Joker{
             local highest_ranks = rank_groups[highest_rank_id]
             local lowest_ranks = rank_groups[lowest_rank_id]
 
-            local triggered = false
+            local num_triggered = 0
 
             -- Cannot wrap around to aces
             if lowest_rank_id > 2 then
-                triggered = true
+                num_triggered = num_triggered + 1
                 for i = 1, #lowest_ranks do
                     G.E_MANAGER:add_event(Event({
                         func = function()
@@ -515,7 +555,7 @@ SMODS.Joker{
 
             -- Cannot wrap around to 2s
             if highest_rank_id < 14 then
-                triggered = true
+                num_triggered = num_triggered + 1
                 for i = 1, #highest_ranks do
                     G.E_MANAGER:add_event(Event({
                         func = function()
@@ -542,14 +582,14 @@ SMODS.Joker{
                         end
                     end
 
-                    if has_ace and has_two then
+                    if has_ace and has_two and num_triggered == 2 then
                         check_for_unlock({type = 'training_complete'})
                     end
                     return true
                 end
             }))
 
-            if triggered then
+            if num_triggered > 0 then
                 return {
                     message = localize("k_pumped_ex"),
                     colour = G.C.FILTER
@@ -640,7 +680,7 @@ SMODS.Joker{
     calculate = function (self, card, context)
         if context.skip_blind and not context.blueprint then
             TeaTime = false
-             SMODS.destroy_cards(card, nil, nil, true)
+            SMODS.destroy_cards(card, nil, nil, true)
                 return {
                     message = localize('k_drank_ex'),
                     colour = G.C.FILTER
@@ -748,7 +788,7 @@ SMODS.Joker{
 SMODS.Joker{
     name = 'Heartfelt Gift',
     key = 'heartfelt_gift',
-    config = {extra = {poker_hand = 'Three of a Kind'}},
+    config = {extra = {poker_hand = 'Three of a Kind', fool = false, venus = false, lovers = false, deja_vu = false}},
     atlas = 'atlas',
     pos = {x = 1, y = 2},
     cost = 6,
@@ -771,9 +811,18 @@ SMODS.Joker{
 
     calculate = function (self, card, context)
         local gift_pool = {'c_venus', 'c_lovers', 'c_fool', 'c_deja_vu'}
-        
-        if context.joker_main and next(context.poker_hands[card.ability.extra.poker_hand]) then
+        if context.joker_main and next(context.poker_hands[card.ability.extra.poker_hand]) and
+        #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
             local gift = pseudorandom_element(gift_pool, 'hoh_heartfelt_gift')
+            if gift == 'c_venus' then card.ability.extra.venus = true   --really channeling my inner localthunk here
+            elseif gift == 'c_lovers' then card.ability.extra.lovers = true
+            elseif gift == 'c_fool' then card.ability.extra.fool = true
+            elseif gift == 'c_deja_vu' then card.ability.extra.deja_vu = true
+            end
+            if card.ability.extra.venus and card.ability.extra.lovers and card.ability.extra.fool 
+            and card.ability.extra.deja_vu then
+            check_for_unlock({type = 'thoughtfulness'})
+            end
             G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
             G.E_MANAGER:add_event(Event({
                 trigger = 'before',
@@ -866,31 +915,34 @@ SMODS.Joker{
             juice_card_until(card, eval, true)
         end
 
-        if context.cardarea == G.jokers and context.after and G.GAME.current_round.hands_played == 0 then
-            if #context.full_hand == 2 then
-                local heart_card = {}
-                local nonheart_card = {}
-                for k, v in ipairs(context.full_hand) do
-                    if v:is_suit("Hearts") then heart_card[#heart_card+1] = v
-                    else nonheart_card[#nonheart_card+1] = v end
-                    if #heart_card == 1 and #nonheart_card == 1 then
-                        G.E_MANAGER:add_event(Event({
-                            func = function()
-                                if nonheart_card[1] ~= heart_card[1] then
-                                    copy_card(heart_card[1], nonheart_card[1])
-                                    heart_card[1]:juice_up()
-                                    nonheart_card[1]:juice_up()
-                                    card:juice_up()
-                                end
-                                return true
-                            end
-                        }))
-                        return {
-                            message = localize('k_copied_ex'),
-                            colour = G.C.RED
-                        }
-                    end
+        if context.cardarea == G.jokers and context.after and (G.GAME.current_round.hands_played == 0 or true) then
+            local heart_card = {}
+            local nonheart_card = {}
+            for k, v in ipairs(context.full_hand) do
+                if v.shattered or v.destroyed then
+                    -- ignore
+                elseif v:is_suit("Hearts") then
+                    heart_card[#heart_card+1] = v
+                else
+                    nonheart_card[#nonheart_card+1] = v
                 end
+            end
+            if #heart_card == 1 and #nonheart_card == 1 then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        if nonheart_card[1] ~= heart_card[1] then
+                            copy_card(heart_card[1], nonheart_card[1])
+                            heart_card[1]:juice_up()
+                            nonheart_card[1]:juice_up()
+                            card:juice_up()
+                        end
+                        return true
+                    end
+                }))
+                return {
+                    message = localize('k_copied_ex'),
+                    colour = G.C.RED
+                }
             end
         end
     end

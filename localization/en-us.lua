@@ -4,10 +4,10 @@ return {
             j_hoh_keep_the_beat = {
                 name = "Keep the Beat",
                 text = {
-                    "{X:mult,C:white}X#1#{} {C:mult}Mult{} if hand contains",
+                    "{X:mult,C:white}X#1#{} Mult if hand contains",
                     "scoring {V:1}#2#{} card,",
-                    "otherwise {C:mult}self destructs",
-                    "{C:inactive}suit cycles every hand",
+                    "otherwise {C:mult}self destructs,",
+                    "suit cycles every hand",
                     "{C:inactive,s:0.8}(#3#){}",
                 },
             },
@@ -94,8 +94,8 @@ return {
                 name = "Heart of Gold",
                 text = {
                     "When {C:attention}Boss Blind{} is defeated,",
-                    "earn {C:money}$1{} for every {C:money}$2000{}",
-                    "raised during {C:attention}House of Hearts 2025{}",
+                    "earn {C:money}$1{} for every {C:attention}$2000{}",
+                    "raised during {C:dark_edition}House of Hearts 2025{}",
                     "{C:inactive}({C:money}$#1#{C:inactive}){}"
                 },
             },
@@ -105,6 +105,7 @@ return {
                     "If played hand contains a {C:attention}Three of a Kind{},",
                     "create a {C:planet, T:c_venus}Venus{}, {C:tarot, T:c_lovers}The Lovers{},",
                     "{C:tarot, T:c_fool}The Fool{}, or {C:spectral, T:c_deja_vu}Deja Vu{} card",
+                    "{C:inactive}(Must have room)"
                 },
             },
             j_hoh_crimson_chip = {
@@ -267,6 +268,7 @@ return {
                 text = {
                     "{X:red,C:white}Code{}",
                     "- This menu :3",
+                    "- Joker rewrites/modifications",
                     "- Achievements"
                 },
 			},
@@ -311,6 +313,11 @@ return {
             k_hoh_aha_header = "American Heart Association",
             k_hoh_cpr_tutorial = "CPR Tutorial",
             k_hoh_donate_aha = "Donate to AHA",
+
+            hoh_reset_achievements = "Reset Achievements",
+            hoh_are_you_sure = "Are you sure?",
+            hoh_no = "No",
+            hoh_created_by = "Created By: Balatro University Discord",
         },
         achievement_names = {
             ach_hoh_no_pressure = 'No Pressure',
@@ -324,14 +331,16 @@ return {
             ach_hoh_donothon = 'Dono-thon',
             ach_hoh_contagious_smile = 'Contagious Smile',
             ach_hoh_circulatory_system = 'Circulatory System',
-            ach_hoh_refresher = 'Refresher (name pending)',
-            ach_hoh_rebuffed = 'Rebuffed'
+            ach_hoh_break_time = 'Break Time',
+            ach_hoh_rebuffed = 'Rebuffed',
+            ach_hoh_thoughtfulness = 'Thoughtfulness',
+            ach_hoh_checkup = 'Checkup',
         },
         achievement_descriptions = {
             ach_hoh_no_pressure = 'Have a deck with no Spade or Club cards',
             ach_hoh_flavor_fanatic = 'Create 6 Enhanced Cards in a single round',
             ach_hoh_training_complete = 'Create both Aces and 2s at the same time using CPR Training',
-            ach_hoh_refresher = 'Skip 5 times within 4 consecutive antes',
+            ach_hoh_break_time = 'Skip 5 times within 4 consecutive antes',
             ach_hoh_cross_fit = 'Take at least 4 items from Booster Packs in a single round',
             ach_hoh_long_walk = 'Use every Rank in a Straight at least once during a run',
             ach_hoh_stayin_alive = 'Play a hand of 9 - Ace - Ace in Hearts Suit',
@@ -340,7 +349,9 @@ return {
             ach_hoh_donothon = 'Earn $40 or more at Cashout during a run',
             ach_hoh_contagious_smile = 'Play a Flush Five in Hearts Suit',
             ach_hoh_circulatory_system = 'Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards',
-            ach_hoh_rebuffed = 'Use Crimson Chip to retrigger played cards twice or more in the same hand'
+            ach_hoh_rebuffed = 'Use Crimson Chip to retrigger played cards twice or more in the same hand',
+            ach_hoh_thoughtfulness = 'Receive each gift at least once from Heartfelt Gift during a run',
+            ach_hoh_checkup = 'Trigger the Stethoscope using a card with the same Rank and Suit during all three Blinds of an Ante',
         }
     }
 }
