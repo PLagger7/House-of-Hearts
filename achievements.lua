@@ -423,11 +423,8 @@ HouseOfHearts.calculate = function(self, context)
     if context.skip_blind then
         local ante = G.GAME.round_resets.ante
         G.GAME.blinds_skipped_ante[ante] = G.GAME.blinds_skipped_ante[ante] + 1
-        print(ante)
-        print(G.GAME.blinds_skipped_ante[ante])
 
         local total_skips = 0
-
         for i = ante, ante - 4, -1 do
             total_skips = total_skips + (G.GAME.blinds_skipped_ante[i] or 0)
         end

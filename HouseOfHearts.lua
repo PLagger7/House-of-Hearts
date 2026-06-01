@@ -433,6 +433,17 @@ SMODS.Joker{
         end
     end,
 
+    -- Update suit (after every hand played)
+    change_ktb_suit = function(self)
+        if G.GAME.ktb_suit and self.hoh_update_ktb then
+            self.hoh_update_ktb = false
+            local suits = {"Diamonds", "Clubs", "Hearts", "Spades"}
+            local i = get_index(suits, G.GAME.ktb_suit)
+            if i == #suits then i = 0 end
+            G.GAME.ktb_suit = suits[i + 1]
+        end
+    end,
+
     calculate = function(self, card, context)
         if context.cardarea == G.jokers then
 
@@ -456,7 +467,7 @@ SMODS.Joker{
                 end
 
                 card.pause_sprite_updates = true
-                G.GAME.hoh_update_ktb = true
+                self.hoh_update_ktb = true
                 return {
                     xmult = card.ability.extra.xmult
                 }
@@ -483,7 +494,7 @@ SMODS.Joker{
                     end
                 }))
 
-                change_ktb_suit()
+                self:change_ktb_suit()
             end
         end
     end
@@ -673,18 +684,19 @@ SMODS.Joker{
     unlocked = true,
     discovered = true,
 
-    add_to_deck = function ()
-        TeaTime = true
-    end,
-
     calculate = function (self, card, context)
-        if context.skip_blind and not context.blueprint then
-            TeaTime = false
-            SMODS.destroy_cards(card, nil, nil, true)
-                return {
-                    message = localize('k_drank_ex'),
-                    colour = G.C.FILTER
-                }
+        if context.skip_blind and not context.blueprint and card.should_trigger then
+
+            G.E_MANAGER:add_event(Event({
+            func = function()
+                SMODS.destroy_cards(card, nil, nil, true)
+                return true
+            end }))
+
+            return {
+            message = localize('k_drank_ex'),
+                colour = G.C.FILTER
+            }
         end
     end
 }
@@ -1032,20 +1044,12 @@ SMODS.Back{
 
 -- FUNCTIONS
 
-change_ktb_suit = function()
-    if G.GAME.ktb_suit and G.GAME.hoh_update_ktb then
-        G.GAME.hoh_update_ktb = false
-        local suits = {"Diamonds", "Clubs", "Hearts", "Spades"}
-        local i = get_index(suits, G.GAME.ktb_suit)
-        if i == #suits then i = 0 end
-        G.GAME.ktb_suit = suits[i + 1]
-    end
-end
-
-TeaTime = false
 local ref_skip_blind = G.FUNCS.skip_blind
 function G.FUNCS.skip_blind(e)
-    if TeaTime then
+    local tea_jokers = find_joker("j_hoh_green_tea")
+    if next(tea_jokers) then
+        local tea_joker = tea_jokers[next(tea_jokers)]
+        tea_joker.should_trigger = true
         G.E_MANAGER:add_event(Event({ --i stole all this from Shenanigans Decks
                 trigger = 'before',
                 delay = 0.2,
@@ -1086,7 +1090,7 @@ end
 
 -- RESETS
 
-reset_skip_count = function()
+local init_skip_count = function()
     G.GAME.blinds_skipped_ante = {}
     for i = 1, 39 do
         G.GAME.blinds_skipped_ante[i] = G.GAME.blinds_skipped_ante[i] or 0
@@ -1094,11 +1098,13 @@ reset_skip_count = function()
     end
 end
 
-reset_ktb_suit = function()
+local init_ktb_suit = function()
     G.GAME.ktb_suit = G.GAME.ktb_suit or "Diamonds"
 end
 
 mod.reset_game_globals = function(run_start)
-	reset_ktb_suit()
-    reset_skip_count()
+    if run_start then
+        init_ktb_suit()
+        init_skip_count()
+    end
 end
