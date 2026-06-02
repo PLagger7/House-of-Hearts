@@ -326,7 +326,7 @@ HouseOfHearts.calculate = function(self, context)
         local dark_suits = false
         local decksize = 0
         for _, card in pairs(G.playing_cards) do
-            if card.base.suit == 'Spades' or card.base.suit == 'Clubs' then
+            if (card.base.suit == 'Spades' or card.base.suit == 'Clubs') and not SMODS.has_no_suit(card) then
                 dark_suits = true
                 decksize = decksize + 1
             elseif not dark_suits then 
