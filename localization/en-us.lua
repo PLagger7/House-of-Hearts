@@ -199,6 +199,7 @@ return {
                     "- CPR Training",
                     "- 5-A-Day",
                     "- Heartbeat Deck",
+                    "- Mastery Achievements Icons",
                 },
 			},
 			hoh_honu_hover = {
@@ -280,6 +281,7 @@ return {
                     "- Heartfelt Gift",
                     "- Pressure Cuff",
                     "- Mod Icon",
+                    "- Certification Achievements Icons",
                 },
 			},
 
