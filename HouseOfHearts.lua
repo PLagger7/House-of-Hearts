@@ -927,7 +927,7 @@ SMODS.Joker{
             juice_card_until(card, eval, true)
         end
 
-        if context.cardarea == G.jokers and context.after and (G.GAME.current_round.hands_played == 0 or true) then
+        if context.cardarea == G.jokers and context.after and G.GAME.current_round.hands_played == 0 then
             local heart_card = {}
             local nonheart_card = {}
             for k, v in ipairs(context.full_hand) do
