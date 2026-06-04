@@ -748,7 +748,7 @@ SMODS.Joker{
             end
 
             return
-        elseif context.remove_playing_cards and not context.bluerpint then
+        elseif context.remove_playing_cards and not context.blueprint then
             local bl = 0
                 for k, v in ipairs(context.removed) do
                     if v:is_suit("Spades") or v:is_suit("Clubs") then bl = bl + 1 end
