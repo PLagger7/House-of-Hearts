@@ -1075,7 +1075,8 @@ function G.FUNCS.skip_blind(e)
                     G.GAME.shop_free = nil
                     G.GAME.shop_d6ed = nil
                     G.GAME.current_round.used_packs = {}
-
+                    G.GAME.current_round.reroll_cost = G.GAME.round_resets.reroll_cost
+                    G.GAME.current_round.reroll_cost_increase = 0
                     G.blind_select:remove() -- from somewhere else
                     G.blind_prompt_box:remove()
                     G.blind_select = nil
