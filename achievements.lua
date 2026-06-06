@@ -95,7 +95,7 @@ SMODS.Achievement {
     hidden_text = false,
     hidden_name = false,
     unlock_condition = function (self, args)
-        return args.type == 'hoh_enhanced_round' and args.amount >= 6
+        return args.type == 'hoh_enhanced_round' and args.amount >= 6 and args.menu == nil
     end
 }
 
@@ -106,10 +106,10 @@ end
 local card_set_ability = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
     if type(center) == "table" and center.set == "Enhanced" or type(center) == "string" and is_enhancement(center) then
-        if self.area == G.play or self.area == G.hand then
+        if self.area == G.play or self.area == G.hand and G.OVERLAY_MENU == nil then
             self.hoh_just_enhanced = nil
             G.GAME.hoh_enhanced_round = (G.GAME.hoh_enhanced_round or 0) + 1
-            check_for_unlock({type = 'hoh_enhanced_round', amount = G.GAME.hoh_enhanced_round})
+            check_for_unlock({type = 'hoh_enhanced_round', amount = G.GAME.hoh_enhanced_round, menu = G.OVERLAY_MENU})
         else
             -- Cache newly created enhanced cards (i.e. when creating one with DNA / Standard pack / etc.)
             self.hoh_just_enhanced = true
@@ -121,10 +121,10 @@ end
 
 local cardarea_emplace = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
-    if card.hoh_just_enhanced and (self == G.play or self == G.hand or self == G.deck) then
+    if card.hoh_just_enhanced and G.OVERLAY_MENU == nil and (self == G.play or self == G.hand or self == G.deck) then
         card.hoh_just_enhanced = nil
         G.GAME.hoh_enhanced_round = (G.GAME.hoh_enhanced_round or 0) + 1
-        check_for_unlock({type = 'hoh_enhanced_round', amount = G.GAME.hoh_enhanced_round})
+        check_for_unlock({type = 'hoh_enhanced_round', amount = G.GAME.hoh_enhanced_round, menu = G.OVERLAY_MENU})
     else
         card.hoh_just_enhanced = nil
     end
