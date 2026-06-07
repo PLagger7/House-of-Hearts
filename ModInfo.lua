@@ -158,6 +158,7 @@ function G.FUNCS.hoh_reset_achievements_actually(e)
         end
     end
 
+    fetch_achievements()
     G:save_progress()
     G.CONTROLLER:key_press('escape')
 end
