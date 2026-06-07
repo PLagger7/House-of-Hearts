@@ -407,11 +407,9 @@ HouseOfHearts.calculate = function(self, context)
         for _, card in pairs(G.playing_cards) do
             if SMODS.has_enhancement(card, 'm_mult') then
                 reds = reds + 1
-            end
-            if card.edition and card.edition.key == 'e_holo' then
+            elseif card.edition and card.edition.key == 'e_holo' then
                 reds = reds + 1
-            end
-            if card.seal == 'Red' then
+            elseif card.seal == 'Red' then
                 reds = reds + 1
             end
         end

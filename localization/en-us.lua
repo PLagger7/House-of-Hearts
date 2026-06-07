@@ -350,7 +350,7 @@ return {
             ach_hoh_recycled = 'Have 0 cards remaining in your deck during a round',
             ach_hoh_donothon = 'Earn $40 or more at Cashout during a run',
             ach_hoh_contagious_smile = 'Play a Flush Five in Hearts Suit',
-            ach_hoh_circulatory_system = 'Have at least 52 cards in your Deck that are Mult Cards, Holographic Cards, or Red Seal Cards',
+            ach_hoh_circulatory_system = 'Have at least 52 cards in your Deck that are either Mult, Holographic, or have a Red Seal',
             ach_hoh_rebuffed = 'Use Crimson Chip to retrigger played cards twice or more in the same hand',
             ach_hoh_thoughtfulness = 'Receive each gift at least once from Heartfelt Gift during a run',
             ach_hoh_checkup = 'Trigger the Stethoscope using a card with the same Rank and Suit during all three Blinds of an Ante',
